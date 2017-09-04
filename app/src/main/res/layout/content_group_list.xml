@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.reveu.weloudgrouplist.GroupList"
+    tools:showIn="@layout/app_bar_group_list">
+
+    <RelativeLayout
+        android:id="@+id/ctGroupList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/fragGroupList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.reveu.weloudgrouplist.FragGroupList"
+            tools:layout="@layout/fragment_grouplist_main" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

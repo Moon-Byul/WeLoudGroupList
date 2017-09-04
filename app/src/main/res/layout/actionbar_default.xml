@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="#4472c4">
+
+        <ImageView
+            android:id="@+id/actionbar_default_btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/backbtn"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:tint="#ffffff"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        <TextView
+            android:id="@+id/actionbar_default_tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        <ImageView
+            android:id="@+id/actionbar_default_btnConfirm"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/checkmark"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:tint="#ffffff"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+    </LinearLayout>
+</RelativeLayout>

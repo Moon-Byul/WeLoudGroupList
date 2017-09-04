@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">WeLoudGroupList</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="text_groupname">그룹명</string>
+    <string name="text_autojoin">자동 가입</string>
+    <string name="text_myaccount">내 계정</string>
+    <string name="text_programinfo">프로그램 정보</string>
+    <string name="text_id">아이디</string>
+    <string name="text_password">비밀번호</string>
+    <string name="text_currentPw">현재 비밀번호</string>
+    <string name="text_newPw">새로운 비밀번호</string>
+    <string name="text_confirmPw">비밀번호 확인</string>
+    <string name="text_nickname">닉네임</string>
+    <string name="text_email">이메일</string>
+    <string name="text_login">로그인</string>
+    <string name="text_createaccount">계정 생성</string>
+    <string name="text_cancel">취소</string>
+    <string name="text_settings">설정</string>
+    <string name="text_accountinfo">계정 정보</string>
+    <string name="text_logout">로그아웃</string>
+    <string name="text_ascName">오름차순으로 정렬 (이름)</string>
+    <string name="text_descName">내림차순으로 정렬 (이름)</string>
+    <string name="text_ascDate">최근 수정된 날짜순으로 정렬</string>
+    <string name="text_descDate">수정이 오래된 날짜순으로 정렬</string>
+    <string name="text_loading">잠시만 기다려주세요.</string>
+    <string name="text_passwordchange">비밀번호 변경</string>
+    <string name="text_notformatted">의 형식이 일치하지 않습니다.</string>
+    <string name="text_isexists">는 이미 존재합니다.</string>
+    <string name="text_accountchanged">계정 정보가 변경되었습니다.</string>
+
+    <string name="error_idpassword">아이디나 패스워드가 틀렸습니다.</string>
+    <string name="error_temporary">일시적인 오류입니다.</string>
+
+    <string name="hint_groupname">그룹 이름 (2 ~ 16자)</string>
+    <string name="hint_id">아이디 (4 ~ 16자)</string>
+    <string name="hint_password">비밀번호 (4 ~ 24자)</string>
+    <string name="hint_nickname">닉네임 (2 ~ 12자)</string>
+    <string name="hint_email">이메일 주소</string>
+
+</resources>

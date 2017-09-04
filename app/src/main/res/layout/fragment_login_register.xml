@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/register_container"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3763b1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WELOUD LOGO"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="0.5"
+        android:layout_margin="15dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editId"
+            android:hint="@string/hint_id"
+            android:background="#ffffff"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editPassword"
+            android:hint="@string/hint_password"
+            android:background="#ffffff"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:inputType="textPassword"
+            android:maxLines="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editNickname"
+            android:hint="@string/hint_nickname"
+            android:background="#ffffff"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editEmail"
+            android:hint="@string/hint_email"
+            android:background="#ffffff"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:inputType="textNoSuggestions"
+            android:maxLines="1"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#254479"
+            android:textColor="#ffffff"
+            android:text="@string/text_createaccount"
+            android:textSize="18dp"
+            android:layout_margin="5dp"
+            android:id="@+id/btnCreate"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textinfo"
+            android:text=""
+            android:textColor="#ff0000"
+            style="@style/borderWhiteInRed"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:layout_margin="15dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="#254479"
+                android:textColor="#ffffff"
+                android:text="@string/text_cancel"
+                android:textSize="18dp"
+                android:id="@+id/btnCancel"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

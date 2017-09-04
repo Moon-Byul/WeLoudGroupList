@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">WeLoudGroupList</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="TAG_USERNUM">userNum</string>
+    <string name="TAG_ID">ID</string>
+    <string name="TAG_GROUPID">groupID</string>
+    <string name="TAG_GROUPNAME">groupName</string>
+    <string name="TAG_NICKNAME">nickName</string>
+    <string name="TAG_EMAIL">email</string>
+    <string name="TAG_ISMEMBER">isMember</string>
+    <string name="TAG_ISADMISSION">isAdmission</string>
+    <string name="TAG_RANKID">rankID</string>
+    <string name="TAG_GROUPUPLOAD">groupUpload</string>
+    <string name="TAG_USERAPPROVED">userApproved</string>
+    <string name="TAG_SERVERIP">serverIP</string>
+
+    <string name="TAG_JSON_LOGIN">login</string>
+    <string name="TAG_JSON_SEARCH">groupsearch</string>
+    <string name="TAG_JSON_GROUPCREATE">groupcreate</string>
+    <string name="TAG_JSON_GROUPRANK">grouprank</string>
+    <string name="TAG_JSON_GROUPLIST">grouplist</string>
+    <string name="TAG_JSON_SERVERLIST">serverlist</string>
+    <string name="TAG_JSON_USERACCOUNT">useraccount</string>
+
+    <string name="FTP_ID">WeLoud</string>
+    <string name="FTP_PASSWORD">WeL0udCl0ud</string>
+
+    <string name="APP_VERSION">v 1.0</string>
+
+    <string name="text_groupname">Group Name</string>
+    <string name="text_autojoin">Auto Join</string>
+    <string name="text_myaccount">My Account</string>
+    <string name="text_programinfo">Program Version</string>
+    <string name="text_id">ID</string>
+    <string name="text_password">Password</string>
+    <string name="text_currentPw">Current Password</string>
+    <string name="text_newPw">New Password</string>
+    <string name="text_confirmPw">Confirm Password</string>
+    <string name="text_nickname">Nickname</string>
+    <string name="text_email">Email</string>
+    <string name="text_login">login</string>
+    <string name="text_createaccount">Create Account</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_settings">Settings</string>
+    <string name="text_accountinfo">Account Info</string>
+    <string name="text_logout">Logout</string>
+    <string name="text_ascName">Ascending (Name)</string>
+    <string name="text_descName">Descending (Name)</string>
+    <string name="text_ascDate">Ascending (Date)</string>
+    <string name="text_descDate">Descending (Date)</string>
+    <string name="text_loading">Loading</string>
+    <string name="text_passwordchange">Change Password</string>
+    <string name="text_notformatted">is not formatted.</string>
+    <string name="text_isexists">is exists.</string>
+    <string name="text_accountchanged">Account Data is Changed.</string>
+
+    <string name="error_idpassword">ID or Password Error.</string>
+    <string name="error_temporary">Temporary Error.</string>
+
+    <string name="hint_groupname">Group Name (2 ~ 16)</string>
+    <string name="hint_id">ID (4 ~ 16)</string>
+    <string name="hint_password">Password (4 ~ 24)</string>
+    <string name="hint_nickname">Nickname (2 ~ 12)</string>
+    <string name="hint_email">Email Address</string>
+
+</resources>

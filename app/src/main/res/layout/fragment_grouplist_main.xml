@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/groupList_cdlMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srlGroupMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#d9d9d9">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lvGroup"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_fabMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:src="@drawable/addgroup"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                app:backgroundTint="#4472c4"/>
+
+            <LinearLayout
+                android:id="@+id/layout_fabSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab"
+                android:layout_alignRight="@+id/fab"
+                android:layout_toLeftOf="@+id/fab"
+                android:orientation="horizontal"
+                android:layout_marginBottom="32dp"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:text="그룹 생성"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabCreate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/creategroup"
+                    app:elevation="0dp"
+                    app:backgroundTint="#ffffff"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_fabCreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/layout_fabSearch"
+                android:layout_alignRight="@+id/layout_fabSearch"
+                android:layout_toLeftOf="@+id/layout_fabSearch"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:text="이름으로 전체 그룹 검색"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/searchgroup"
+                    app:elevation="0dp"
+                    app:backgroundTint="#ffffff" />
+
+                </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>

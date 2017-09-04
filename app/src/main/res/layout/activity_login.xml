@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.reveu.weloudgrouplist.Main">
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/fragmentlogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.reveu.weloudgrouplist.FragLogin"
+            tools:layout="@layout/fragment_login_main">
+
+        </fragment>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
