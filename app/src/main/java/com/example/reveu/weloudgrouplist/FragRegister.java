@@ -63,7 +63,7 @@ public class FragRegister extends Fragment
             @Override
             public void onClick(View v)
             {
-                hideKeyboard(v);
+                new StockLib().hideKeyboard(v, getActivity());
             }
         });
         btncreate.setOnClickListener(new View.OnClickListener()
@@ -90,7 +90,7 @@ public class FragRegister extends Fragment
                     task.execute(id, password, email, nickname);
                 }
 
-                hideKeyboard(v);
+                new StockLib().hideKeyboard(v, getActivity());
             }
         });
         btncancel.setOnClickListener(new View.OnClickListener()
@@ -120,13 +120,6 @@ public class FragRegister extends Fragment
         editPassword.setText("");
         editNickname.setText("");
         editEmail.setText("");
-    }
-
-    // 나는 키보드가 싫다!!!!!!!!!!!!
-    private void hideKeyboard(View v)
-    {
-        InputMethodManager imm= (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     class RegisterUser extends AsyncTask<String, Void, String>

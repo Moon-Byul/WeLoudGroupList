@@ -1,5 +1,6 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,8 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +25,15 @@ import android.widget.TextView;
 
 public class SettChangePw extends AppCompatActivity
 {
-    private String ID;
-
     private ImageView btnActionBarBack;
     private ImageView btnActionBarConfirm;
     private TextView tvActionBarTitle;
+
+    private EditText etCurrentPw;
+    private EditText etNewPw;
+    private EditText etConfirmPw;
+
+    private String ID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -41,6 +50,75 @@ public class SettChangePw extends AppCompatActivity
 
         Intent intent = getIntent();
         ID = intent.getStringExtra(getText(R.string.TAG_ID).toString());
+
+        etCurrentPw = (EditText) findViewById(R.id.changePw_etCurrent);
+        etNewPw = (EditText) findViewById(R.id.changePw_etNew);
+        etConfirmPw = (EditText) findViewById(R.id.changePw_etConfirm);
+
+        setEnableConfirmBtn(false);
+
+        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                finish();
+            }
+        });
+
+        btnActionBarConfirm.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new StockLib().hideKeyboard(v, getApplication());
+            }
+        });
+
+        etCurrentPw.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                isAllTypedPw();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        etNewPw.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                isAllTypedPw();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        etConfirmPw.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                isAllTypedPw();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void setDefaultActionBar(String title, boolean isClose, int confirmType)
@@ -90,6 +168,24 @@ public class SettChangePw extends AppCompatActivity
         {
             btnActionBarConfirm.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void isAllTypedPw()
+    {
+        if(etCurrentPw.getText().toString().length() > 0)
+        {
+            if(etNewPw.getText().toString().length() > 0)
+            {
+                if(etConfirmPw.getText().toString().length() > 0)
+                    setEnableConfirmBtn(true);
+                else
+                    setEnableConfirmBtn(false);
+            }
+            else
+                setEnableConfirmBtn(false);
+        }
+        else
+            setEnableConfirmBtn(false);
     }
 
     private void setEnableConfirmBtn(boolean enabled)

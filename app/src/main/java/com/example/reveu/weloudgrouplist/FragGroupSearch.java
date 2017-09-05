@@ -87,8 +87,8 @@ public class FragGroupSearch extends Fragment
     public void onPause()
     {
         super.onPause();
-        InputMethodManager imm= (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etGroupSearch.getWindowToken(), 0);
+
+        new StockLib().hideKeyboard(etGroupSearch, getActivity());
     }
 
     public void setAdapterOnView(GroupListAdapter adapter)

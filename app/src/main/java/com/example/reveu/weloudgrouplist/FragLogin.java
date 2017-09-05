@@ -65,7 +65,7 @@ public class FragLogin extends Fragment
             @Override
             public void onClick(View v)
             {
-                hideKeyboard(v);
+                new StockLib().hideKeyboard(v, getActivity());
             }
         });
 
@@ -77,7 +77,7 @@ public class FragLogin extends Fragment
                 String id = editId.getText().toString();
                 String password = editPassword.getText().toString();
 
-                hideKeyboard(v);
+                new StockLib().hideKeyboard(v, getActivity());
 
                 LoginData task = new LoginData();
                 task.execute(id, password);
@@ -131,13 +131,6 @@ public class FragLogin extends Fragment
         {
             Log.d(TAG, "showResult : ", e);
         }
-    }
-
-    // 나는 키보드가 싫다!!!!!!!!!!!!
-    private void hideKeyboard(View v)
-    {
-        InputMethodManager imm= (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     private class LoginData extends AsyncTask<String, Void, String>

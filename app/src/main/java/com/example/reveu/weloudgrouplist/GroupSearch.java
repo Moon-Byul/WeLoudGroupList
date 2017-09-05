@@ -90,7 +90,7 @@ public class GroupSearch extends AppCompatActivity
                 }
                 else
                 {
-                    hideKeyboard(v);
+                    new StockLib().hideKeyboard(v, getApplication());
 
                     SearchGroup task = new SearchGroup();
                     task.execute(etSearch.getText().toString(), userNum, "0", "null");
@@ -219,13 +219,6 @@ public class GroupSearch extends AppCompatActivity
         {
             Log.d(TAG, "showResult : ", e);
         }
-    }
-
-    // 나는 키보드가 싫다!!!!!!!!!!!!
-    private void hideKeyboard(View v)
-    {
-        InputMethodManager imm= (InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     private class SearchGroup extends AsyncTask<String, Void, String>
