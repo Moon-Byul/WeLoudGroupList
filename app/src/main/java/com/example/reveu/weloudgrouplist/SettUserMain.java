@@ -26,14 +26,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by reveu on 2017-08-24.
+ * Created by reveu on 2017-08-23.
  */
 
 public class SettUserMain extends AppCompatActivity
 {
-    private ImageView btnActionBarBack;
-    private ImageView btnActionBarConfirm;
-    private TextView tvActionBarTitle;
+    private ActionbarLib abLib = new ActionbarLib();
 
     private LinearLayout btnAccount;
 
@@ -56,9 +54,9 @@ public class SettUserMain extends AppCompatActivity
 
         btnAccount = (LinearLayout) findViewById(R.id.userMain_btnAccount);
 
-        setDefaultActionBar(getText(R.string.text_settings).toString(), true, 0);
+        abLib.setDefaultActionBar(this, getText(R.string.text_settings).toString(), true, 0);
 
-        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -77,55 +75,6 @@ public class SettUserMain extends AppCompatActivity
                 startActivity(intent);
             }
         });
-    }
-
-    private void setDefaultActionBar(String title, boolean isClose, int confirmType)
-    {
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-
-        View customBar = LayoutInflater.from(this).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
-
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
-
-        tvActionBarTitle.setText(title);
-
-        if(isClose)
-        {
-            btnActionBarBack.setImageResource(R.drawable.cancle);
-        }
-        else
-        {
-            btnActionBarBack.setImageResource(R.drawable.backbtn);
-        }
-
-        if(confirmType > 0)
-        {
-            btnActionBarConfirm.setVisibility(View.VISIBLE);
-            if(confirmType == 1)
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.checkmark);
-            }
-            else
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
-            }
-        }
-        else
-        {
-            btnActionBarConfirm.setVisibility(View.INVISIBLE);
-        }
     }
 
     private class UITask extends AsyncTask<String, Void, String>

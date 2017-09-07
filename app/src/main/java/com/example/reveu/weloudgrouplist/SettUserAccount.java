@@ -48,9 +48,8 @@ import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 public class SettUserAccount extends AppCompatActivity
 {
-    private ImageView btnActionBarBack;
-    private ImageView btnActionBarConfirm;
-    private TextView tvActionBarTitle;
+    private ActionbarLib abLib = new ActionbarLib();
+    private StockLib stLib = new StockLib();
 
     private LinearLayout ctMain;
     private LinearLayout btnChangePw;
@@ -74,7 +73,7 @@ public class SettUserAccount extends AppCompatActivity
     private void UIAction()
     {
         setContentView(R.layout.activity_settings_useraccount);
-        setDefaultActionBar(getText(R.string.text_accountinfo).toString(), false, 1);
+        abLib.setDefaultActionBar(this, getText(R.string.text_accountinfo).toString(), false, 1);
 
         Intent intent = getIntent();
         ID = intent.getStringExtra(getText(R.string.TAG_ID).toString());
@@ -86,7 +85,7 @@ public class SettUserAccount extends AppCompatActivity
         btnChangePw = (LinearLayout) findViewById(R.id.userAccount_btnChangePw);
         ctMain = (LinearLayout) findViewById(R.id.userAccount_ctMain);
 
-        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -95,7 +94,7 @@ public class SettUserAccount extends AppCompatActivity
             }
         });
 
-        btnActionBarConfirm.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarConfirm().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -157,63 +156,14 @@ public class SettUserAccount extends AppCompatActivity
         task.execute("0", ID);
     }
 
-    private void setDefaultActionBar(String title, boolean isClose, int confirmType)
-    {
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-
-        View customBar = LayoutInflater.from(this).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
-
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
-
-        tvActionBarTitle.setText(title);
-
-        if(isClose)
-        {
-            btnActionBarBack.setImageResource(R.drawable.cancle);
-        }
-        else
-        {
-            btnActionBarBack.setImageResource(R.drawable.backbtn);
-        }
-
-        if(confirmType > 0)
-        {
-            btnActionBarConfirm.setVisibility(View.VISIBLE);
-            if(confirmType == 1)
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.checkmark);
-            }
-            else
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
-            }
-        }
-        else
-        {
-            btnActionBarConfirm.setVisibility(View.INVISIBLE);
-        }
-    }
-
     private boolean checkInfo()
     {
-        if(!Pattern.matches("^[a-zA-Z0-9가-힣]{2,12}$", etNickname.getText().toString()))
+        if(!stLib.isNickFormatted(etNickname.getText().toString()))
         {
             tvErrorMsg.setText(getText(R.string.text_nickname).toString() + getText(R.string.text_notformatted).toString());
             return false;
         }
-        else if(!Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9.]+$", etEmail.getText().toString()))
+        else if(!stLib.isEmailFormatted(etEmail.getText().toString()))
         {
             tvErrorMsg.setText(getText(R.string.text_email).toString() + getText(R.string.text_notformatted).toString());
             return false;
@@ -231,22 +181,13 @@ public class SettUserAccount extends AppCompatActivity
         {
             if(etEmail.getText().toString().equals(Email))
             {
-                setEnableConfirmBtn(false);
+                abLib.setEnableConfirmBtn(false);
             }
             else
-                setEnableConfirmBtn(true);
+                abLib.setEnableConfirmBtn(true);
         }
         else
-            setEnableConfirmBtn(true);
-    }
-
-    private void setEnableConfirmBtn(boolean enabled)
-    {
-        btnActionBarConfirm.setEnabled(enabled);
-        if(enabled)
-            btnActionBarConfirm.setColorFilter(Color.argb(255, 255, 255, 255));
-        else
-            btnActionBarConfirm.setColorFilter(Color.argb(180, 255, 255, 255));
+            abLib.setEnableConfirmBtn(true);
     }
 
     private void getJsonData(String jsonString)
@@ -295,7 +236,7 @@ public class SettUserAccount extends AppCompatActivity
                 etEmail.setText(Email);
                 etNickname.setText(Nickname);
 
-                setEnableConfirmBtn(false);
+                abLib.setEnableConfirmBtn(false);
             }
             else
             {
@@ -310,7 +251,7 @@ public class SettUserAccount extends AppCompatActivity
                     Nickname = etNickname.getText().toString();
                     Email = etEmail.getText().toString();
 
-                    setEnableConfirmBtn(false);
+                    abLib.setEnableConfirmBtn(false);
                 }
             }
 

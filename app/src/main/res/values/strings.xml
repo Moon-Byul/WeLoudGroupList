@@ -58,6 +58,8 @@
     <string name="text_notformatted">is not formatted.</string>
     <string name="text_isexists">is exists.</string>
     <string name="text_accountchanged">Account Data is Changed.</string>
+    <string name="text_newpwsamecurrent">New Password is the same Current Password.</string>
+    <string name="text_newpwnotmatch">New Password is not match Confirm Password.</string>
 
     <string name="error_idpassword">ID or Password Error.</string>
     <string name="error_temporary">Temporary Error.</string>

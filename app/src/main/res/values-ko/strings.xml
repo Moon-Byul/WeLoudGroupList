@@ -32,6 +32,8 @@
     <string name="text_notformatted">의 형식이 일치하지 않습니다.</string>
     <string name="text_isexists">는 이미 존재합니다.</string>
     <string name="text_accountchanged">계정 정보가 변경되었습니다.</string>
+    <string name="text_newpwsamecurrent">새 비밀번호가 현재 비밀번호와 같습니다.</string>
+    <string name="text_newpwnotmatch">새 비밀번호가 비밀번호 확인과 같지 않습니다.</string>
 
     <string name="error_idpassword">아이디나 패스워드가 틀렸습니다.</string>
     <string name="error_temporary">일시적인 오류입니다.</string>

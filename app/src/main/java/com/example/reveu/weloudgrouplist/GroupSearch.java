@@ -42,13 +42,12 @@ import static android.content.ContentValues.TAG;
 
 public class GroupSearch extends AppCompatActivity
 {
+    private ActionbarLib abLib = new ActionbarLib();
+
     private LinearLayout ctMain;
     private ListView lvGroup;
     private EditText etSearch;
     private ImageView btnSearch;
-    private ImageView btnActionBarBack;
-    private ImageView btnActionBarConfirm;
-    private TextView tvActionBarTitle;
     private GroupListAdapter glaAdapter = new GroupListAdapter();
 
     private String userNum;
@@ -116,9 +115,9 @@ public class GroupSearch extends AppCompatActivity
             }
         });
 
-        setDefaultActionBar("그룹 검색", false, 0);
+        abLib.setDefaultActionBar(this, "그룹 검색", false, 0);
 
-        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -126,55 +125,6 @@ public class GroupSearch extends AppCompatActivity
                 finish();
             }
         });
-    }
-
-    private void setDefaultActionBar(String title, boolean isClose, int confirmType)
-    {
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-
-        View customBar = LayoutInflater.from(this).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
-
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
-
-        tvActionBarTitle.setText(title);
-
-        if(isClose)
-        {
-            btnActionBarBack.setImageResource(R.drawable.cancle);
-        }
-        else
-        {
-            btnActionBarBack.setImageResource(R.drawable.backbtn);
-        }
-
-        if(confirmType > 0)
-        {
-            btnActionBarConfirm.setVisibility(View.VISIBLE);
-            if(confirmType == 1)
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.checkmark);
-            }
-            else
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
-            }
-        }
-        else
-        {
-            btnActionBarConfirm.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void searchEvent()

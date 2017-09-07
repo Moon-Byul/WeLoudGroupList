@@ -1,23 +1,22 @@
 package com.example.reveu.weloudgrouplist;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
+
+import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 /**
  * Created by reveu on 2017-08-31.
@@ -25,13 +24,13 @@ import android.widget.TextView;
 
 public class SettChangePw extends AppCompatActivity
 {
-    private ImageView btnActionBarBack;
-    private ImageView btnActionBarConfirm;
-    private TextView tvActionBarTitle;
+    private ActionbarLib abLib = new ActionbarLib();
+    private StockLib stLib = new StockLib();
 
     private EditText etCurrentPw;
     private EditText etNewPw;
     private EditText etConfirmPw;
+    private TextView tvErrorMsg;
 
     private String ID;
 
@@ -46,7 +45,7 @@ public class SettChangePw extends AppCompatActivity
     private void UIAction()
     {
         setContentView(R.layout.activity_settings_changepassword);
-        setDefaultActionBar(getText(R.string.text_passwordchange).toString(), false, 1);
+        abLib.setDefaultActionBar(this, getText(R.string.text_passwordchange).toString(), false, 1);
 
         Intent intent = getIntent();
         ID = intent.getStringExtra(getText(R.string.TAG_ID).toString());
@@ -54,10 +53,11 @@ public class SettChangePw extends AppCompatActivity
         etCurrentPw = (EditText) findViewById(R.id.changePw_etCurrent);
         etNewPw = (EditText) findViewById(R.id.changePw_etNew);
         etConfirmPw = (EditText) findViewById(R.id.changePw_etConfirm);
+        tvErrorMsg = (TextView) findViewById(R.id.changePw_tvErrorMsg);
 
-        setEnableConfirmBtn(false);
+        abLib.setEnableConfirmBtn(false);
 
-        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -66,12 +66,21 @@ public class SettChangePw extends AppCompatActivity
             }
         });
 
-        btnActionBarConfirm.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarConfirm().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 new StockLib().hideKeyboard(v, getApplication());
+
+                tvErrorMsg.setText("");
+                tvErrorMsg.setText(passwordCheck());
+
+                if(tvErrorMsg.getText().toString().equals(""))
+                {
+                    // 비밀번호 변경
+                    Log.d("Twily", "Password Change");
+                }
             }
         });
 
@@ -121,52 +130,31 @@ public class SettChangePw extends AppCompatActivity
         });
     }
 
-    private void setDefaultActionBar(String title, boolean isClose, int confirmType)
+    private String passwordCheck()
     {
-        ActionBar actionBar = getSupportActionBar();
+        String currentPw = etCurrentPw.getText().toString();
+        String newPw = etNewPw.getText().toString();
+        String confirmPw = etConfirmPw.getText().toString();
 
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
+        if(!stLib.isPwFormatted(currentPw))
+            return getText(R.string.text_currentPw).toString() + getText(R.string.text_notformatted).toString();
 
-        View customBar = LayoutInflater.from(this).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
+        if(!stLib.isPwFormatted(newPw))
+            return getText(R.string.text_newPw).toString() + getText(R.string.text_notformatted).toString();
 
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
+        if(!stLib.isPwFormatted(confirmPw))
+            return getText(R.string.text_confirmPw).toString() + getText(R.string.text_notformatted).toString();
 
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
-
-        tvActionBarTitle.setText(title);
-
-        if(isClose)
+        if(currentPw.equals(newPw))
         {
-            btnActionBarBack.setImageResource(R.drawable.cancle);
+            return getText(R.string.text_newpwsamecurrent).toString();
         }
         else
         {
-            btnActionBarBack.setImageResource(R.drawable.backbtn);
-        }
-
-        if(confirmType > 0)
-        {
-            btnActionBarConfirm.setVisibility(View.VISIBLE);
-            if(confirmType == 1)
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.checkmark);
-            }
+            if(!newPw.equals(confirmPw))
+                return getText(R.string.text_newpwnotmatch).toString();
             else
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
-            }
-        }
-        else
-        {
-            btnActionBarConfirm.setVisibility(View.INVISIBLE);
+                return "";
         }
     }
 
@@ -177,24 +165,15 @@ public class SettChangePw extends AppCompatActivity
             if(etNewPw.getText().toString().length() > 0)
             {
                 if(etConfirmPw.getText().toString().length() > 0)
-                    setEnableConfirmBtn(true);
+                    abLib.setEnableConfirmBtn(true);
                 else
-                    setEnableConfirmBtn(false);
+                    abLib.setEnableConfirmBtn(false);
             }
             else
-                setEnableConfirmBtn(false);
+                abLib.setEnableConfirmBtn(false);
         }
         else
-            setEnableConfirmBtn(false);
-    }
-
-    private void setEnableConfirmBtn(boolean enabled)
-    {
-        btnActionBarConfirm.setEnabled(enabled);
-        if(enabled)
-            btnActionBarConfirm.setColorFilter(Color.argb(255, 255, 255, 255));
-        else
-            btnActionBarConfirm.setColorFilter(Color.argb(180, 255, 255, 255));
+            abLib.setEnableConfirmBtn(false);
     }
 
     private class UITask extends AsyncTask<String, Void, String>

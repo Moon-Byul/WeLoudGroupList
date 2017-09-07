@@ -35,6 +35,8 @@ import static android.content.ContentValues.TAG;
 
 public class FragRegister extends Fragment
 {
+    private StockLib stLib = new StockLib();
+
     TextView textinfo;
     EditText editId;
     EditText editPassword;
@@ -76,13 +78,13 @@ public class FragRegister extends Fragment
                 String nickname = editNickname.getText().toString();
                 String email = editEmail.getText().toString();
 
-                if(!(Pattern.matches("^[a-zA-Z0-9]{4,16}$", id)))
+                if(!stLib.isIDFormatted(id))
                     textinfo.setText(getText(R.string.text_id).toString() + getText(R.string.text_notformatted).toString());
-                else if(!Pattern.matches("^[a-zA-Z0-9~!@#$%^&*()-_=+]{4,24}$", password))
+                else if(!stLib.isPwFormatted(password))
                     textinfo.setText(getText(R.string.text_password).toString() + getText(R.string.text_notformatted).toString());
-                else if(!(Pattern.matches("^[a-zA-Z0-9가-힣]{2,12}$", nickname)))
+                else if(!stLib.isNickFormatted(nickname))
                     textinfo.setText(getText(R.string.text_nickname).toString() + getText(R.string.text_notformatted).toString());
-                else if(!Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9.]+$", email))
+                else if(!stLib.isEmailFormatted(email))
                     textinfo.setText(getText(R.string.text_email).toString() + getText(R.string.text_notformatted).toString());
                 else
                 {

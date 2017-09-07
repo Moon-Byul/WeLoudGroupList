@@ -35,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import static android.R.attr.id;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -43,13 +44,13 @@ import static android.content.ContentValues.TAG;
 
 public class GroupCreate extends AppCompatActivity
 {
+    private ActionbarLib abLib = new ActionbarLib();
+    private StockLib stLib = new StockLib();
+
     private LinearLayout ctMain;
     private EditText etGroupName;
     private Switch swAutoJoin;
     private TextView tvErrorMsg;
-    private ImageView btnActionBarBack;
-    private ImageView btnActionBarConfirm;
-    private TextView tvActionBarTitle;
 
     private ProgressDialog progressDialog;
 
@@ -77,9 +78,9 @@ public class GroupCreate extends AppCompatActivity
         swAutoJoin = (Switch) findViewById(R.id.groupCreate_swAutoJoin);
         tvErrorMsg = (TextView) findViewById(R.id.groupCreate_tvErrorMsg);
 
-        setDefaultActionBar("그룹 생성", false, 1);
+        abLib.setDefaultActionBar(this, "그룹 생성", false, 1);
 
-        btnActionBarBack.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -88,13 +89,13 @@ public class GroupCreate extends AppCompatActivity
             }
         });
 
-        btnActionBarConfirm.setOnClickListener(new View.OnClickListener()
+        abLib.getBtnActionBarConfirm().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 String groupName = etGroupName.getText().toString();
-                if(!(Pattern.matches("^[a-zA-Z0-9가-힣]{2,12}$", groupName)))
+                if(!stLib.isIDFormatted(groupName))
                 {
                     tvErrorMsg.setText("그룹 이름을 형식에 맞게 작성하십시오.");
                 }
@@ -117,55 +118,6 @@ public class GroupCreate extends AppCompatActivity
         super.onDestroy();
         if(ftpMain != null)
             ftpMain.disconnect();
-    }
-
-    private void setDefaultActionBar(String title, boolean isClose, int confirmType)
-    {
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-
-        View customBar = LayoutInflater.from(this).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
-
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
-
-        tvActionBarTitle.setText(title);
-
-        if(isClose)
-        {
-            btnActionBarBack.setImageResource(R.drawable.cancle);
-        }
-        else
-        {
-            btnActionBarBack.setImageResource(R.drawable.backbtn);
-        }
-
-        if(confirmType > 0)
-        {
-            btnActionBarConfirm.setVisibility(View.VISIBLE);
-            if(confirmType == 1)
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.checkmark);
-            }
-            else
-            {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
-            }
-        }
-        else
-        {
-            btnActionBarConfirm.setVisibility(View.INVISIBLE);
-        }
     }
 
     private String getJsonData(String jsonString, int type)
