@@ -105,7 +105,7 @@ public class GroupCreate extends AppCompatActivity
 
                     progressDialog = ProgressDialog.show(GroupCreate.this, getText(R.string.text_loading).toString(), null, true, true);
 
-                    CreateGroup task = new CreateGroup();
+                    CreateGroupTask task = new CreateGroupTask();
                     task.execute("0", groupName, String.valueOf(userNum), autoJoin);
                 }
             }
@@ -157,7 +157,7 @@ public class GroupCreate extends AppCompatActivity
         }
     }
 
-    private class CreateGroup extends AsyncTask<String, Void, String>
+    private class CreateGroupTask extends AsyncTask<String, Void, String>
     {
         int type;
 
@@ -190,7 +190,7 @@ public class GroupCreate extends AppCompatActivity
 
                         for(int i=0; i<perArr.length; i++)
                         {
-                            CreateGroup task = new CreateGroup();
+                            CreateGroupTask task = new CreateGroupTask();
                             task.execute("1", String.valueOf(groupID), nameArr[i], perArr[i]);
                         }
                     }
@@ -207,7 +207,7 @@ public class GroupCreate extends AppCompatActivity
 
                         if(rankID.equals("2"))
                         {
-                            CreateGroup task = new CreateGroup();
+                            CreateGroupTask task = new CreateGroupTask();
                             task.execute("2", String.valueOf(groupID), String.valueOf(userNum));
                         }
                     }
@@ -220,7 +220,7 @@ public class GroupCreate extends AppCompatActivity
                     }
                     else
                     {
-                        CreateGroup task = new CreateGroup();
+                        CreateGroupTask task = new CreateGroupTask();
                         task.execute("3", String.valueOf(groupID), String.valueOf(userNum), "2");
                     }
                 }

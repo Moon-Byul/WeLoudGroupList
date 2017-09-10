@@ -181,7 +181,7 @@ public class FragGroupList extends Fragment
 
     public void getGroupList()
     {
-        GroupListData glData = new GroupListData();
+        GroupListTask glData = new GroupListTask();
         glData.execute(((GroupList) getActivity()).getUserNum());
     }
 
@@ -232,7 +232,7 @@ public class FragGroupList extends Fragment
         }
     }
 
-    private class GroupListData extends AsyncTask<String, Void, String>
+    private class GroupListTask extends AsyncTask<String, Void, String>
     {
         ProgressDialog progressDialog;
 

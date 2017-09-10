@@ -91,7 +91,7 @@ public class GroupSearch extends AppCompatActivity
                 {
                     new StockLib().hideKeyboard(v, getApplication());
 
-                    SearchGroup task = new SearchGroup();
+                    SearchGroupTask task = new SearchGroupTask();
                     task.execute(etSearch.getText().toString(), userNum, "0", "null");
                 }
             }
@@ -109,7 +109,7 @@ public class GroupSearch extends AppCompatActivity
                 }
                 else
                 {
-                    SearchGroup task = new SearchGroup();
+                    SearchGroupTask task = new SearchGroupTask();
                     task.execute(String.valueOf(item.getGroupID()), userNum, "1", String.valueOf(position));
                 }
             }
@@ -171,7 +171,7 @@ public class GroupSearch extends AppCompatActivity
         }
     }
 
-    private class SearchGroup extends AsyncTask<String, Void, String>
+    private class SearchGroupTask extends AsyncTask<String, Void, String>
     {
         ProgressDialog progressDialog;
         int position;
@@ -224,7 +224,7 @@ public class GroupSearch extends AppCompatActivity
                 }
                 else if(result.contains("*autojoin"))
                 {
-                    SearchGroup task = new SearchGroup();
+                    SearchGroupTask task = new SearchGroupTask();
                     task.execute(groupinfo, userNum, "2", "null");
                 }
                 else if(result.contains("*group_user_inserted"))

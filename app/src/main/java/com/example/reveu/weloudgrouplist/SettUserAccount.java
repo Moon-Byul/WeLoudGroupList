@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -70,6 +71,15 @@ public class SettUserAccount extends AppCompatActivity
         task.execute();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode == RESULT_OK)
+        {
+            Snackbar.make(ctMain, getText(R.string.text_pwischange), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+        }
+    }
+
     private void UIAction()
     {
         setContentView(R.layout.activity_settings_useraccount);
@@ -105,7 +115,7 @@ public class SettUserAccount extends AppCompatActivity
 
                 if(result)
                 {
-                    UserAccount task = new UserAccount();
+                    UserAccountTask task = new UserAccountTask();
                     task.execute("1", ID, etNickname.getText().toString(), etEmail.getText().toString());
                 }
             }
@@ -118,7 +128,7 @@ public class SettUserAccount extends AppCompatActivity
             {
                 Intent intent = new Intent(SettUserAccount.this, SettChangePw.class);
                 intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -152,7 +162,7 @@ public class SettUserAccount extends AppCompatActivity
             public void afterTextChanged(Editable s) {}
         });
 
-        UserAccount task = new UserAccount();
+        UserAccountTask task = new UserAccountTask();
         task.execute("0", ID);
     }
 
@@ -209,7 +219,7 @@ public class SettUserAccount extends AppCompatActivity
         }
     }
 
-    private class UserAccount extends AsyncTask<String, Void, String>
+    private class UserAccountTask extends AsyncTask<String, Void, String>
     {
         ProgressDialog progressDialog;
         int type;

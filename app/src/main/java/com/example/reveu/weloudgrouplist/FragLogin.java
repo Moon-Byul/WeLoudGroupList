@@ -79,7 +79,7 @@ public class FragLogin extends Fragment
 
                 new StockLib().hideKeyboard(v, getActivity());
 
-                LoginData task = new LoginData();
+                LoginTask task = new LoginTask();
                 task.execute(id, password);
             }
         });
@@ -133,7 +133,7 @@ public class FragLogin extends Fragment
         }
     }
 
-    private class LoginData extends AsyncTask<String, Void, String>
+    private class LoginTask extends AsyncTask<String, Void, String>
     {
         ProgressDialog progressDialog;
 
@@ -161,7 +161,7 @@ public class FragLogin extends Fragment
             {
                 if(result.contains("*password is error."))
                 {
-                    textinfo.setText(getText(R.string.error_idpassword).toString());
+                    textinfo.setText(getText(R.string.text_idpassworderr).toString());
                 }
                 else
                     {

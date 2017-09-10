@@ -59,9 +59,11 @@
     <string name="text_isexists">is exists.</string>
     <string name="text_accountchanged">Account Data is Changed.</string>
     <string name="text_newpwsamecurrent">New Password is the same Current Password.</string>
-    <string name="text_newpwnotmatch">New Password is not match Confirm Password.</string>
+    <string name="text_newpwnotmatch">Confirm Password is not match.</string>
+    <string name="text_passworderr">Password is Error.</string>
+    <string name="text_idpassworderr">ID or Password Error.</string>
+    <string name="text_pwischange">Password is Change.</string>
 
-    <string name="error_idpassword">ID or Password Error.</string>
     <string name="error_temporary">Temporary Error.</string>
 
     <string name="hint_groupname">Group Name (2 ~ 16)</string>

@@ -88,7 +88,7 @@ public class FragRegister extends Fragment
                     textinfo.setText(getText(R.string.text_email).toString() + getText(R.string.text_notformatted).toString());
                 else
                 {
-                    RegisterUser task = new RegisterUser();
+                    RegisterUserTask task = new RegisterUserTask();
                     task.execute(id, password, email, nickname);
                 }
 
@@ -124,7 +124,7 @@ public class FragRegister extends Fragment
         editEmail.setText("");
     }
 
-    class RegisterUser extends AsyncTask<String, Void, String>
+    private class RegisterUserTask extends AsyncTask<String, Void, String>
     {
         ProgressDialog progressDialog;
 
