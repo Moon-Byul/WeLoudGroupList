@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/groupList_cdlMain"
+        android:id="@+id/groupcloudList_cdlMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/srlGroupMain"
+            android:id="@+id/srlGroupCloudMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#d9d9d9">
@@ -18,17 +18,19 @@
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/lvGroup"/>
+                    android:id="@+id/lvCloudGroup"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:listSelector="@android:color/transparent"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_fabMain"
+            android:id="@+id/layout_fabCloudMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/fabCloud"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
@@ -41,12 +43,12 @@
                 app:backgroundTint="#4472c4"/>
 
             <LinearLayout
-                android:id="@+id/layout_fabCreate"
+                android:id="@+id/layout_fabCloudCreateFolder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/fab"
-                android:layout_alignRight="@+id/fab"
-                android:layout_toLeftOf="@+id/fab"
+                android:layout_above="@+id/fabCloud"
+                android:layout_alignRight="@+id/fabCloud"
+                android:layout_toLeftOf="@+id/fabCloud"
                 android:orientation="horizontal"
                 android:layout_marginBottom="32dp"
                 android:visibility="invisible">
@@ -57,11 +59,11 @@
                     android:layout_gravity="center"
                     android:textSize="16dp"
                     android:textColor="#ffffff"
-                    android:text="@string/text_creategroup"
+                    android:text="@string/text_createfolder"
                     />
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fabCreate"
+                    android:id="@+id/fabCloudCreateFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -73,12 +75,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_fabSearch"
+                android:id="@+id/layout_fabCloudUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/layout_fabCreate"
-                android:layout_alignRight="@+id/layout_fabCreate"
-                android:layout_toLeftOf="@+id/layout_fabCreate"
+                android:layout_above="@+id/layout_fabCloudCreateFolder"
+                android:layout_alignRight="@+id/layout_fabCloudCreateFolder"
+                android:layout_toLeftOf="@+id/layout_fabCloudCreateFolder"
                 android:orientation="horizontal"
                 android:layout_marginBottom="16dp"
                 android:visibility="invisible">
@@ -89,11 +91,11 @@
                     android:layout_gravity="center"
                     android:textSize="16dp"
                     android:textColor="#ffffff"
-                    android:text="@string/text_findgroup"
+                    android:text="@string/text_uploadFile"
                     />
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fabSearch"
+                    android:id="@+id/fabCloudUpload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -102,7 +104,7 @@
                     app:elevation="0dp"
                     app:backgroundTint="#ffffff" />
 
-                </LinearLayout>
+            </LinearLayout>
 
         </RelativeLayout>
 

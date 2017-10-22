@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
-            android:inputType="textPersonName|textNoSuggestions"
+            android:inputType="textNoSuggestions"
             android:text=""
             android:hint="그룹 이름을 입력하세요."
             android:ems="10" />

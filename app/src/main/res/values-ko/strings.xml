@@ -19,6 +19,7 @@
     <string name="text_email">이메일</string>
     <string name="text_login">로그인</string>
     <string name="text_createaccount">계정 생성</string>
+    <string name="text_ok">확인</string>
     <string name="text_cancel">취소</string>
     <string name="text_settings">설정</string>
     <string name="text_accountinfo">계정 정보</string>
@@ -37,6 +38,22 @@
     <string name="text_passworderr">비밀번호가 틀렸습니다.</string>
     <string name="text_idpassworderr">아이디나 비밀번호가 틀렸습니다.</string>
     <string name="text_pwischange">비밀번호가 변경되었습니다.</string>
+    <string name="text_picture">"사진"</string>
+    <string name="text_music">"음악"</string>
+    <string name="text_document">"문서"</string>
+    <string name="text_video">"비디오"</string>
+    <string name="text_folder">"폴더"</string>
+    <string name="text_groupsettings">"그룹 설정"</string>
+    <string name="text_backtogrouplist">"그룹리스트로 이동"</string>
+    <string name="text_dropoutsgroup">"그룹 탈퇴"</string>
+    <string name="text_favoritegroup">"그룹 즐겨찾기"</string>
+    <string name="text_uploaddate">업로드 날짜</string>
+    <string name="text_creategroup">그룹 생성</string>
+    <string name="text_findgroup">이름으로 모든 그룹 검색</string>
+    <string name="text_createfolder">폴더 생성</string>
+    <string name="text_uploadFile">파일 업로드</string>\
+    <string name="text_inputfoldername">폴더 이름 입력</string>
+    <string name="text_foldernameisempty">폴더명이 비어있습니다.</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
 

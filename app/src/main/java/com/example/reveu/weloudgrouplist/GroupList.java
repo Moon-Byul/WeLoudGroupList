@@ -214,4 +214,15 @@ public class GroupList extends AppCompatActivity
         intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
         startActivity(intent);
     }
+
+    public void groupCloudEvent(String groupName, int groupID)
+    {
+        Intent intent = new Intent(GroupList.this, GroupCloudList.class);
+        intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
+        intent.putExtra(getText(R.string.TAG_NICKNAME).toString(), nickName);
+        intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
+        intent.putExtra(getText(R.string.TAG_GROUPNAME).toString(), groupName);
+        intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+        startActivity(intent);
+    }
 }

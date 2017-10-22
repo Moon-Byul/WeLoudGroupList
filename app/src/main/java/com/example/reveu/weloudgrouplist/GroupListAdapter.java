@@ -201,7 +201,7 @@ public class GroupListAdapter extends BaseAdapter
         {
             int result = compareFav(o1, o2);
             if(result == 0)
-                return o1.getGroupUploadDate().compareTo(o2.getGroupUploadDate());
+                return o2.getGroupUploadDate().compareTo(o1.getGroupUploadDate());
             else
                 return result;
         }
@@ -214,7 +214,7 @@ public class GroupListAdapter extends BaseAdapter
         {
             int result = compareFav(o1, o2);
             if(result == 0)
-                return o2.getGroupUploadDate().compareTo(o1.getGroupUploadDate());
+                return o1.getGroupUploadDate().compareTo(o2.getGroupUploadDate());
             else
                 return result;
         }

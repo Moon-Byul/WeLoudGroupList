@@ -1,6 +1,7 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,14 +78,17 @@ public class FragGroupList extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                GroupListItem item = (GroupListItem) glaAdapter.getItem(position);
+                GroupListItem item = glaAdapter.getItem(position);
 
+                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
+                /*
                 if(item.getFav())
                     item.setFav(false);
                 else
                     item.setFav(true);
                 Snackbar.make(view, "테스트 메시지입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 glaAdapter.notifyDataSetChanged();
+                */
             }
         });
 

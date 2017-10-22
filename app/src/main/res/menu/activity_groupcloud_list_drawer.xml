@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_cloud_top"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_gc_groupsett"
+            android:icon="@drawable/settings"
+            android:title="@string/text_groupsettings" />
+
+    </group>
+
+    <group
+        android:id="@+id/menu_cloud_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_gc_setting"
+            android:icon="@drawable/settings"
+            android:title="@string/text_settings" />
+
+        <item
+            android:id="@+id/nav_gc_backlist"
+            android:icon="@drawable/logout"
+            android:title="@string/text_backtogrouplist" />
+
+        <item
+            android:id="@+id/nav_gc_dropouts"
+            android:icon="@drawable/canclecircle"
+            android:title="@string/text_dropoutsgroup" />
+
+    </group>
+
+</menu>
