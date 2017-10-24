@@ -1,5 +1,6 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -38,6 +39,19 @@ public class FTPLib
         password = context.getText(R.string.FTP_PASSWORD).toString();
 
         new FTPTask().execute("*Connect");
+    }
+
+    public boolean isConnect()
+    {
+        try
+        {
+            return new FTPTask().execute("*isConnect").get().equals("true");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void disconnect()
@@ -231,10 +245,14 @@ public class FTPLib
             {
                 FTPRemoveDirectory(params[1]);
             }
+            else if(params[0].equals("*isConnect"))
+            {
+                return (FTPIsConnect() ? "true" : "false");
+            }
             return params[0];
         }
 
-        private void FTPConnect()
+        private boolean FTPConnect()
         {
             boolean loginResult = false;
 
@@ -260,6 +278,8 @@ public class FTPLib
             {
                 System.out.println("FTP_LOGIN_SUCCESS");
             }
+
+            return loginResult;
         }
 
         private void FTPDisconnect()
@@ -269,6 +289,11 @@ public class FTPLib
                 ftpClient.disconnect();
             }
             catch (IOException ignored){}
+        }
+
+        private boolean FTPIsConnect()
+        {
+            return ftpClient.isConnected();
         }
 
         private void FTPMakeDirectory(String folderName)

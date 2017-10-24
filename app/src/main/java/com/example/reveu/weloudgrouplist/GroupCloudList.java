@@ -255,8 +255,9 @@ public class GroupCloudList extends AppCompatActivity
                     JSONObject item = jsonArray.getJSONObject(0);
 
                     serverIP = item.getString(getText(R.string.TAG_SERVERIP).toString());
-                    ftpMain = new FTPLib(serverIP, "/" + groupName, getApplicationContext());
-                    fragGroupCloudList.loadFileList();
+                    ftpMain = new FTPLib(serverIP, "/" + groupName, GroupCloudList.this);
+                    if(ftpMain.isConnect())
+                        fragGroupCloudList.loadFileList();
                 }
                 catch (JSONException e)
                 {

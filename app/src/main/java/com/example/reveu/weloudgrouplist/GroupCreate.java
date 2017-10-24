@@ -185,8 +185,8 @@ public class GroupCreate extends AppCompatActivity
 
                         ftpMain = new FTPLib(serverIP, "/", getApplicationContext());
 
-                        String[] nameArr = {"일반회원", "특별회원", "관리자"};
-                        String[] perArr = {"0", "127", "1023"};
+                        String[] nameArr = {"일반회원", "특별회원", "관리자", "개설자"};
+                        String[] perArr = {"0", "127", "1023", "2047"};
 
                         for(int i=0; i<perArr.length; i++)
                         {
@@ -205,7 +205,7 @@ public class GroupCreate extends AppCompatActivity
                     {
                         String rankID = getJsonData(result, type);
 
-                        if(rankID.equals("2"))
+                        if(rankID.equals("3"))
                         {
                             CreateGroupTask task = new CreateGroupTask();
                             task.execute("2", String.valueOf(groupID), String.valueOf(userNum));
@@ -221,14 +221,15 @@ public class GroupCreate extends AppCompatActivity
                     else
                     {
                         CreateGroupTask task = new CreateGroupTask();
-                        task.execute("3", String.valueOf(groupID), String.valueOf(userNum), "2");
+                        task.execute("3", String.valueOf(groupID), String.valueOf(userNum), "3");
                     }
                 }
                 else
                 {
                     progressDialog.dismiss();
 
-                    ftpMain.makeDirectory(etGroupName.getText().toString());
+                    if(ftpMain.isConnect())
+                        ftpMain.makeDirectory(etGroupName.getText().toString());
 
                     Toast.makeText(getApplicationContext(), "그룹이 생성되었습니다.", Toast.LENGTH_SHORT).show();
                     finish();
