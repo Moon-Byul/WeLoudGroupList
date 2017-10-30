@@ -79,13 +79,13 @@ public class FragRegister extends Fragment
                 String email = editEmail.getText().toString();
 
                 if(!stLib.isIDFormatted(id))
-                    textinfo.setText(getText(R.string.text_id).toString() + getText(R.string.text_notformatted).toString());
+                    textinfo.setText(getString(R.string.text_notformatted, getText(R.string.text_id)));
                 else if(!stLib.isPwFormatted(password))
-                    textinfo.setText(getText(R.string.text_password).toString() + getText(R.string.text_notformatted).toString());
+                    textinfo.setText(getString(R.string.text_notformatted, getText(R.string.text_password)));
                 else if(!stLib.isNickFormatted(nickname))
-                    textinfo.setText(getText(R.string.text_nickname).toString() + getText(R.string.text_notformatted).toString());
+                    textinfo.setText(getString(R.string.text_notformatted, getText(R.string.text_nickname)));
                 else if(!stLib.isEmailFormatted(email))
-                    textinfo.setText(getText(R.string.text_email).toString() + getText(R.string.text_notformatted).toString());
+                    textinfo.setText(getString(R.string.text_notformatted, getText(R.string.text_email)));
                 else
                 {
                     RegisterUserTask task = new RegisterUserTask();

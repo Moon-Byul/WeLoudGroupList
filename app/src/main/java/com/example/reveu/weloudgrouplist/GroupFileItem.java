@@ -32,7 +32,7 @@ public class GroupFileItem
 
     public void setFileUploadDate(Calendar input)
     {
-        // FTP 서버 시간 오류때문에 하나하나 다시설정해야한다.. --;
+        // FTP 서버의 시간은 UTC 시간 기준으로 return 하기 때문에 재 설정한다.
         fileUploadDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         fileUploadDate.set(input.get(Calendar.YEAR), input.get(Calendar.MONTH), input.get(Calendar.DATE), input.get(Calendar.HOUR_OF_DAY), input.get(Calendar.MINUTE), input.get(Calendar.SECOND));
     }

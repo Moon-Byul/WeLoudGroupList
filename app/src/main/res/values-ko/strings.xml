@@ -30,7 +30,7 @@
     <string name="text_descDate">수정이 오래된 날짜순으로 정렬</string>
     <string name="text_loading">잠시만 기다려주세요.</string>
     <string name="text_passwordchange">비밀번호 변경</string>
-    <string name="text_notformatted">의 형식이 일치하지 않습니다.</string>
+    <string name="text_notformatted">%1$s의 형식이 일치하지 않습니다.</string>
     <string name="text_isexists">는 이미 존재합니다.</string>
     <string name="text_accountchanged">계정 정보가 변경되었습니다.</string>
     <string name="text_newpwsamecurrent">새 비밀번호가 현재 비밀번호와 같습니다.</string>
@@ -53,7 +53,15 @@
     <string name="text_createfolder">폴더 생성</string>
     <string name="text_uploadFile">파일 업로드</string>\
     <string name="text_inputfoldername">폴더 이름 입력</string>
-    <string name="text_foldernameisempty">폴더명이 비어있습니다.</string>
+    <string name="text_nameisempty">명이 비어있습니다.</string>
+    <string name="text_downloadsuccess">다운로드에 성공하였습니다.</string>
+    <string name="text_downloadfail">다운로드에 실패하였습니다.</string>
+    <string name="text_fileisntexists">파일이 존재하지 않습니다.</string>
+    <string name="text_delete">삭제</string>
+    <string name="text_overwrite">덮어쓰기</string>
+    <string name="text_rename">이름변경</string>
+    <string name="text_fileisexists">해당 파일은 이미 존재합니다.</string>
+    <string name="text_file">파일</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
 

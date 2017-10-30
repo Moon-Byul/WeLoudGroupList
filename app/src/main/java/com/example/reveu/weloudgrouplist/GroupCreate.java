@@ -95,7 +95,7 @@ public class GroupCreate extends AppCompatActivity
             public void onClick(View v)
             {
                 String groupName = etGroupName.getText().toString();
-                if(!stLib.isIDFormatted(groupName))
+                if(!stLib.isGroupNameFormatted(groupName))
                 {
                     tvErrorMsg.setText("그룹 이름을 형식에 맞게 작성하십시오.");
                 }
@@ -185,8 +185,8 @@ public class GroupCreate extends AppCompatActivity
 
                         ftpMain = new FTPLib(serverIP, "/", getApplicationContext());
 
-                        String[] nameArr = {"일반회원", "특별회원", "관리자", "개설자"};
-                        String[] perArr = {"0", "127", "1023", "2047"};
+                        String[] nameArr = {"개설자", "일반회원", "특별회원", "관리자"};
+                        String[] perArr = {"2047", "0", "127", "1023"};
 
                         for(int i=0; i<perArr.length; i++)
                         {
@@ -221,7 +221,7 @@ public class GroupCreate extends AppCompatActivity
                     else
                     {
                         CreateGroupTask task = new CreateGroupTask();
-                        task.execute("3", String.valueOf(groupID), String.valueOf(userNum), "3");
+                        task.execute("3", String.valueOf(groupID), String.valueOf(userNum), "0");
                     }
                 }
                 else

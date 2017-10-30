@@ -78,4 +78,15 @@ public class StockLib
         else
             return false;
     }
+
+    /*
+     * GroupName이 형식에 맞는지 체크하는 Method.
+     */
+    public Boolean isGroupNameFormatted(String input)
+    {
+        if(Pattern.matches("^[a-zA-Z0-9가-힣]{2,16}$", input))
+            return true;
+        else
+            return false;
+    }
 }

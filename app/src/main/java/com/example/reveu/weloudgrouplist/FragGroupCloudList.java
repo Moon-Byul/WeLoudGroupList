@@ -3,6 +3,7 @@ package com.example.reveu.weloudgrouplist;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.DialogPreference;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -23,12 +24,15 @@ import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTPFile;
 
+import java.io.File;
+import java.security.acl.Group;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.R.attr.name;
+import static android.R.attr.permission;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -44,6 +48,9 @@ public class FragGroupCloudList extends Fragment
     private RelativeLayout layout_fabMain;
     private LinearLayout layout_fabCreateFolder;
     private LinearLayout layout_fabUpload;
+
+    private boolean isFabCreateFolderVisible;
+    private boolean isFabUploadVisible;
 
     @Nullable
     @Override
@@ -84,6 +91,16 @@ public class FragGroupCloudList extends Fragment
                         ftpMain.changeWorkingDirectory(item.getFile().getName());
                         loadFileList();
                     }
+                    else
+                    {
+                        // 일단 다운로드
+
+                        if(isExternalStorageWritable())
+                        {
+                            File defaultDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                            ftpMain.downloadFile(false, item.getFile().getName(), "", defaultDownload.getPath());
+                        }
+                    }
                 }
                 //gcaAdapter.notifyDataSetChanged();
             }
@@ -96,7 +113,7 @@ public class FragGroupCloudList extends Fragment
             {
                 final GroupFileItem item = (GroupFileItem) gcaAdapter.getItem(position);
                 final FTPLib ftpMain = ((GroupCloudList) getActivity()).getFTPMain();
-                final CharSequence[] items = {"삭제"};
+                final CharSequence[] items = {getText(R.string.text_delete).toString()};
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setItems(items, new DialogInterface.OnClickListener()
@@ -104,7 +121,7 @@ public class FragGroupCloudList extends Fragment
                     @Override
                     public void onClick(DialogInterface dialog, int index)
                     {
-                        if(items[index].equals("삭제"))
+                        if(items[index].equals(getText(R.string.text_delete).toString()))
                         {
                             ftpMain.delete(item.getFile());
                             loadFileList();
@@ -165,7 +182,7 @@ public class FragGroupCloudList extends Fragment
                         }
                         else
                         {
-                            Toast.makeText(getActivity(), "폴더명이 공백입니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getText(R.string.text_folder).toString() + getText(R.string.text_nameisempty).toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -200,13 +217,50 @@ public class FragGroupCloudList extends Fragment
         else
         {
             layout_fabMain.setBackgroundColor(Color.argb(128, 0, 0, 0));
-            layout_fabCreateFolder.setVisibility(View.VISIBLE);
-            layout_fabUpload.setVisibility(View.VISIBLE);
+
+            if(isFabCreateFolderVisible)
+                layout_fabCreateFolder.setVisibility(View.VISIBLE);
+            else
+                layout_fabCreateFolder.setVisibility(View.GONE);
+
+            if(isFabUploadVisible)
+                layout_fabUpload.setVisibility(View.VISIBLE);
+            else
+                layout_fabUpload.setVisibility(View.GONE);
+
             fab.setImageResource(R.drawable.canclegroup);
             srlGroupCloudMain.setEnabled(false);
             lvCloudGroup.setEnabled(false);
         }
         isFabClicked = !isFabClicked;
+    }
+
+    public void permissionEvent()
+    {
+        boolean isVisible = false;
+        int permission = ((GroupCloudList) getActivity()).getUserPermission();
+        PermissionLib pmLib = new PermissionLib();
+
+        if(pmLib.isUserFolderAdd(permission))
+        {
+            isVisible = true;
+            isFabCreateFolderVisible = true;
+        }
+        else
+            isFabCreateFolderVisible = false;
+
+        if(pmLib.isUserUpload(permission))
+        {
+            isVisible = true;
+            isFabUploadVisible = true;
+        }
+        else
+            isFabUploadVisible = false;
+
+        if(!isVisible)
+            fab.setVisibility(View.GONE);
+        else
+            fab.setVisibility(View.VISIBLE);
     }
 
     public void setFabClicked(boolean input)
@@ -279,5 +333,27 @@ public class FragGroupCloudList extends Fragment
         {
             Log.d("Twily", "실패함.");
         }
+    }
+
+    public boolean isExternalStorageWritable()
+    {
+        String state = Environment.getExternalStorageState();
+
+        if(Environment.MEDIA_MOUNTED.equals(state))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isExternalStorageReadable()
+    {
+        String state = Environment.getExternalStorageState();
+
+        if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        {
+            return true;
+        }
+        return false;
     }
 }

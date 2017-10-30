@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static android.R.attr.id;
 import static android.R.attr.type;
 import static android.content.ContentValues.TAG;
 import static com.example.reveu.weloudgrouplist.R.id.fragGroupList;
@@ -38,9 +39,11 @@ public class GroupCloudList extends AppCompatActivity
     FragGroupCloudList fragGroupCloudList;
 
     private Menu menu;
+    private Menu menuNav;
     private String userNum;
     private String ID;
     private String nickName;
+    private int userPermission;
     private int groupID;
     private String groupName;
 
@@ -72,6 +75,7 @@ public class GroupCloudList extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        menuNav = navigationView.getMenu();
 
         TextView tvNavNick = (TextView) navigationView.getHeaderView(0).findViewById(R.id.groupList_nav_tvNick);
         TextView tvNavId = (TextView) navigationView.getHeaderView(0).findViewById(R.id.groupList_nav_tvId);
@@ -81,7 +85,10 @@ public class GroupCloudList extends AppCompatActivity
         setTitle(groupName);
 
         GroupCloudTask gcTask = new GroupCloudTask();
-        gcTask.execute(String.valueOf(groupID));
+        gcTask.execute("0", String.valueOf(groupID));
+
+        GroupCloudTask gcTaskPms = new GroupCloudTask();
+        gcTaskPms.execute("1", String.valueOf(groupID), String.valueOf(userNum));
     }
 
     @Override
@@ -188,23 +195,42 @@ public class GroupCloudList extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        /*
-        if (id == R.id.nav_gl_settings)
+        if (id == R.id.nav_gc_setting)
         {
             Intent intent = new Intent(GroupCloudList.this, SettUserMain.class);
             intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
             startActivity(intent);
         }
-        else if (id == R.id.nav_gl_logout)
+        else if (id == R.id.nav_gc_backlist)
         {
-
+            finish();
         }
-        */
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    private void permissionEvent()
+    {
+        /*
+         * Group Setting 접근 권한 확인 후 Visible
+         */
+        MenuItem item = menuNav.findItem(R.id.nav_gc_groupsett);
+        PermissionLib pmLib = new PermissionLib();
+
+        if(pmLib.isUserManageGroup(userPermission))
+        {
+            item.setVisible(true);
+        }
+        else
+        {
+            item.setVisible(false);
+        }
+
+        // fab 권한 체크를 위한 method call
+        ((FragGroupCloudList) fragGroupCloudList).permissionEvent();
     }
 
     private void setVisibleItem(Menu menu, int id, boolean state)
@@ -213,14 +239,46 @@ public class GroupCloudList extends AppCompatActivity
         item.setVisible(state);
     }
 
+    private String jsonEvent(int type, String jsonString)
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray;
+
+            if(type == 0)
+                jsonArray = jsonObject.getJSONArray(getText(R.string.TAG_JSON_GROUPCLOUD).toString());
+            else
+                jsonArray = jsonObject.getJSONArray(getText(R.string.TAG_PERMISSION).toString());
+
+            JSONObject item = jsonArray.getJSONObject(0);
+
+            if(type == 0)
+                return item.getString(getText(R.string.TAG_SERVERIP).toString());
+            else
+                return item.getString(getText(R.string.TAG_PERMISSION).toString());
+        }
+        catch (JSONException e)
+        {
+            Log.d(TAG, "GroupCloudList : ", e);
+            return "";
+        }
+    }
+
     public FTPLib getFTPMain()
     {
         return ftpMain;
     }
 
+    public int getUserPermission()
+    {
+        return userPermission;
+    }
+
 
     private class GroupCloudTask extends AsyncTask<String, Void, String>
     {
+        int type;
         ProgressDialog progressDialog;
 
         @Override
@@ -245,23 +303,19 @@ public class GroupCloudList extends AppCompatActivity
             }
             else
             {
-                String serverIP;
-                try
+                if(type == 0)
                 {
-                    JSONObject jsonObject = new JSONObject(result);
-                    JSONArray jsonArray;
-                    jsonArray = jsonObject.getJSONArray(getText(R.string.TAG_JSON_GROUPCLOUD).toString());
-
-                    JSONObject item = jsonArray.getJSONObject(0);
-
-                    serverIP = item.getString(getText(R.string.TAG_SERVERIP).toString());
+                    String serverIP;
+                    serverIP = jsonEvent(type, result);
                     ftpMain = new FTPLib(serverIP, "/" + groupName, GroupCloudList.this);
                     if(ftpMain.isConnect())
                         fragGroupCloudList.loadFileList();
                 }
-                catch (JSONException e)
+                else if(type == 1)
                 {
-                    Log.d(TAG, "GroupCloudList : ", e);
+                    userPermission = Integer.parseInt(jsonEvent(type, result));
+
+                    permissionEvent();
                 }
             }
 
@@ -272,10 +326,23 @@ public class GroupCloudList extends AppCompatActivity
         @Override
         protected String doInBackground(String... params)
         {
-            String groupID = params[0];
+            type = Integer.parseInt(params[0]);
+            String groupID = params[1];
 
-            String serverURL = "http://weloud.duckdns.org/weloud/db_get_groupcloud_ip.php";
-            String postParameters = "GroupID=" + groupID;
+            String serverURL = "";
+            String postParameters = "";
+
+            if(type == 0)
+            {
+                serverURL = "http://weloud.duckdns.org/weloud/db_get_groupcloud_ip.php";
+                postParameters = "GroupID=" + groupID;
+            }
+            else if(type == 1)
+            {
+                String userNum = params[2];
+                serverURL = "http://weloud.duckdns.org/weloud/db_get_userpermission.php";
+                postParameters = "GroupID=" + groupID + "&userNum=" + userNum;
+            }
             try
             {
                 URL url = new URL(serverURL);

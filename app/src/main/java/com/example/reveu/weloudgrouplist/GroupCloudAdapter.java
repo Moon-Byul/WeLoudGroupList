@@ -24,11 +24,11 @@ import java.util.TimeZone;
  * Created by reveu on 2017-05-29.
  */
 
-public class GroupCloudAdapter extends BaseAdapter
+class GroupCloudAdapter extends BaseAdapter
 {
     private ArrayList<GroupFileItem> gciList = new ArrayList<GroupFileItem>();
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", java.util.Locale.getDefault());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", java.util.Locale.getDefault());
 
     // ArrayList의 사이즈를 리턴
     @Override
@@ -75,8 +75,6 @@ public class GroupCloudAdapter extends BaseAdapter
         final GroupFileItem listViewItem = gciList.get(position);
         final FTPFile file = listViewItem.getFile();
 
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-
         // 아이템 내 각 위젯에 데이터 반영
         if(file.getName().equals(""))
         {
@@ -94,12 +92,12 @@ public class GroupCloudAdapter extends BaseAdapter
         return convertView;
     }
 
-    public ArrayList<GroupFileItem> getList()
+    ArrayList<GroupFileItem> getList()
     {
         return gciList;
     }
 
-    public void addItem(FTPFile file)
+    void addItem(FTPFile file)
     {
         GroupFileItem item = new GroupFileItem();
 
@@ -109,7 +107,7 @@ public class GroupCloudAdapter extends BaseAdapter
         this.notifyDataSetChanged();
     }
 
-    public void addItem(FTPFile file, Calendar fileUploadDate)
+    void addItem(FTPFile file, Calendar fileUploadDate)
     {
         GroupFileItem item = new GroupFileItem();
 
@@ -120,33 +118,33 @@ public class GroupCloudAdapter extends BaseAdapter
         this.notifyDataSetChanged();
     }
 
-    public void clearList()
+    void clearList()
     {
         gciList.clear();
     }
 
-    public void sortAscName()
+    void sortAscName()
     {
         AscendingName asscending = new AscendingName();
         Collections.sort(gciList, asscending);
         this.notifyDataSetChanged();
     }
 
-    public void sortDescName()
+    void sortDescName()
     {
         DescendingName desscending = new DescendingName();
         Collections.sort(gciList, desscending);
         this.notifyDataSetChanged();
     }
 
-    public void sortAscDate()
+    void sortAscDate()
     {
         AscendingDate asscending = new AscendingDate();
         Collections.sort(gciList, asscending);
         this.notifyDataSetChanged();
     }
 
-    public void sortDescDate()
+    void sortDescDate()
     {
         DescendingDate desscending = new DescendingDate();
         Collections.sort(gciList, desscending);

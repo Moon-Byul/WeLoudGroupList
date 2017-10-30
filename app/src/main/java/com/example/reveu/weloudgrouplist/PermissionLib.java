@@ -1,5 +1,7 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -15,17 +17,17 @@ public class PermissionLib
 
         또한 Manage_Group이 존재할 경우에면 User Ban이 가능하다. (Ban 또한 Manage_Group을 가진 관리자는 Ban을 할 수 없다.)
      */
-    public static final int USER_UPLOAD = 1 << 1;
-    public static final int USER_FILE_MODIFY_NAME = 1 << 2;
-    public static final int USER_FILE_MOVE = 1 << 3;
-    public static final int USER_FILE_DELETE = 1 << 4;
-    public static final int USER_FOLDER_ADD = 1 << 5;
-    public static final int USER_FOLDER_MODIFY = 1 << 6;
-    public static final int USER_FOLDER_DELETE = 1 << 7;
-    public static final int USER_APPROVE_JOIN = 1 << 8;
-    public static final int USER_INVITE = 1 << 9;
-    public static final int USER_MANAGE_GROUP = 1 << 10;
-    public static final int USER_CREATOR = 1 << 11;
+    public static final int USER_UPLOAD = 1 << 0;
+    public static final int USER_FILE_MODIFY_NAME = 1 << 1;
+    public static final int USER_FILE_MOVE = 1 << 2;
+    public static final int USER_FILE_DELETE = 1 << 3;
+    public static final int USER_FOLDER_ADD = 1 << 4;
+    public static final int USER_FOLDER_MODIFY = 1 << 5;
+    public static final int USER_FOLDER_DELETE = 1 << 6;
+    public static final int USER_APPROVE_JOIN = 1 << 7;
+    public static final int USER_INVITE = 1 << 8;
+    public static final int USER_MANAGE_GROUP = 1 << 9;
+    public static final int USER_CREATOR = 1 << 10;
 
     public boolean isUserUpload(int permission)
     {
