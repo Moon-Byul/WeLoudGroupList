@@ -8,18 +8,105 @@
     tools:context="com.example.reveu.weloudgrouplist.GroupCloudList"
     tools:showIn="@layout/app_bar_groupcloud_list">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/ctGroupCloudList"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <fragment
             android:id="@+id/fragGroupCloudList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:name="com.example.reveu.weloudgrouplist.FragGroupCloudList"
             tools:layout="@layout/fragment_groupcloud_list" />
 
-    </RelativeLayout>
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_GroupCloud_Left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintGuide_percent="0.05"
+            android:orientation="vertical"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_GroupCloud_Right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintGuide_percent="0.95"
+            android:orientation="vertical"/>
+
+         <android.support.constraint.ConstraintLayout
+             android:id="@+id/ctGroupCloudModify"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:background="#fff"
+             android:orientation="horizontal"
+             android:layout_marginBottom="15dp"
+             android:elevation="25dp"
+             android:clickable="true"
+             android:visibility="gone"
+             app:backgroundTint="#4472c4"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintLeft_toLeftOf="@id/gl_GroupCloud_Left"
+             app:layout_constraintRight_toRightOf="@id/gl_GroupCloud_Right">
+
+             <TextView
+                 android:id="@+id/tv_GroupCloud_amount"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="10dp"
+                 android:layout_marginTop="15dp"
+                 android:layout_marginBottom="15dp"
+                 android:textColor="#000"
+                 app:layout_constraintLeft_toLeftOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+             <ImageView
+                 android:id="@+id/iv_GroupCloud_downloadOrRename"
+                 android:layout_width="24dp"
+                 android:layout_height="24dp"
+                 android:layout_marginEnd="15dp"
+                 android:src="@drawable/download"
+                 android:tint="#777"
+                 app:layout_constraintRight_toLeftOf="@+id/iv_GroupCloud_delete"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+             <ImageView
+                 android:id="@+id/iv_GroupCloud_delete"
+                 android:layout_width="28dp"
+                 android:layout_height="28dp"
+                 android:layout_marginEnd="15dp"
+                 android:src="@drawable/delete"
+                 android:tint="#777"
+                 app:layout_constraintRight_toLeftOf="@+id/iv_GroupCloud_move"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+             <ImageView
+                 android:id="@+id/iv_GroupCloud_move"
+                 android:layout_width="30dp"
+                 android:layout_height="30dp"
+                 android:layout_marginEnd="10dp"
+                 android:src="@drawable/foldermove"
+                 android:tint="#777"
+                 app:layout_constraintRight_toLeftOf="@+id/iv_GroupCloud_cancel"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+             <ImageView
+                 android:id="@+id/iv_GroupCloud_cancel"
+                 android:layout_width="36dp"
+                 android:layout_height="36dp"
+                 android:layout_marginEnd="10dp"
+                 android:src="@drawable/cancle"
+                 android:tint="#777"
+                 app:layout_constraintRight_toRightOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+         </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>

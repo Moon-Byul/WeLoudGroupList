@@ -1,7 +1,11 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.DialogPreference;
@@ -12,24 +16,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.File;
+import java.security.acl.AclNotFoundException;
 import java.security.acl.Group;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static android.R.attr.name;
 import static android.R.attr.permission;
@@ -84,8 +93,6 @@ public class FragGroupCloudList extends Fragment
                 }
                 else
                 {
-                    Snackbar.make(view, ftpMain.getExt(item.getFile()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                     if (ftpMain.getExt(item.getFile()).equals("folder"))
                     {
                         ftpMain.changeWorkingDirectory(item.getFile().getName());
@@ -93,16 +100,14 @@ public class FragGroupCloudList extends Fragment
                     }
                     else
                     {
-                        // 일단 다운로드
-
-                        if(isExternalStorageWritable())
+                        if(((GroupCloudList) getActivity()).getModifyLayoutType() == 0)
+                            fileCheckEvent(item);
+                        else
                         {
-                            File defaultDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                            ftpMain.downloadFile(false, item.getFile().getName(), "", defaultDownload.getPath());
+                            fileClickEvent(item, ftpMain);
                         }
                     }
                 }
-                //gcaAdapter.notifyDataSetChanged();
             }
         });
 
@@ -111,26 +116,46 @@ public class FragGroupCloudList extends Fragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
             {
-                final GroupFileItem item = (GroupFileItem) gcaAdapter.getItem(position);
-                final FTPLib ftpMain = ((GroupCloudList) getActivity()).getFTPMain();
-                final CharSequence[] items = {getText(R.string.text_delete).toString()};
+                GroupCloudList gclTemp = ((GroupCloudList) getActivity());
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setItems(items, new DialogInterface.OnClickListener()
+                final GroupFileItem item = (GroupFileItem) gcaAdapter.getItem(position);
+                final FTPLib ftpMain = gclTemp.getFTPMain();
+
+                if(item.getFile().getName().equals(""))
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int index)
+                    ftpMain.changeWorkingDirectory("..");
+                    loadFileList();
+                }
+                else
+                {
+
+                    if(gclTemp.getModifyLayoutType() < 0)
                     {
-                        if(items[index].equals(getText(R.string.text_delete).toString()))
+                        gclTemp.modifyLayoutEvent(true, item);
+                        fileCheckEvent(item);
+                    }
+                    else
+                    {
+                        if (ftpMain.getExt(item.getFile()).equals("folder"))
                         {
-                            ftpMain.delete(item.getFile());
-                            loadFileList();
+                            if(gclTemp.getModifyLayoutType() == 1)
+                            {
+                                fileCheckEvent(item);
+                            }
+
+                            // Rename은 1개만..
+                            if(gcaAdapter.getCheckCount() > 1)
+                                gclTemp.ivGroupCloudDownloadOrRename.setVisibility(View.GONE);
+                            else
+                                gclTemp.ivGroupCloudDownloadOrRename.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            if(gclTemp.getModifyLayoutType() == 0)
+                                fileCheckEvent(item);
                         }
                     }
-                });
-
-                alert.show();
-
+                }
                 return true;
             }
         });
@@ -203,9 +228,130 @@ public class FragGroupCloudList extends Fragment
         return rootView;
     }
 
+    private void fileClickEvent(final GroupFileItem item, final FTPLib ftpMain)
+    {
+        int permission = ((GroupCloudList) getActivity()).getUserPermission();
+        PermissionLib pmLib = new PermissionLib();
+        ArrayList<CharSequence> listItems = new ArrayList<CharSequence>();
+
+        //listItems.add(getText(R.string.text_open));
+        listItems.add(getText(R.string.text_download));
+
+        if(pmLib.isUserFileModifyName(permission))
+            listItems.add(getText(R.string.text_rename));
+
+        listItems.add(getText(R.string.text_cancel));
+
+        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle(getText(R.string.text_chooseyouraction))
+        .setItems(items, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int index)
+            {
+                // Download Event
+                if(items[index].equals(getText(R.string.text_download).toString()))
+                {
+                    if(isExternalStorageWritable())
+                    {
+                        File defaultDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        ftpMain.downloadFile(false, item.getFile().getName(), "", defaultDownload.getPath());
+                    }
+                }
+                // Rename Event
+                else if(items[index].equals(getText(R.string.text_rename).toString()))
+                {
+                    fileRenameEvent(item, ftpMain);
+                }
+                // Open Event
+                else if(items[index].equals(getText(R.string.text_open).toString()))
+                {
+
+                }
+            }
+        })
+
+        .show();
+        gcaAdapter.notifyDataSetChanged();
+    }
+
+    private void fileCheckEvent(GroupFileItem item)
+    {
+        if(item.getChecked())
+        {
+            item.setChecked(false);
+            gcaAdapter.removeCheckItem(item);
+        }
+        else
+        {
+            item.setChecked(true);
+            gcaAdapter.addCheckItem(item);
+        }
+
+        int amount = gcaAdapter.getCheckCount();
+
+        if(amount > 1)
+            ((GroupCloudList) getActivity()).tvGroupCloudAmount.setText(getString(R.string.text_selectitem_multi, amount));
+        else if(amount == 1)
+            ((GroupCloudList) getActivity()).tvGroupCloudAmount.setText(getString(R.string.text_selectitem_one, amount));
+        else
+            ((GroupCloudList) getActivity()).modifyLayoutEvent(false, item);
+
+        gcaAdapter.notifyDataSetChanged();
+    }
+
+    public void fileRenameEvent(final GroupFileItem item, final FTPLib ftpMain)
+    {
+        final EditText name = new EditText(getActivity());
+
+        name.setText(item.getFile().getName());
+
+        // Create Rename AlertDialog
+        AlertDialog.Builder alertRename = new AlertDialog.Builder(getActivity());
+
+        alertRename.setMessage(getText(R.string.text_rename).toString())
+                .setView(name)
+                .setPositiveButton(getText(R.string.text_ok).toString(), new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String fileName = name.getText().toString();
+
+                        if(!item.getFile().getName().equals(fileName))
+                        {
+                            if(!fileName.equals(""))
+                            {
+                                if(ftpMain.rename(item.getFile().getName(), fileName))
+                                    loadFileList();
+                                else
+                                    Toast.makeText(getActivity(), getText(R.string.text_nameisexists), Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(getActivity(), getText(R.string.text_file).toString() + getText(R.string.text_nameisempty).toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                })
+
+                .setNegativeButton(getText(R.string.text_cancel).toString(), new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+
+                    }
+                });
+
+        alertRename.show();
+    }
+
     public void fabClickEvent()
     {
-        if(isFabClicked == true)
+        if(isFabClicked)
         {
             layout_fabMain.setBackgroundColor(Color.argb(0, 255, 255, 255));
             layout_fabCreateFolder.setVisibility(View.INVISIBLE);
@@ -289,6 +435,11 @@ public class FragGroupCloudList extends Fragment
         return lvCloudGroup;
     }
 
+    public FloatingActionButton getFab()
+    {
+        return fab;
+    }
+
     private void getFileList()
     {
         ((GroupCloudList) getActivity()).getFTPMain().getFileList();
@@ -319,7 +470,7 @@ public class FragGroupCloudList extends Fragment
                     FTPFile file = ftpfiles[i];
                     cal.setTime(ftpFormat.parse(ftpMain.getFileModificationTime(file.getName())));
 
-                    gcaAdapter.addItem(file, cal);
+                    gcaAdapter.addItem(file, cal, ftpMain.getDirectory());
                 }
 
                 gcaAdapter.sortAscName();

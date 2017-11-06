@@ -3,12 +3,15 @@ package com.example.reveu.weloudgrouplist;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.*;
+import java.net.ConnectException;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -21,6 +24,7 @@ class FTPLib
     private static String password = "";
     private static final int port = 21;
     private static String defaultPath;
+    private static String workingPath;
     private static FTPClient ftpClient;
     private FTPFile[] ftpFile;
 
@@ -34,24 +38,10 @@ class FTPLib
         this.context = context;
         serverIP = serverIPInp;
         defaultPath = defaultPathInp;
+        workingPath = "";
 
         user = context.getText(R.string.FTP_ID).toString();
         password = context.getText(R.string.FTP_PASSWORD).toString();
-
-        new FTPTask().execute("*Connect");
-    }
-
-    boolean isConnect()
-    {
-        try
-        {
-            return new FTPTask().execute("*isConnect").get().equals("true");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     void disconnect()
@@ -130,21 +120,38 @@ class FTPLib
         return R.drawable.blank_file;
     }
 
-    void rename(String targetFileName, String changeFileName)
+    boolean rename(String targetFileName, String changeFileName)
     {
         try
         {
-            ftpClient.rename(targetFileName, changeFileName);
+            String result = new FTPTask().execute("*Rename", targetFileName, changeFileName).get();
+
+            if(result.equals("")) // 에러
+                return false;
+            else
+                return true;
         }
-        catch(IOException ioe)
+        catch(Exception e)
         {
-            System.out.println("FTP_RENAME_ERR : 이름 변경 실패");
+            return false;
         }
     }
 
-    void makeDirectory(String folderName)
+    boolean makeDirectory(String folderName)
     {
-        new FTPTask().execute("*MakeDirectory", folderName);
+        try
+        {
+            String result = new FTPTask().execute("*MakeDirectory", folderName).get();
+
+            if(result.equals("")) // 에러
+                return false;
+            else
+                return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
 
     void delete(FTPFile targetFile)
@@ -227,9 +234,13 @@ class FTPLib
     {
         final CharSequence[] items = {context.getText(R.string.text_overwrite).toString(), context.getText(R.string.text_rename).toString(), context.getText(R.string.text_cancel).toString()};
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        TextView tvFileName = new TextView(context);
+        tvFileName.setText(context.getText(R.string.text_file) + " : " + targetFile);
+        tvFileName.setGravity(Gravity.CENTER);
 
-        alert.setTitle(context.getText(R.string.text_fileisexists))
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setView(tvFileName)
+        .setTitle(context.getText(R.string.text_fileisexists))
         .setItems(items, new DialogInterface.OnClickListener()
         {
             @Override
@@ -286,9 +297,9 @@ class FTPLib
                     alertRename.show();
                 }
             }
-        });
+        })
 
-        alert.show();
+        .show();
 
         return "";
     }
@@ -298,52 +309,63 @@ class FTPLib
         @Override
         protected String doInBackground(String... params)
         {
-            switch(params[0])
+            String result = params[0];
+            try
             {
-                case "*Connect" :
-                    FTPConnect();
-                    break;
+                FTPConnect();
+                switch(params[0])
+                {
+                    case "*MakeDirectory":
+                        result = FTPMakeDirectory(params[1]);
+                        break;
 
-                case "*Disconnect" :
-                    FTPDisconnect();
-                    break;
+                    case "*GetDirectory":
+                        result = FTPgetDirectory();
+                        break;
 
-                case "*MakeDirectory" :
-                    FTPMakeDirectory(params[1]);
-                    break;
+                    case "*GetFileList":
+                        FTPgetFileList();
+                        result = "*GetFileListComplete";
+                        break;
 
-                case "*GetDirectory" :
-                    return FTPgetDirectory();
+                    case "*GetFileModificationTime":
+                        result = FTPgetFileModificationTime(params[1]);
+                        break;
 
-                case "*GetFileList" :
-                    FTPgetFileList();
-                    return "*GetFileListComplete";
+                    case "*ChangeWorkingDirectory":
+                        FTPchangeWorkingDirectory(params[1]);
+                        break;
 
-                case "*GetFileModificationTime" :
-                    return FTPgetFileModificationTime(params[1]);
+                    case "*Delete":
+                        FTPdelete(params[1]);
+                        break;
 
-                case "*ChangeWorkingDirectory" :
-                    FTPchangeWorkingDirectory(params[1]);
-                    break;
+                    case "*Rename":
+                        result = FTPRename(params[1], params[2]);
+                        break;
 
-                case "*Delete" :
-                    FTPdelete(params[1]);
-                    break;
+                    case "*RemoveDir":
+                        FTPRemoveDirectory(params[1]);
+                        break;
 
-                case "*RemoveDir" :
-                    FTPRemoveDirectory(params[1]);
-                    break;
-
-                case "*isConnect" :
-                    return (FTPIsConnect() ? "true" : "false");
-
-                case "*DownloadFile" :
-                    return FTPDownloadFile(params[1], params[2], params[3]);
+                    case "*DownloadFile":
+                        result = FTPDownloadFile(params[1], params[2], params[3]);
+                        break;
+                }
+                FTPDisconnect();
             }
-            return params[0];
+            catch (ConnectException ce)
+            {
+                ce.printStackTrace();
+                Toast.makeText(context, context.getText(R.string.error_connection), Toast.LENGTH_SHORT).show();
+            }
+            finally
+            {
+                return result;
+            }
         }
 
-        private boolean FTPConnect()
+        private boolean FTPConnect() throws ConnectException
         {
             boolean loginResult = false;
 
@@ -354,20 +376,22 @@ class FTPLib
 
                 ftpClient.connect(serverIP, port);
                 loginResult = ftpClient.login(user, password);
-                ftpClient.changeWorkingDirectory(defaultPath);
+
+                if(workingPath.equals(""))
+                    ftpClient.changeWorkingDirectory(defaultPath);
+                else
+                    ftpClient.changeWorkingDirectory(workingPath);
             }
             catch(IOException e)
             {
                 System.out.println("FTP_LOGIN_ERR : " + e.getMessage());
+                throw new ConnectException();
             }
 
             if(!loginResult)
             {
                 System.out.println("FTP_LOGIN_ERR : 로그인 실패");
-            }
-            else
-            {
-                System.out.println("FTP_LOGIN_SUCCESS");
+                throw new ConnectException();
             }
 
             return loginResult;
@@ -382,20 +406,33 @@ class FTPLib
             catch (IOException ignored){}
         }
 
-        private boolean FTPIsConnect()
-        {
-            return ftpClient.isConnected();
-        }
-
-        private void FTPMakeDirectory(String folderName)
+        private String FTPMakeDirectory(String folderName)
         {
             try
             {
                 ftpClient.makeDirectory(folderName);
+                return "true";
             }
             catch(IOException ioe)
             {
                 System.out.println("FTP_MAKEDIRECTORY_ERR : 폴더 생성 실패");
+                return "";
+            }
+        }
+
+        private String FTPRename(String targetFileName, String changeFileName)
+        {
+            try
+            {
+                if(ftpClient.rename(targetFileName, changeFileName))
+                    return "Success";
+                else
+                    return "";
+            }
+            catch(IOException ioe)
+            {
+                System.out.println("FTP_RENAME_ERR : 이름 변경 실패");
+                return "";
             }
         }
 
@@ -405,7 +442,6 @@ class FTPLib
             try
             {
                 files = ftpClient.listFiles();
-                System.out.println("FTP_FILELIST_SUCCESS");
                 ftpFile = files;
             }
             catch(IOException ioe)
@@ -451,7 +487,10 @@ class FTPLib
                 if(path.equals("..") && isDirectoryDefault(FTPgetDirectory()))
                     System.out.println("FTP_CHANGEWORKINGDIRECTORY_ERR : 권한이 거부되었습니다.");
                 else
+                {
                     ftpClient.changeWorkingDirectory(path);
+                    workingPath = FTPgetDirectory();
+                }
             }
             catch(IOException ioe)
             {

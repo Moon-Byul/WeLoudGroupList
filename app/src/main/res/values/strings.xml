@@ -89,9 +89,18 @@
     <string name="text_overwrite">Overwrite</string>
     <string name="text_rename">Rename</string>
     <string name="text_fileisexists">The file already exists.</string>
+    <string name="text_filenameisexists">The file name is exists.</string>
     <string name="text_file">File</string>
+    <string name="text_chooseyouraction">Choose your action.</string>
+    <string name="text_selectitem_one">%1$d item</string>
+    <string name="text_selectitem_multi">%1$d items</string>
+    <string name="text_areyousuredelete_one">Are you sure want to delete %1$s?</string>
+    <string name="text_areyousuredelete_multi">Are you sure want to delete selected %1$d items?</string>
+    <string name="text_download">Download</string>
+    <string name="text_open">Open</string>
 
     <string name="error_temporary">Temporary Error.</string>
+    <string name="error_connection">Conntection Error.</string>
 
     <string name="hint_groupname">Group Name (2 ~ 16)</string>
     <string name="hint_id">ID (4 ~ 16)</string>

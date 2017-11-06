@@ -57,13 +57,22 @@
     <string name="text_downloadsuccess">다운로드에 성공하였습니다.</string>
     <string name="text_downloadfail">다운로드에 실패하였습니다.</string>
     <string name="text_fileisntexists">파일이 존재하지 않습니다.</string>
+    <string name="text_nameisexists">파일 이름이 이미 있습니다.</string>
     <string name="text_delete">삭제</string>
     <string name="text_overwrite">덮어쓰기</string>
     <string name="text_rename">이름변경</string>
     <string name="text_fileisexists">해당 파일은 이미 존재합니다.</string>
     <string name="text_file">파일</string>
+    <string name="text_chooseyouraction">작업을 선택하세요.</string>
+    <string name="text_selectitem_one">항목 %1$d개</string>
+    <string name="text_selectitem_multi">항목 %1$d개</string>
+    <string name="text_areyousuredelete_one">%1$s 파일을 삭제하시겠습니까?</string>
+    <string name="text_areyousuredelete_multi">파일 %1$d개를 삭제하시겠습니까?</string>
+    <string name="text_download">다운로드</string>
+    <string name="text_open">열기</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
+    <string name="error_connection">연결 오류입니다.</string>
 
     <string name="hint_groupname">그룹 이름 (2 ~ 16자)</string>
     <string name="hint_id">아이디 (4 ~ 16자)</string>

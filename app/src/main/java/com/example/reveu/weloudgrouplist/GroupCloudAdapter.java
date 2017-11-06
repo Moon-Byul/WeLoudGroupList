@@ -1,6 +1,7 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import java.util.TimeZone;
 class GroupCloudAdapter extends BaseAdapter
 {
     private ArrayList<GroupFileItem> gciList = new ArrayList<GroupFileItem>();
+    private ArrayList<GroupFileItem> gciCheckList = new ArrayList<GroupFileItem>();
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", java.util.Locale.getDefault());
 
@@ -35,6 +37,11 @@ class GroupCloudAdapter extends BaseAdapter
 
     public int getCount() {
         return gciList.size();
+    }
+
+    public int getCheckCount()
+    {
+        return gciCheckList.size();
     }
 
     // position번째에 있는 object를 return
@@ -84,7 +91,10 @@ class GroupCloudAdapter extends BaseAdapter
         }
         else
         {
-            holder.ivFileExtImage.setImageResource(new FTPLib().getExtDrawable(listViewItem.getFile()));
+            if(listViewItem.getChecked())
+                holder.ivFileExtImage.setImageResource(R.drawable.checkmark);
+            else
+                holder.ivFileExtImage.setImageResource(new FTPLib().getExtDrawable(listViewItem.getFile()));
             holder.tvFileName.setText(file.getName());
             holder.tvFileUpload.setText(context.getText(R.string.text_uploaddate).toString() + " : " + dateFormat.format(listViewItem.getFileUploadDate().getTime()));
         }
@@ -97,30 +107,73 @@ class GroupCloudAdapter extends BaseAdapter
         return gciList;
     }
 
+    ArrayList<GroupFileItem> getCheckList()
+    {
+        return gciCheckList;
+    }
+
     void addItem(FTPFile file)
     {
         GroupFileItem item = new GroupFileItem();
 
         item.setFile(file);
 
+        Log.d("Twily", item.getFile() + "?");
+
         gciList.add(item);
         this.notifyDataSetChanged();
     }
 
-    void addItem(FTPFile file, Calendar fileUploadDate)
+    void addItem(FTPFile file, Calendar fileUploadDate, String path)
     {
         GroupFileItem item = new GroupFileItem();
 
         item.setFile(file);
         item.setFileUploadDate(fileUploadDate);
+        item.setPath(path);
+
+        GroupFileItem temp = checkFile(item);
+        if(temp != null)
+            item.setChecked(true);
 
         gciList.add(item);
         this.notifyDataSetChanged();
     }
 
+
+    GroupFileItem checkFile(GroupFileItem item)
+    {
+        for (GroupFileItem temp : gciCheckList)
+        {
+            if(temp.getPath().equals(item.getPath()))
+            {
+                if(temp.getFile().getName().equals(item.getFile().getName()))
+                    return temp;
+            }
+        }
+        return null;
+    }
+
+    void addCheckItem(GroupFileItem item)
+    {
+        gciCheckList.add(item);
+    }
+
     void clearList()
     {
         gciList.clear();
+    }
+
+    void clearCheckList()
+    {
+        gciCheckList.clear();
+    }
+
+    void removeCheckItem(GroupFileItem item)
+    {
+        GroupFileItem temp = checkFile(item);
+        if(temp != null)
+            gciCheckList.remove(temp);
     }
 
     void sortAscName()

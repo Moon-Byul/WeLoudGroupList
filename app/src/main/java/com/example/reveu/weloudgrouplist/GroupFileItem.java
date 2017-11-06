@@ -17,6 +17,8 @@ public class GroupFileItem
 {
     FTPFile file;
     Calendar fileUploadDate = Calendar.getInstance();
+    String path = "";
+    boolean isChecked = false;
     /*
      * status의 value type
      * 0 - null
@@ -37,6 +39,16 @@ public class GroupFileItem
         fileUploadDate.set(input.get(Calendar.YEAR), input.get(Calendar.MONTH), input.get(Calendar.DATE), input.get(Calendar.HOUR_OF_DAY), input.get(Calendar.MINUTE), input.get(Calendar.SECOND));
     }
 
+    public void setChecked(boolean input)
+    {
+        isChecked = input;
+    }
+
+    public void setPath(String input)
+    {
+        path = input;
+    }
+
     public FTPFile getFile()
     {
         return file;
@@ -45,5 +57,15 @@ public class GroupFileItem
     public Calendar getFileUploadDate()
     {
         return fileUploadDate;
+    }
+
+    public boolean getChecked()
+    {
+        return isChecked;
+    }
+
+    public String getPath()
+    {
+        return path;
     }
 }
