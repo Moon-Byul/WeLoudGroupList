@@ -1,20 +1,25 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.*;
-import java.net.ConnectException;
-
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ConnectException;
 
 class FTPLib
 {
@@ -376,6 +381,8 @@ class FTPLib
 
                 ftpClient.connect(serverIP, port);
                 loginResult = ftpClient.login(user, password);
+
+                ftpClient.enterLocalPassiveMode();
 
                 if(workingPath.equals(""))
                     ftpClient.changeWorkingDirectory(defaultPath);
