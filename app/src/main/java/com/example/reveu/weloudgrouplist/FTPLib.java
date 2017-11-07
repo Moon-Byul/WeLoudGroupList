@@ -58,12 +58,8 @@ class FTPLib
     {
         try
         {
-            if (new FTPTask().execute("*GetFileList").get().equals("*GetFileListComplete"))
-            {
-                return ftpFile;
-            }
-
-            return null;
+            new FTPTask().execute("*GetFileList");
+            return ftpFile;
         }
         catch(Exception e)
         {

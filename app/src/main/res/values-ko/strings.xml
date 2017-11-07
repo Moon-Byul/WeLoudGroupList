@@ -70,6 +70,11 @@
     <string name="text_areyousuredelete_multi">파일 %1$d개를 삭제하시겠습니까?</string>
     <string name="text_download">다운로드</string>
     <string name="text_open">열기</string>
+    <string name="text_kickuser">회원 강퇴</string>
+    <string name="text_permissionsett">등급별 권한 설정</string>
+    <string name="text_userranksett">회원 등급 설정</string>
+    <string name="text_userinvite">회원 초대</string>
+    <string name="text_useradmission">회원 가입승인</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

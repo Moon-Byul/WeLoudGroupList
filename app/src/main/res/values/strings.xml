@@ -98,6 +98,12 @@
     <string name="text_areyousuredelete_multi">Are you sure want to delete selected %1$d items?</string>
     <string name="text_download">Download</string>
     <string name="text_open">Open</string>
+    <string name="text_kickuser">Kick User</string>
+    <string name="text_permissionsett">Rank Permission Settings</string>
+    <string name="text_userranksett">User Rank Settings</string>
+    <string name="text_userinvite">User Invite</string>
+    <string name="text_useradmission">User Admission</string>
+
 
     <string name="error_temporary">Temporary Error.</string>
     <string name="error_connection">Conntection Error.</string>

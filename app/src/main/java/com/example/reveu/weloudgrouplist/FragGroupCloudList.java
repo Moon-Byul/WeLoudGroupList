@@ -1,47 +1,33 @@
 package com.example.reveu.weloudgrouplist;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.DialogPreference;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.File;
-import java.security.acl.AclNotFoundException;
-import java.security.acl.Group;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-import static android.R.attr.name;
-import static android.R.attr.permission;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -445,10 +431,31 @@ public class FragGroupCloudList extends Fragment
         ((GroupCloudList) getActivity()).getFTPMain().getFileList();
     }
 
-    public void loadFileList()
+    public boolean loadFileList()
     {
-        FTPLib ftpMain = ((GroupCloudList) getActivity()).getFTPMain();
-        FTPFile[] ftpfiles = ftpMain.getFileList();
+        final FTPLib ftpMain = ((GroupCloudList) getActivity()).getFTPMain();
+        FTPFile[] ftpfiles = null;
+
+        AsyncTask.execute(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                FTPFile[] ftpFilesTemp = null;
+                try
+                {
+                    while(ftpFilesTemp == null)
+                    {
+                        ftpFilesTemp = ftpMain.getFileList();
+                        this.wait(100);
+                    }
+                }
+                catch(InterruptedException ie)
+                {
+                    ie.printStackTrace();
+                }
+            }
+        });
 
         gcaAdapter.clearList();
 
@@ -474,15 +481,18 @@ public class FragGroupCloudList extends Fragment
                 }
 
                 gcaAdapter.sortAscName();
+                return true;
             }
             catch(ParseException pe)
             {
                 pe.printStackTrace();
+                return false;
             }
         }
         else
         {
             Log.d("Twily", "실패함.");
+            return false;
         }
     }
 

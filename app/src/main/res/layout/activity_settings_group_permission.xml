@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/userMain_ctMain"
+    android:id="@+id/settings_grouppermission_ctMain"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +11,7 @@
     android:focusableInTouchMode="true">
 
     <LinearLayout
+        android:id="@+id/settings_grouppermission_ctList"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,8 +20,10 @@
         android:divider="@drawable/separator"
         android:showDividers="middle">
 
+        <!-- 동적 생성을 위한 ctMain만 생성.. -->
+
         <LinearLayout
-            android:id="@+id/userMain_btnAccount"
+            android:id="@+id/settings_grouppermission_btnSample"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,35 +52,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/text_programinfo"
-                android:textColor="#000"
-                android:textSize="18dp"/>
-
-             <TextView
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:text="@string/APP_VERSION"
-                 android:gravity="right"
-                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <!-- Sample end -->
 
     </LinearLayout>
 

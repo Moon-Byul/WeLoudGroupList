@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.net.ftp.FTPFile;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,16 +33,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.acl.Group;
 import java.util.ArrayList;
 
-import static android.R.attr.id;
-import static android.R.attr.name;
-import static android.R.attr.type;
 import static android.content.ContentValues.TAG;
-import static com.example.reveu.weloudgrouplist.R.id.fab;
-import static com.example.reveu.weloudgrouplist.R.id.fragGroupList;
-import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 public class GroupCloudList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -325,6 +317,12 @@ public class GroupCloudList extends AppCompatActivity
             intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
             startActivity(intent);
         }
+        else if (id == R.id.nav_gc_groupsett)
+        {
+            Intent intent = new Intent(GroupCloudList.this, SettGroupMain.class);
+            intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
+            startActivity(intent);
+        }
         else if (id == R.id.nav_gc_backlist)
         {
             finish();
@@ -493,8 +491,6 @@ public class GroupCloudList extends AppCompatActivity
         {
             super.onPostExecute(result);
 
-            progressDialog.dismiss();
-
             if(result == null)
             {
                 Toast.makeText(getApplicationContext(), getText(R.string.error_temporary).toString(), Toast.LENGTH_SHORT).show();
@@ -506,6 +502,7 @@ public class GroupCloudList extends AppCompatActivity
                     String serverIP;
                     serverIP = jsonEvent(type, result);
                     ftpMain = new FTPLib(serverIP, "/" + groupName, GroupCloudList.this);
+
                     fragGroupCloudList.loadFileList();
                 }
                 else if(type == 1)
