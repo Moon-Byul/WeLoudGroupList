@@ -1,14 +1,18 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -124,7 +128,7 @@ public class GroupCloudList extends AppCompatActivity
                         for (GroupFileItem temp : gciTemp)
                         {
                             File defaultDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                            ftpMain.downloadFile(false, temp.getFile().getName(), "", defaultDownload.getPath());
+                            ftpMain.downloadFile(temp.getFile().getName(), "", defaultDownload.getPath());
                         }
                     }
                 }
@@ -157,7 +161,8 @@ public class GroupCloudList extends AppCompatActivity
                         }
 
                         modifyLayoutEvent(false, null);
-                        fragGroupCloudList.loadFileList();
+
+                        ftpMain.execute(GroupCloudList.this, "loadFileList", FTPCMD.GetFileList);
                     }
                 })
 
@@ -188,12 +193,12 @@ public class GroupCloudList extends AppCompatActivity
 
                 for (GroupFileItem temp : gciTemp)
                 {
-                    Log.d("Twily", "Rename : " + temp.getPath() + "/" + temp.getFile().getName() + " to : " + ftpMain.getDirectory() + "/" + temp.getFile().getName());
-                    ftpMain.rename(temp.getPath() + "/" + temp.getFile().getName(), ftpMain.getDirectory() + "/" + temp.getFile().getName());
+                    Log.d("Twily", "Rename : " + temp.getPath() + "/" + temp.getFile().getName() + " to : " + ftpMain.getWorkingPath() + "/" + temp.getFile().getName());
+                    ftpMain.execute(FTPCMD.Rename, temp.getPath() + "/" + temp.getFile().getName(), ftpMain.getWorkingPath() + "/" + temp.getFile().getName());
                 }
 
                 modifyLayoutEvent(false, null);
-                fragGroupCloudList.loadFileList();
+                ftpMain.execute(GroupCloudList.this, "loadFileList", FTPCMD.GetFileList);
             }
         });
 
@@ -213,14 +218,6 @@ public class GroupCloudList extends AppCompatActivity
         super.onStart();
 
         //fragGroupCloudList.getGroupList();
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if(ftpMain != null)
-            ftpMain.disconnect();
     }
 
     @Override
@@ -332,6 +329,11 @@ public class GroupCloudList extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    public void loadFileList()
+    {
+        fragGroupCloudList.loadFileList();
     }
 
     private void permissionEvent()
@@ -482,7 +484,7 @@ public class GroupCloudList extends AppCompatActivity
         {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(GroupCloudList.this, getText(R.string.text_loading).toString(), null, true, true);
+            //progressDialog = ProgressDialog.show(GroupCloudList.this, getText(R.string.text_loading).toString(), null, true, true);
         }
 
 
@@ -490,6 +492,8 @@ public class GroupCloudList extends AppCompatActivity
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
+
+            //progressDialog.dismiss();
 
             if(result == null)
             {
@@ -503,7 +507,7 @@ public class GroupCloudList extends AppCompatActivity
                     serverIP = jsonEvent(type, result);
                     ftpMain = new FTPLib(serverIP, "/" + groupName, GroupCloudList.this);
 
-                    fragGroupCloudList.loadFileList();
+                    ftpMain.execute(GroupCloudList.this, "loadFileList", FTPCMD.GetFileList);
                 }
                 else if(type == 1)
                 {

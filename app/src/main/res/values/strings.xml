@@ -103,6 +103,8 @@
     <string name="text_userranksett">User Rank Settings</string>
     <string name="text_userinvite">User Invite</string>
     <string name="text_useradmission">User Admission</string>
+    <string name="text_downloadcomplete">Download Complete</string>
+    <string name="text_downloadinprogress">Download is progress</string>
 
 
     <string name="error_temporary">Temporary Error.</string>

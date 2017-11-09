@@ -112,14 +112,6 @@ public class GroupCreate extends AppCompatActivity
         });
     }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if(ftpMain != null)
-            ftpMain.disconnect();
-    }
-
     private String getJsonData(String jsonString, int type)
     {
         String result = "null";
@@ -157,6 +149,18 @@ public class GroupCreate extends AppCompatActivity
         }
     }
 
+    public void dirCreateSuccess()
+    {
+        String[] nameArr = {"개설자", "일반회원", "특별회원", "관리자"};
+        String[] perArr = {"2047", "0", "127", "1023"};
+
+        for(int i=0; i<perArr.length; i++)
+        {
+            CreateGroupTask task = new CreateGroupTask();
+            task.execute("1", String.valueOf(groupID), nameArr[i], perArr[i]);
+        }
+    }
+
     private class CreateGroupTask extends AsyncTask<String, Void, String>
     {
         int type;
@@ -184,23 +188,7 @@ public class GroupCreate extends AppCompatActivity
                         String serverIP = getJsonData(result, 2);
 
                         ftpMain = new FTPLib(serverIP, "/", getApplicationContext());
-                        boolean isDirectoryMaked = ftpMain.makeDirectory(etGroupName.getText().toString());
-
-                        if(isDirectoryMaked)
-                        {
-                            String[] nameArr = {"개설자", "일반회원", "특별회원", "관리자"};
-                            String[] perArr = {"2047", "0", "127", "1023"};
-
-                            for(int i=0; i<perArr.length; i++)
-                            {
-                                CreateGroupTask task = new CreateGroupTask();
-                                task.execute("1", String.valueOf(groupID), nameArr[i], perArr[i]);
-                            }
-                        }
-                        else
-                        {
-                            Snackbar.make(ctMain, getText(R.string.error_connection), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        }
+                        ftpMain.execute(GroupCreate.this, "dirCreateSuccess", FTPCMD.MakeDirectory, etGroupName.getText().toString());
                     }
                 }
                 else if(type == 1)

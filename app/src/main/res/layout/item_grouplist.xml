@@ -35,14 +35,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 android:id="@+id/group_tvName" />
 
             <TextView
                 android:text="최근 업로드 : 2017년 1월 27일"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="14dp"
                 android:id="@+id/group_tvEtc" />
 
         </LinearLayout>

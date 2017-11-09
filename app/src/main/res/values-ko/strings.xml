@@ -75,6 +75,8 @@
     <string name="text_userranksett">회원 등급 설정</string>
     <string name="text_userinvite">회원 초대</string>
     <string name="text_useradmission">회원 가입승인</string>
+    <string name="text_downloadcomplete">다운로드 완료</string>
+    <string name="text_downloadinprogress">다운로드 진행 중</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

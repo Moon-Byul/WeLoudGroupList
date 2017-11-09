@@ -102,6 +102,8 @@ public class FragLogin extends Fragment
         editId.setText("");
         editPassword.setText("");
         textinfo.setText("");
+
+        new StockLib().verifyStoragePermissions(getActivity());
     }
 
     private void loginEvent()

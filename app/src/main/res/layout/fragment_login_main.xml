@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="WELOUD LOGO"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="30dp" />
 
     </LinearLayout>
 
@@ -38,6 +38,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             android:inputType="textNoSuggestions"
+            android:textSize="18dp"
             android:maxLines="1"/>
         <EditText
             android:layout_width="match_parent"
@@ -48,6 +49,7 @@
             android:background="#ffffff"
             android:layout_margin="5dp"
             android:maxLines="1"
+            android:textSize="18dp"
             android:padding="5dp"/>
         <Button
             android:layout_width="match_parent"
