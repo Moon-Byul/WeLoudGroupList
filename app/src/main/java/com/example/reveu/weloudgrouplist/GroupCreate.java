@@ -62,12 +62,7 @@ public class GroupCreate extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.execute();
-    }
 
-    private void UIAction()
-    {
         setContentView(R.layout.activity_groupcreate);
 
         Intent intent = getIntent();
@@ -78,7 +73,7 @@ public class GroupCreate extends AppCompatActivity
         swAutoJoin = (Switch) findViewById(R.id.groupCreate_swAutoJoin);
         tvErrorMsg = (TextView) findViewById(R.id.groupCreate_tvErrorMsg);
 
-        abLib.setDefaultActionBar(this, "그룹 생성", false, 1);
+        abLib.setDefaultActionBar(this, getText(R.string.text_creategroup).toString(), false, 1);
 
         abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
@@ -97,7 +92,7 @@ public class GroupCreate extends AppCompatActivity
                 String groupName = etGroupName.getText().toString();
                 if(!stLib.isGroupNameFormatted(groupName))
                 {
-                    tvErrorMsg.setText("그룹 이름을 형식에 맞게 작성하십시오.");
+                    tvErrorMsg.setText(getString(R.string.text_notformatted, getText(R.string.text_groupname)));
                 }
                 else
                 {
@@ -149,18 +144,6 @@ public class GroupCreate extends AppCompatActivity
         }
     }
 
-    public void dirCreateSuccess()
-    {
-        String[] nameArr = {"개설자", "일반회원", "특별회원", "관리자"};
-        String[] perArr = {"2047", "0", "127", "1023"};
-
-        for(int i=0; i<perArr.length; i++)
-        {
-            CreateGroupTask task = new CreateGroupTask();
-            task.execute("1", String.valueOf(groupID), nameArr[i], perArr[i]);
-        }
-    }
-
     private class CreateGroupTask extends AsyncTask<String, Void, String>
     {
         int type;
@@ -176,11 +159,24 @@ public class GroupCreate extends AppCompatActivity
             }
             else
             {
+                /*
+                 * 순차적 시스템.
+                 *
+                 * type 0 (첫번째 Asynctask) 에서 PHP와 통신하여 그룹 이름이 중복되는지 확인.
+                 * type 0은 조금 특별하게 type 1~2와 다르게 execute를 사용하는데, 이는 폴더 생성이 정상적으로 되었는지 확인하기 위해
+                 * method에 따로 배치해놓음 (invoke, reflect 사용)
+                 *
+                 * type 1에서 랭크 이름이 중복되는지 확인. (그럴일은 없겠지만 만약을 위해)
+                 *
+                 * type 2에서 그룹 생성자가 이미 그룹에 가입되어있는지 확인 (역시 그럴일 없음)
+                 *
+                 * type 3은 그룹 생성 알림을 위한 Toast Message 출력.
+                 */
                 if(type == 0)
                 {
                     if (result.contains("*group_already"))
                     {
-                        tvErrorMsg.setText(etGroupName.getText().toString() + " 그룹은 이미 존재합니다.");
+                        tvErrorMsg.setText(getString(R.string.text_groupnameexists, etGroupName.getText()));
                     }
                     else
                     {
@@ -195,7 +191,7 @@ public class GroupCreate extends AppCompatActivity
                 {
                     if (result.contains("*rank_already"))
                     {
-                        Snackbar.make(ctMain, "랭크 이름이 이미 존재합니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_ranknameexsists), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
                     else
                     {
@@ -212,7 +208,7 @@ public class GroupCreate extends AppCompatActivity
                 {
                     if (result.contains("*group_user_already"))
                     {
-                        Snackbar.make(ctMain, "이미 가입되어 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
                     else
                     {
@@ -224,7 +220,7 @@ public class GroupCreate extends AppCompatActivity
                 {
                     progressDialog.dismiss();
 
-                    Toast.makeText(getApplicationContext(), "그룹이 생성되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getText(R.string.text_successcreategroup), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -315,18 +311,19 @@ public class GroupCreate extends AppCompatActivity
         }
     }
 
-    private class UITask extends AsyncTask<String, Void, String>
+    /*
+     *  아래의 부분은 Invoke (Reflect)를 통해서 사용하는 메소드들 입니다.
+     *  never used가 뜬다고 해서 지우지 마시오.
+     */
+    public void dirCreateSuccess()
     {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
+        String[] nameArr = {"개설자", "일반회원", "특별회원", "관리자"};
+        String[] perArr = {"2047", "0", "127", "1023"};
 
-        @Override
-        protected void onPostExecute(String s)
+        for(int i=0; i<perArr.length; i++)
         {
-            UIAction();
+            CreateGroupTask task = new CreateGroupTask();
+            task.execute("1", String.valueOf(groupID), nameArr[i], perArr[i]);
         }
     }
 }

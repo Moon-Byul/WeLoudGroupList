@@ -21,12 +21,7 @@ public class SettGroupMain extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.execute();
-    }
 
-    private void UIAction()
-    {
         setContentView(R.layout.activity_settings_group_main);
 
         Intent intent = getIntent();
@@ -42,20 +37,5 @@ public class SettGroupMain extends AppCompatActivity
                 finish();
             }
         });
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
-        }
     }
 }

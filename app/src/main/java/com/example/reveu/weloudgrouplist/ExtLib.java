@@ -10,18 +10,18 @@ import java.util.List;
  * Created by reveu on 2017-10-22.
  */
 
-public class ExtLib
+class ExtLib
 {
     private ArrayList<ExtClass> extLib = new ArrayList<ExtClass>();
 
-    public ExtLib()
+    ExtLib()
     {
         // 이 문장에서 확장자 관리
 
         extLib.add(new ExtClass(String.valueOf(R.drawable.document), "txt", "docs", "hwp"));
     }
 
-    public int getDrawableExt(String input)
+    int getDrawableExt(String input)
     {
         for (ExtClass ext : extLib)
         {
@@ -57,7 +57,7 @@ public class ExtLib
             }
         }
 
-        public ArrayList<String> getExtList()
+        ArrayList<String> getExtList()
         {
             return extList;
         }

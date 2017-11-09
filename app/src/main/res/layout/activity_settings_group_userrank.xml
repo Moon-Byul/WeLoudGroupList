@@ -8,6 +8,10 @@
     android:divider="@drawable/separator"
     android:showDividers="middle">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/actionbar_default"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

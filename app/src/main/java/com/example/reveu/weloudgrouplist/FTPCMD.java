@@ -6,11 +6,11 @@ package com.example.reveu.weloudgrouplist;
 
 enum FTPCMD
 {
-    MakeDirectory("MD"), GetFileList("GFL"), ChangeWorkingDirectory("CWD"), Delete("DEL"), Rename("RN"), RemoveDir("RDIR"), DownloadFile("DOWN");
+    MakeDirectory("MD"), GetFileList("GFL"), ChangeWorkingDirectory("CWD"), Delete("DEL"), Move("MV"), Rename("RN"), RemoveDir("RDIR"), DownloadFile("DOWN"), SearchFile("SRF");
 
     final private String name;
 
-    private FTPCMD(String name)
+    FTPCMD(String name)
     {
         this.name = name;
     }

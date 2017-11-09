@@ -78,15 +78,13 @@ public class FragGroupCloudList extends Fragment
 
                 if(item.getFile().getName().equals(""))
                 {
-                    ftpMain.execute(FTPCMD.ChangeWorkingDirectory, "..");
-                    ftpMain.execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
+                    ((GroupCloudList) getActivity()).cwdEvent("..");
                 }
                 else
                 {
                     if (ftpMain.getExt(item.getFile()).equals("folder"))
                     {
-                        ftpMain.execute(FTPCMD.ChangeWorkingDirectory, item.getFile().getName());
-                        ftpMain.execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
+                        ((GroupCloudList) getActivity()).cwdEvent(ftpMain.getWorkingPath() + "/" + item.getFile().getName());
                     }
                     else
                     {
@@ -94,7 +92,7 @@ public class FragGroupCloudList extends Fragment
                             fileCheckEvent(item);
                         else
                         {
-                            fileClickEvent(item, ftpMain);
+                            fileClickEvent(item);
                         }
                     }
                 }
@@ -113,8 +111,7 @@ public class FragGroupCloudList extends Fragment
 
                 if(item.getFile().getName().equals(""))
                 {
-                    ftpMain.execute(FTPCMD.ChangeWorkingDirectory, "..");
-                    ftpMain.execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
+                    ((GroupCloudList) getActivity()).cwdEvent("..");
                 }
                 else
                 {
@@ -155,7 +152,7 @@ public class FragGroupCloudList extends Fragment
             @Override
             public void onRefresh()
             {
-                ((GroupCloudList) getActivity()).getFTPMain().execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
+                ((GroupCloudList) getActivity()).getFTPMain().execute(getActivity(), "loadFileList", FTPCMD.GetFileList);
                 srlGroupCloudMain.setRefreshing(false);
             }
         });
@@ -196,7 +193,7 @@ public class FragGroupCloudList extends Fragment
 
                             ftpMain.execute(FTPCMD.MakeDirectory, folderName);
                             fabClickEvent();
-                            ftpMain.execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
+                            ftpMain.execute(getActivity(), "loadFileList", FTPCMD.GetFileList);
                         }
                         else
                         {
@@ -221,52 +218,9 @@ public class FragGroupCloudList extends Fragment
         return rootView;
     }
 
-    private void fileClickEvent(final GroupFileItem item, final FTPLib ftpMain)
+    private void fileClickEvent(GroupFileItem item)
     {
-        int permission = ((GroupCloudList) getActivity()).getUserPermission();
-        PermissionLib pmLib = new PermissionLib();
-        ArrayList<CharSequence> listItems = new ArrayList<CharSequence>();
-
-        //listItems.add(getText(R.string.text_open));
-        listItems.add(getText(R.string.text_download));
-
-        if(pmLib.isUserFileModifyName(permission))
-            listItems.add(getText(R.string.text_rename));
-
-        listItems.add(getText(R.string.text_cancel));
-
-        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle(getText(R.string.text_chooseyouraction))
-        .setItems(items, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int index)
-            {
-                // Download Event
-                if(items[index].equals(getText(R.string.text_download).toString()))
-                {
-                    if(isExternalStorageWritable())
-                    {
-                        File defaultDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                        ftpMain.downloadFile(item.getFile().getName(), "", defaultDownload.getPath());
-                    }
-                }
-                // Rename Event
-                else if(items[index].equals(getText(R.string.text_rename).toString()))
-                {
-                    fileRenameEvent(item, ftpMain);
-                }
-                // Open Event
-                else if(items[index].equals(getText(R.string.text_open).toString()))
-                {
-
-                }
-            }
-        })
-
-        .show();
+        ((GroupCloudList) getActivity()).fileClickEvent(item);
         gcaAdapter.notifyDataSetChanged();
     }
 
@@ -293,51 +247,6 @@ public class FragGroupCloudList extends Fragment
             ((GroupCloudList) getActivity()).modifyLayoutEvent(false, item);
 
         gcaAdapter.notifyDataSetChanged();
-    }
-
-    public void fileRenameEvent(final GroupFileItem item, final FTPLib ftpMain)
-    {
-        final EditText name = new EditText(getActivity());
-
-        name.setText(item.getFile().getName());
-
-        // Create Rename AlertDialog
-        AlertDialog.Builder alertRename = new AlertDialog.Builder(getActivity());
-
-        alertRename.setMessage(getText(R.string.text_rename).toString())
-                .setView(name)
-                .setPositiveButton(getText(R.string.text_ok).toString(), new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        String fileName = name.getText().toString();
-
-                        if(!item.getFile().getName().equals(fileName))
-                        {
-                            if(!fileName.equals(""))
-                            {
-                                ftpMain.execute(FTPCMD.Rename, item.getFile().getName(), fileName);
-                                ftpMain.execute(getFragmentManager().findFragmentById(R.id.fragGroupCloudList), "loadFileList", FTPCMD.GetFileList);
-                            }
-                            else
-                            {
-                                Toast.makeText(getActivity(), getText(R.string.text_file).toString() + getText(R.string.text_nameisempty).toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                })
-
-                .setNegativeButton(getText(R.string.text_cancel).toString(), new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-
-                    }
-                });
-
-        alertRename.show();
     }
 
     public void fabClickEvent()
@@ -462,27 +371,5 @@ public class FragGroupCloudList extends Fragment
             Log.d("Twily", "실패함.");
             return false;
         }
-    }
-
-    public boolean isExternalStorageWritable()
-    {
-        String state = Environment.getExternalStorageState();
-
-        if(Environment.MEDIA_MOUNTED.equals(state))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isExternalStorageReadable()
-    {
-        String state = Environment.getExternalStorageState();
-
-        if(Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-        {
-            return true;
-        }
-        return false;
     }
 }

@@ -23,4 +23,17 @@ public class StringLib
             return "";
         }
     }
+
+    public String lastDir(String path)
+    {
+        int index = path.lastIndexOf("/");
+        if(index != -1)
+        {
+            return path.substring(index + 1);
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

@@ -58,12 +58,7 @@ public class GroupSearch extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.execute();
-    }
 
-    private void UIAction()
-    {
         setContentView(R.layout.activity_groupsearch);
 
         Intent intent = getIntent();
@@ -321,21 +316,6 @@ public class GroupSearch extends AppCompatActivity
 
                 return new String("Error: " + e.getMessage());
             }
-        }
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
         }
     }
 }

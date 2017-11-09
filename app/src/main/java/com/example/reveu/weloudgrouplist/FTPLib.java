@@ -22,14 +22,18 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPFileFilter;
 import org.apache.commons.net.io.CopyStreamAdapter;
 import org.apache.commons.net.io.CopyStreamListener;
 
+import static android.R.attr.path;
 import static android.R.attr.type;
 import static android.content.ContentValues.TAG;
 
@@ -45,6 +49,7 @@ class FTPLib
     private static FTPClient ftpClient;
 
     private FTPFile[] ftpFile;
+    private FTPFileAdv[] ftpSearch;
 
     FTPLib()
     {
@@ -65,9 +70,8 @@ class FTPLib
     {
         String[] temp = new String[]{type.getName()};
         String[] result = new String[ftpCommand.length + 1];
-        System.arraycopy(temp, 0, result, 0, 1);
-        System.arraycopy(ftpCommand, 0, result, 1, ftpCommand.length);
 
+        new StockLib().arrayMerge(result, temp, ftpCommand);
         new FTPTask().execute(result);
     }
 
@@ -209,6 +213,11 @@ class FTPLib
     FTPFile[] getFTPFile()
     {
         return ftpFile;
+    }
+
+    FTPFileAdv[] getFtpSearch()
+    {
+        return ftpSearch;
     }
 
     String getExt(FTPFile file)
@@ -417,7 +426,9 @@ class FTPLib
         private Activity activity = null;
         private android.support.v4.app.Fragment fragment = null;
         private String methodCall = "";
-        private String saveParam = "";
+        private String[] saveParam;
+        private FTPFileFilter filterDir;
+        private FTPFileFilter filterSearch;
 
         FTPTask()
         {
@@ -457,19 +468,30 @@ class FTPLib
                     progressDialog.dismiss();
             }
 
-            switch(saveParam)
+            switch(saveParam[0])
             {
+                case "MV":
                 case "RN":
-                    Toast.makeText(context, context.getText(R.string.text_nameisexists), Toast.LENGTH_SHORT).show();
+                {
+                    if(result.equals(""))
+                    {
+                        if(saveParam.equals("MV"))
+                            Toast.makeText(context, context.getString(R.string.text_movefailed, saveParam[1]), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(context, context.getText(R.string.text_nameisexists), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        if(saveParam.equals("RN"))
+                            Toast.makeText(context, context.getText(R.string.text_successrename), Toast.LENGTH_SHORT).show();
+                    }
                     break;
+                }
 
                 case "DOWN":
                 {
                     if(result.equals(""))
-                    {
                         Toast.makeText(context, context.getText(R.string.text_downloadsuccess), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
                     else if(result.equals("Error_fnfe"))
                         Toast.makeText(context, context.getText(R.string.text_fileisntexists), Toast.LENGTH_SHORT).show();
                     else
@@ -505,7 +527,8 @@ class FTPLib
         @Override
         protected String doInBackground(String... params)
         {
-            String result = saveParam = params[0];
+            saveParam = params;
+            String result = params[0];
             try
             {
                 if(FTPConnect())
@@ -528,6 +551,7 @@ class FTPLib
                             FTPdelete(params[1]);
                             break;
 
+                        case "MV":
                         case "RN":
                             result = FTPRename(params[1], params[2]);
                             break;
@@ -538,6 +562,10 @@ class FTPLib
 
                         case "DOWN":
                             result = FTPDownloadFile(params[1], params[2]);
+                            break;
+
+                        case "SRF":
+                            FTPsearchFile(params[1]);
                             break;
                     }
                     FTPDisconnect();
@@ -771,6 +799,64 @@ class FTPLib
                 ioe.printStackTrace();
                 return "Error_ioe";
             }
+        }
+
+        private void FTPsearchFile(final String name)
+        {
+            try
+            {
+                filterSearch = new FTPFileFilter()
+                {
+                    @Override
+                    public boolean accept(FTPFile ftpFile)
+                    {
+                        return (ftpFile.getName().contains(name));
+                    }
+                };
+
+                filterDir = new FTPFileFilter()
+                {
+                    @Override
+                    public boolean accept(FTPFile ftpFile)
+                    {
+                        return (ftpFile.isDirectory());
+                    }
+                };
+
+                ArrayList<FTPFileAdv> result = searchAlgorithm(defaultPath);
+                ftpSearch = result.toArray(new FTPFileAdv[result.size()]);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.out.println("FTP_FILELIST_ERR : 리스트 가져오기 실패");
+            }
+        }
+
+        private ArrayList<FTPFileAdv> searchAlgorithm(String path) throws IOException
+        {
+            ArrayList<FTPFileAdv> result = new ArrayList<FTPFileAdv>();
+
+            result.addAll(convertFTPFileArr(ftpClient.listFiles(path, filterSearch), path));
+
+            FTPFile[] searchFile = ftpClient.listFiles(path, filterDir);
+            for(FTPFile loopFile : searchFile)
+            {
+                result.addAll(searchAlgorithm(path + "/" + loopFile.getName()));
+            }
+            return result;
+        }
+
+        private ArrayList<FTPFileAdv> convertFTPFileArr(FTPFile[] files, String path)
+        {
+            ArrayList<FTPFileAdv> adv = new ArrayList<FTPFileAdv>();
+
+            for(FTPFile file : files)
+            {
+                adv.add(new FTPFileAdv(file, path));
+            }
+
+            return adv;
         }
 
         private void FTPRemoveDirectory(String path)

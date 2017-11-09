@@ -104,6 +104,9 @@ public class GroupList extends AppCompatActivity
         return true;
     }
 
+    /*
+     * 상단 Actionbar의 Item들을 Click 하였을 때 발생하는 Method.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         /*
@@ -185,12 +188,18 @@ public class GroupList extends AppCompatActivity
         return false;
     }
 
+    /*
+     * setVisible을 하는데 중복으로 사용되는 코드가 많아서 method를 정의하여 간소화 한 것.
+     */
     private void setVisibleItem(Menu menu, int id, boolean state)
     {
         MenuItem item = menu.findItem(id);
         item.setVisible(state);
     }
 
+    /*
+     * Getter
+     */
     public String getUserNum()
     {
         return userNum;
@@ -201,6 +210,9 @@ public class GroupList extends AppCompatActivity
         return ID;
     }
 
+    /*
+     *  그룹 검색 Activity로 넘어가는 Method.
+     */
     public void groupSearchEvent()
     {
         Intent intent = new Intent(GroupList.this, GroupSearch.class);
@@ -208,6 +220,9 @@ public class GroupList extends AppCompatActivity
         startActivity(intent);
     }
 
+    /*
+     * 그룹 생성 Activity로 넘어가는 Method.
+     */
     public void groupCreateEvent()
     {
         Intent intent = new Intent(GroupList.this, GroupCreate.class);
@@ -215,6 +230,9 @@ public class GroupList extends AppCompatActivity
         startActivity(intent);
     }
 
+    /*
+     * 그룹 Cloud (Drive) Activity로 넘어가는 Method.
+     */
     public void groupCloudEvent(String groupName, int groupID)
     {
         Intent intent = new Intent(GroupList.this, GroupCloudList.class);

@@ -105,6 +105,15 @@
     <string name="text_useradmission">User Admission</string>
     <string name="text_downloadcomplete">Download Complete</string>
     <string name="text_downloadinprogress">Download is progress</string>
+    <string name="text_movefailed">Failed to move File %1$s.</string>
+    <string name="text_searchfileandfolder">Search Files and Folders (more than 2 characters)</string>
+    <string name="text_path">Path : %1$s</string>
+    <string name="text_successrename">Success to change name.</string>
+    <string name="text_morechar">Please enter more than %1$d characters</string>
+    <string name="text_groupnameexists">%1$s Group is already exists.</string>
+    <string name="text_ranknameexsists">This rank is already exists.</string>
+    <string name="text_youalreadyjoined">You have already joined this group</string>
+    <string name="text_successcreategroup">Successfully created group.</string>
 
 
     <string name="error_temporary">Temporary Error.</string>

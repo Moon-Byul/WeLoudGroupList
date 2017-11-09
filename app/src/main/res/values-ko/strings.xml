@@ -77,6 +77,14 @@
     <string name="text_useradmission">회원 가입승인</string>
     <string name="text_downloadcomplete">다운로드 완료</string>
     <string name="text_downloadinprogress">다운로드 진행 중</string>
+    <string name="text_movefailed">%1$s 파일 이동에 실패하였습니다.</string>
+    <string name="text_searchfileandfolder">파일 및 폴더 검색 (2글자 이상)</string>
+    <string name="text_path">경로 : %1$s</string>
+    <string name="text_morechar">%1$d 글자 이상 입력하세요.</string>
+    <string name="text_groupnameexists">%1$s 그룹은 이미 존재합니다.</string>
+    <string name="text_ranknameexsists">해당 등급은 이미 존재합니다.</string>
+    <string name="text_youalreadyjoined">이미 그룹에 가입하셨습니다.</string>
+    <string name="text_successcreategroup">그룹을 생성하였습니다.</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

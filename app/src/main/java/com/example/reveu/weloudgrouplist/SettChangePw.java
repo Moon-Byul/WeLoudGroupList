@@ -48,13 +48,6 @@ public class SettChangePw extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        // Main Thread의 부담을 덜기 위해 ASyncTask를 사용하여 다른 Thread로 UI를 처리했다.
-        UITask task = new UITask();
-        task.execute();
-    }
-
-    private void UIAction()
-    {
         setContentView(R.layout.activity_settings_changepassword);
         abLib.setDefaultActionBar(this, getText(R.string.text_passwordchange).toString(), false, 1);
 
@@ -285,21 +278,6 @@ public class SettChangePw extends AppCompatActivity
 
                 return new String("Error: " + e.getMessage());
             }
-        }
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
         }
     }
 }

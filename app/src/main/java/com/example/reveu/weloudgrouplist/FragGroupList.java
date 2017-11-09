@@ -81,14 +81,6 @@ public class FragGroupList extends Fragment
                 GroupListItem item = glaAdapter.getItem(position);
 
                 ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
-                /*
-                if(item.getFav())
-                    item.setFav(false);
-                else
-                    item.setFav(true);
-                Snackbar.make(view, "테스트 메시지입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                glaAdapter.notifyDataSetChanged();
-                */
             }
         });
 

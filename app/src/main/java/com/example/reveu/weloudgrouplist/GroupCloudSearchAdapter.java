@@ -7,35 +7,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.File;
-import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Created by reveu on 2017-05-29.
  */
 
-class GroupCloudAdapter extends BaseAdapter
+class GroupCloudSearchAdapter extends BaseAdapter
 {
     private ArrayList<GroupFileItem> gciList = new ArrayList<GroupFileItem>();
-    private ArrayList<GroupFileItem> gciCheckList = new ArrayList<GroupFileItem>();
+    private ArrayList<GroupFileItem> gciCheckList;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", java.util.Locale.getDefault());
 
     // ArrayList의 사이즈를 리턴
     @Override
-
     public int getCount() {
         return gciList.size();
     }
@@ -72,7 +67,7 @@ class GroupCloudAdapter extends BaseAdapter
             holder = new GroupListHolder();
             holder.ivFileExtImage = (ImageView) convertView.findViewById(R.id.cloud_ivFileExtImage);
             holder.tvFileName = (TextView) convertView.findViewById(R.id.cloud_tvFileName);
-            holder.tvFileUpload = (TextView) convertView.findViewById(R.id.cloud_tvFileUpload);
+            holder.tvFileUpload = (TextView) convertView.findViewById(R.id.cloud_tvFileUpload); // 같은 Item을 재탕하느라 이름은 Upload지만, 여기서는 경로 Text가 들어간다.
             convertView.setTag(holder);
         }
         else
@@ -97,7 +92,7 @@ class GroupCloudAdapter extends BaseAdapter
             else
                 holder.ivFileExtImage.setImageResource(new FTPLib().getExtDrawable(listViewItem.getFile()));
             holder.tvFileName.setText(file.getName());
-            holder.tvFileUpload.setText(context.getText(R.string.text_uploaddate).toString() + " : " + dateFormat.format(listViewItem.getFileUploadDate().getTime()));
+            holder.tvFileUpload.setText(context.getString(R.string.text_path, listViewItem.getPath()));
         }
 
         return convertView;
@@ -118,18 +113,6 @@ class GroupCloudAdapter extends BaseAdapter
         gciCheckList = list;
     }
 
-    void addItem(FTPFile file)
-    {
-        GroupFileItem item = new GroupFileItem();
-
-        item.setFile(file);
-
-        Log.d("Twily", item.getFile() + "?");
-
-        gciList.add(item);
-        this.notifyDataSetChanged();
-    }
-
     void addItem(FTPFile file, Calendar fileUploadDate, String path)
     {
         GroupFileItem item = new GroupFileItem();
@@ -144,6 +127,16 @@ class GroupCloudAdapter extends BaseAdapter
 
         gciList.add(item);
         this.notifyDataSetChanged();
+    }
+
+    void clearList()
+    {
+        gciList.clear();
+    }
+
+    void clearCheckList()
+    {
+        gciCheckList.clear();
     }
 
     GroupFileItem checkFile(GroupFileItem item)
@@ -169,125 +162,6 @@ class GroupCloudAdapter extends BaseAdapter
     void addCheckItem(GroupFileItem item)
     {
         gciCheckList.add(item);
-    }
-
-    void clearList()
-    {
-        gciList.clear();
-    }
-
-    void clearCheckList()
-    {
-        gciCheckList.clear();
-    }
-
-    void sortAscName()
-    {
-        AscendingName asscending = new AscendingName();
-        Collections.sort(gciList, asscending);
-        this.notifyDataSetChanged();
-    }
-
-    void sortDescName()
-    {
-        DescendingName desscending = new DescendingName();
-        Collections.sort(gciList, desscending);
-        this.notifyDataSetChanged();
-    }
-
-    void sortAscDate()
-    {
-        AscendingDate asscending = new AscendingDate();
-        Collections.sort(gciList, asscending);
-        this.notifyDataSetChanged();
-    }
-
-    void sortDescDate()
-    {
-        DescendingDate desscending = new DescendingDate();
-        Collections.sort(gciList, desscending);
-        this.notifyDataSetChanged();
-    }
-
-    private class AscendingName implements Comparator<GroupFileItem>
-    {
-        @Override
-        public int compare(GroupFileItem o1, GroupFileItem o2)
-        {
-            FTPFile f1 = o1.getFile();
-            FTPFile f2 = o2.getFile();
-
-            int result = compareFolder(f1, f2);
-            if(result == 0)
-                return f1.getName().compareTo(f2.getName());
-            else
-                return result;
-        }
-    }
-
-    private class DescendingName implements Comparator<GroupFileItem>
-    {
-        @Override
-        public int compare(GroupFileItem o1, GroupFileItem o2)
-        {
-            FTPFile f1 = o1.getFile();
-            FTPFile f2 = o2.getFile();
-
-            int result = compareFolder(f1, f2);
-            if(result == 0)
-                return f2.getName().compareTo(f1.getName());
-            else
-                return result;
-        }
-    }
-
-    private class AscendingDate implements Comparator<GroupFileItem>
-    {
-        @Override
-        public int compare(GroupFileItem o1, GroupFileItem o2)
-        {
-            int result = compareFolder(o1.getFile(), o2.getFile());
-            if(result == 0)
-                return o2.getFileUploadDate().compareTo(o1.getFileUploadDate());
-            else
-                return result;
-        }
-    }
-
-    private class DescendingDate implements Comparator<GroupFileItem>
-    {
-        @Override
-        public int compare(GroupFileItem o1, GroupFileItem o2)
-        {
-            int result = compareFolder(o1.getFile(), o2.getFile());
-            if(result == 0)
-                return o1.getFileUploadDate().compareTo(o2.getFileUploadDate());
-            else
-                return result;
-        }
-    }
-
-    private int compareFolder(FTPFile f1, FTPFile f2)
-    {
-        if(f1.getName().equals(""))
-            return -1;
-        if(f2.getName().equals(""))
-            return 1;
-
-        if(f1.isDirectory())
-        {
-            if(!f2.isDirectory())
-                return -1;
-            else
-                return 0;
-        }
-        else
-        {
-            if(f2.isDirectory())
-                return 1;
-            else
-                return 0;
-        }
     }
 
     private class GroupListHolder

@@ -67,21 +67,7 @@ public class SettUserAccount extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.execute();
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if(resultCode == RESULT_OK)
-        {
-            Snackbar.make(ctMain, getText(R.string.text_pwischange), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-        }
-    }
-
-    private void UIAction()
-    {
         setContentView(R.layout.activity_settings_useraccount);
         abLib.setDefaultActionBar(this, getText(R.string.text_accountinfo).toString(), false, 1);
 
@@ -164,6 +150,15 @@ public class SettUserAccount extends AppCompatActivity
 
         UserAccountTask task = new UserAccountTask();
         task.execute("0", ID);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode == RESULT_OK)
+        {
+            Snackbar.make(ctMain, getText(R.string.text_pwischange), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+        }
     }
 
     private boolean checkInfo()
@@ -337,21 +332,6 @@ public class SettUserAccount extends AppCompatActivity
 
                 return new String("Error: " + e.getMessage());
             }
-        }
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
         }
     }
 }

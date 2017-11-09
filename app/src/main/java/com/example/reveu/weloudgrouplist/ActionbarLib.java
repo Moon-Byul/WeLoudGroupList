@@ -33,23 +33,12 @@ public class ActionbarLib
      */
     public void setDefaultActionBar(AppCompatActivity activity, String title, boolean isClose, int confirmType)
     {
-        ActionBar actionBar = activity.getSupportActionBar();
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
 
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-
-        View customBar = LayoutInflater.from(activity).inflate(R.layout.actionbar_default, null);
-        actionBar.setCustomView(customBar);
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4472c4")));
-
-        Toolbar parent = (Toolbar) customBar.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-        btnActionBarBack = (ImageView) customBar.findViewById(R.id.actionbar_default_btnBack);
-        btnActionBarConfirm = (ImageView) customBar.findViewById(R.id.actionbar_default_btnConfirm);
-        tvActionBarTitle = (TextView) customBar.findViewById(R.id.actionbar_default_tvTitle);
+        btnActionBarBack = (ImageView) toolbar.findViewById(R.id.actionbar_default_btnBack);
+        btnActionBarConfirm = (ImageView) toolbar.findViewById(R.id.actionbar_default_btnConfirm);
+        tvActionBarTitle = (TextView) toolbar.findViewById(R.id.actionbar_default_tvTitle);
 
         tvActionBarTitle.setText(title);
 
