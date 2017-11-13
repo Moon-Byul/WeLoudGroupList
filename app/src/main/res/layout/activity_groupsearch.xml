@@ -27,7 +27,7 @@
             android:layout_marginLeft="8dp"
             android:inputType="textNoSuggestions"
             android:text=""
-            android:hint="그룹 이름을 입력하세요."
+            android:hint="@string/text_entergroupname"
             android:ems="10" />
 
         <ImageView

@@ -50,6 +50,7 @@ public class GroupCreate extends AppCompatActivity
     private LinearLayout ctMain;
     private EditText etGroupName;
     private Switch swAutoJoin;
+    private Switch swAllow;
     private TextView tvErrorMsg;
 
     private ProgressDialog progressDialog;
@@ -71,6 +72,7 @@ public class GroupCreate extends AppCompatActivity
         ctMain = (LinearLayout) findViewById(R.id.groupCreate_ctMain);
         etGroupName = (EditText) findViewById(R.id.groupCreate_etGroupName);
         swAutoJoin = (Switch) findViewById(R.id.groupCreate_swAutoJoin);
+        swAllow = (Switch) findViewById(R.id.groupCreate_swAllow);
         tvErrorMsg = (TextView) findViewById(R.id.groupCreate_tvErrorMsg);
 
         abLib.setDefaultActionBar(this, getText(R.string.text_creategroup).toString(), false, 1);
@@ -97,11 +99,12 @@ public class GroupCreate extends AppCompatActivity
                 else
                 {
                     String autoJoin = (swAutoJoin.isChecked() ? "1" : "0");
+                    String allow = (swAllow.isChecked() ? "1" : "0");
 
                     progressDialog = ProgressDialog.show(GroupCreate.this, getText(R.string.text_loading).toString(), null, true, true);
 
                     CreateGroupTask task = new CreateGroupTask();
-                    task.execute("0", groupName, String.valueOf(userNum), autoJoin);
+                    task.execute("0", groupName, String.valueOf(userNum), autoJoin, allow);
                 }
             }
         });
@@ -144,6 +147,15 @@ public class GroupCreate extends AppCompatActivity
         }
     }
 
+    private void dismissDialog()
+    {
+        if(progressDialog != null)
+        {
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
+        }
+    }
+
     private class CreateGroupTask extends AsyncTask<String, Void, String>
     {
         int type;
@@ -177,13 +189,14 @@ public class GroupCreate extends AppCompatActivity
                     if (result.contains("*group_already"))
                     {
                         tvErrorMsg.setText(getString(R.string.text_groupnameexists, etGroupName.getText()));
+                        dismissDialog();
                     }
                     else
                     {
                         groupID = getJsonData(result, type);
                         String serverIP = getJsonData(result, 2);
 
-                        ftpMain = new FTPLib(serverIP, "/", getApplicationContext());
+                        ftpMain = new FTPLib(serverIP, "/", GroupCreate.this);
                         ftpMain.execute(GroupCreate.this, "dirCreateSuccess", FTPCMD.MakeDirectory, etGroupName.getText().toString());
                     }
                 }
@@ -192,6 +205,7 @@ public class GroupCreate extends AppCompatActivity
                     if (result.contains("*rank_already"))
                     {
                         Snackbar.make(ctMain, getText(R.string.text_ranknameexsists), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        dismissDialog();
                     }
                     else
                     {
@@ -209,6 +223,7 @@ public class GroupCreate extends AppCompatActivity
                     if (result.contains("*group_user_already"))
                     {
                         Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        dismissDialog();
                     }
                     else
                     {
@@ -239,7 +254,7 @@ public class GroupCreate extends AppCompatActivity
             if (type == 0)
             {
                 serverURL = "http://weloud.duckdns.org/weloud/db_set_groupinfo.php";
-                postParameters = "groupname=" + params[1] + "&usernum=" + params[2] + "&autojoin=" + params[3];
+                postParameters = "groupname=" + params[1] + "&usernum=" + params[2] + "&autojoin=" + params[3] + "&allow=" + params[4];
             }
             else if(type == 1)
             {

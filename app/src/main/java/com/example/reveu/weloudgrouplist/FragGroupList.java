@@ -35,9 +35,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
+import static android.R.id.input;
 import static android.content.ContentValues.TAG;
 import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
@@ -207,7 +210,10 @@ public class FragGroupList extends Fragment
                         String recentUpload = item.getString(getText(R.string.TAG_GROUPUPLOAD).toString());
                         int approved = item.getInt(getText(R.string.TAG_USERAPPROVED).toString());
 
-                        glaAdapter.addItem(groupID, (approved == 0 ? false : true), groupName, dateFormat.parse(recentUpload));
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dateFormat.parse(recentUpload));
+
+                        glaAdapter.addItem(groupID, (approved == 0 ? false : true), groupName, cal);
                         index++;
                     }
                     glaAdapter.notifyDataSetChanged();

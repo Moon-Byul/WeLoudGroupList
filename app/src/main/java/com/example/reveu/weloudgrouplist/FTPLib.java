@@ -33,6 +33,8 @@ import org.apache.commons.net.ftp.FTPFileFilter;
 import org.apache.commons.net.io.CopyStreamAdapter;
 import org.apache.commons.net.io.CopyStreamListener;
 
+import static android.R.attr.fragment;
+import static android.R.attr.name;
 import static android.R.attr.path;
 import static android.R.attr.type;
 import static android.content.ContentValues.TAG;
@@ -45,7 +47,7 @@ class FTPLib
     private static String password = "";
     private static final int port = 21;
     private static String defaultPath;
-    private static String workingPath;
+    private String workingPath;
     private static FTPClient ftpClient;
 
     private FTPFile[] ftpFile;
@@ -79,9 +81,8 @@ class FTPLib
     {
         String[] temp = new String[]{type.getName()};
         String[] result = new String[ftpCommand.length + 1];
-        System.arraycopy(temp, 0, result, 0, 1);
-        System.arraycopy(ftpCommand, 0, result, 1, ftpCommand.length);
 
+        new StockLib().arrayMerge(result, temp, ftpCommand);
         new FTPTask(activity, methodName).execute(result);
     }
 
@@ -89,9 +90,8 @@ class FTPLib
     {
         String[] temp = new String[]{type.getName()};
         String[] result = new String[ftpCommand.length + 1];
-        System.arraycopy(temp, 0, result, 0, 1);
-        System.arraycopy(ftpCommand, 0, result, 1, ftpCommand.length);
 
+        new StockLib().arrayMerge(result, temp, ftpCommand);
         new FTPTask(fragment, methodName).execute(result);
     }
 
@@ -111,9 +111,9 @@ class FTPLib
             TextView tvFileName = new TextView(context);
 
             if(downloadFileName.equals(""))
-                tvFileName.setText(context.getText(R.string.text_file) + " : " + targetFile);
+                tvFileName.setText(context.getText(R.string.text_download) + " " + context.getText(R.string.text_file) + " : " + targetFile);
             else
-                tvFileName.setText(context.getText(R.string.text_file) + " : " + downloadFileName);
+                tvFileName.setText(context.getText(R.string.text_download) + " " + context.getText(R.string.text_file) + " : " + downloadFileName);
 
             tvFileName.setTextSize(12.0f);
             tvFileName.setGravity(Gravity.CENTER);
@@ -184,6 +184,85 @@ class FTPLib
             execute(FTPCMD.DownloadFile, targetFile, resultPath);
     }
 
+    void uploadExistEvent(Activity activity, android.support.v4.app.Fragment fragment, String methodCall, final String targetFile, final String uploadPath, final String uploadFileName)
+    {
+        final FTPTask task = new FTPTask(activity, fragment, methodCall);
+
+        final CharSequence[] items = {context.getText(R.string.text_overwrite).toString(), context.getText(R.string.text_rename).toString(), context.getText(R.string.text_cancel).toString()};
+
+        TextView tvFileName = new TextView(context);
+
+        if(uploadFileName.equals(""))
+            tvFileName.setText(context.getText(R.string.text_uploadFile) + " : " + targetFile);
+        else
+            tvFileName.setText(context.getText(R.string.text_uploadFile) + " : " + uploadFileName);
+
+        tvFileName.setTextSize(12.0f);
+        tvFileName.setGravity(Gravity.CENTER);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setView(tvFileName)
+        .setTitle(context.getText(R.string.text_fileisexists))
+        .setItems(items, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int index)
+            {
+                // OverWrite Event
+                if(items[index].equals(context.getText(R.string.text_overwrite).toString()))
+                {
+                    task.execute(FTPCMD.UploadFileOverWrite.getName(), targetFile, uploadPath, uploadFileName);
+                }
+                // Rename Event
+                else if(items[index].equals(context.getText(R.string.text_rename).toString()))
+                {
+                    final EditText name = new EditText(context);
+
+                    // Set Default Text to EditText
+                    if(uploadFileName.equals(""))
+                        name.setText(targetFile);
+                    else
+                        name.setText(uploadFileName);
+
+                    // Create Rename AlertDialog
+                    AlertDialog.Builder alertRename = new AlertDialog.Builder(context);
+
+                    alertRename.setMessage(context.getText(R.string.text_rename).toString())
+                            .setView(name)
+                            .setPositiveButton(context.getText(R.string.text_ok).toString(), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    String fileName = name.getText().toString();
+
+                                    if(!fileName.equals(""))
+                                    {
+                                        task.execute(FTPCMD.UploadFile.getName(), targetFile, uploadPath, fileName);
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, context.getText(R.string.text_file).toString() + context.getText(R.string.text_nameisempty).toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            })
+
+                            .setNegativeButton(context.getText(R.string.text_cancel).toString(), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+
+                                }
+                            });
+
+                    alertRename.show();
+                }
+            }
+        })
+        .show();
+    }
+
     void delete(FTPFile targetFile)
     {
         try
@@ -201,7 +280,6 @@ class FTPLib
 
     boolean isDirectoryDefault(String path)
     {
-        Log.d("Twily", path + "::" + defaultPath);
         return path.equals(defaultPath);
     }
 
@@ -242,189 +320,11 @@ class FTPLib
         return R.drawable.blank_file;
     }
 
-    /*
-    void disconnect()
-    {
-        new FTPTask().execute("*Disconnect");
-    }
-
-    FTPFile[] getFileList()
-    {
-        try
-        {
-            if (new FTPTask().execute("*GetFileList").get().equals("*GetFileListComplete"))
-            {
-                return ftpFile;
-            }
-
-            return null;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    FTPFile[] getFileList(Activity activity, String methodName)
-    {
-        try
-        {
-            if (new FTPTask(activity, methodName).execute("*GetFileList").get().equals("*GetFileListComplete"))
-            {
-                return ftpFile;
-            }
-
-            return null;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    String getFileModificationTime(String fileName)
-    {
-        try
-        {
-            return new FTPTask().execute("*GetFileModificationTime", fileName).get();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    String getDirectory()
-    {
-        try
-        {
-            return new FTPTask().execute("*GetDirectory").get();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    void changeWorkingDirectory(String path)
-    {
-        new FTPTask().execute("*ChangeWorkingDirectory", path);
-    }
-
-    boolean rename(String targetFileName, String changeFileName)
-    {
-        try
-        {
-            String result = new FTPTask().execute("*Rename", targetFileName, changeFileName).get();
-
-            if(result.equals("")) // 에러
-                return false;
-            else
-                return true;
-        }
-        catch(Exception e)
-        {
-            return false;
-        }
-    }
-
-    boolean makeDirectory(String folderName)
-    {
-        try
-        {
-            String result = new FTPTask().execute("*MakeDirectory", folderName).get();
-
-            if(result.equals("")) // 에러
-                return false;
-            else
-                return true;
-        }
-        catch(Exception e)
-        {
-            return false;
-        }
-    }
-
-    void delete(FTPFile targetFile)
-    {
-        try
-        {
-            if(targetFile.isDirectory())
-                new FTPTask().execute("*RemoveDir", targetFile.getName());
-            else
-                new FTPTask().execute("*Delete", targetFile.getName());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    void uploadFile(String filePath)
-    {
-        try
-        {
-            File uploadFile = new File(filePath);
-            InputStream inputStream = new FileInputStream(uploadFile);
-            ftpClient.storeFile(uploadFile.getName(), inputStream);
-        }
-        catch(FileNotFoundException fnfe)
-        {
-            System.out.println("FTP_UPLOADFILE_ERR : 파일이 존재하지 않습니다.");
-        }
-        catch(IOException ioe)
-        {
-            System.out.println("FTP_UPLOADFILE_ERR : 파일 업로드 실패");
-        }
-    }
-
-    // isOverWrite = 덮어쓰기를 할 것인지.
-    // downloadFileName = 공백이면 targetFile의 이름을 그대로, 아닐 경우 다른 이름으로 저장 (rename)
-    void downloadFile(boolean isOverWrite, String targetFile, String downloadFileName, String downloadPath)
-    {
-        String resultPath;
-        if(downloadFileName.equals(""))
-            resultPath = downloadPath + "/" + targetFile;
-        else
-            resultPath = downloadPath + "/" + downloadFileName;
-
-        try
-        {
-            String strOverWrite = "";
-            if(isOverWrite)
-                strOverWrite = "OverWrite";
-
-            String result = new FTPTask().execute("*DownloadFile", strOverWrite, targetFile, resultPath).get();
-
-            if(result.equals("Exists"))
-            {
-                fileExistEvent(targetFile, downloadFileName, downloadPath);
-            }
-            else
-            {
-                if(result.equals("Success"))
-                    Toast.makeText(context, context.getText(R.string.text_downloadsuccess), Toast.LENGTH_SHORT).show();
-                else if(result.equals("Error_fnfe"))
-                    Toast.makeText(context, context.getText(R.string.text_fileisntexists), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(context, context.getText(R.string.text_downloadfail), Toast.LENGTH_SHORT).show();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    */
-
     private class FTPTask extends AsyncTask<String, Integer, String>
     {
         private Activity activity = null;
         private android.support.v4.app.Fragment fragment = null;
+
         private String methodCall = "";
         private String[] saveParam;
         private FTPFileFilter filterDir;
@@ -446,6 +346,13 @@ class FTPLib
             methodCall = methodName;
         }
 
+        FTPTask(Activity activityInput, android.support.v4.app.Fragment fragmentInput, String methodName)
+        {
+            activity = activityInput;
+            fragment = fragmentInput;
+            methodCall = methodName;
+        }
+
         ProgressDialog progressDialog;
 
         @Override
@@ -462,6 +369,8 @@ class FTPLib
         {
             super.onPostExecute(result);
 
+            boolean isNotCallMethod = false;
+
             if(progressDialog != null)
             {
                 if(progressDialog.isShowing())
@@ -475,14 +384,14 @@ class FTPLib
                 {
                     if(result.equals(""))
                     {
-                        if(saveParam.equals("MV"))
-                            Toast.makeText(context, context.getString(R.string.text_movefailed, saveParam[1]), Toast.LENGTH_SHORT).show();
+                        if(saveParam[0].equals("MV"))
+                            Toast.makeText(context, context.getString(R.string.text_movefailed, new StringLib().lastDir(saveParam[1])), Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(context, context.getText(R.string.text_nameisexists), Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        if(saveParam.equals("RN"))
+                        if(saveParam[0].equals("RN"))
                             Toast.makeText(context, context.getText(R.string.text_successrename), Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -490,36 +399,51 @@ class FTPLib
 
                 case "DOWN":
                 {
-                    if(result.equals(""))
-                        Toast.makeText(context, context.getText(R.string.text_downloadsuccess), Toast.LENGTH_SHORT).show();
-                    else if(result.equals("Error_fnfe"))
+                    if(result.equals("Error_fnfe"))
                         Toast.makeText(context, context.getText(R.string.text_fileisntexists), Toast.LENGTH_SHORT).show();
-                    else
+                    else if(result.equals("Error_ioe"))
                         Toast.makeText(context, context.getText(R.string.text_downloadfail), Toast.LENGTH_SHORT).show();
+                    break;
+                }
 
+                case "UPO":
+                case "UP":
+                {
+                    if(result.equals("Error_fnfe"))
+                        Toast.makeText(context, context.getText(R.string.text_fileisntexists), Toast.LENGTH_SHORT).show();
+                    else if(result.equals("Error_ioe"))
+                        Toast.makeText(context, context.getText(R.string.text_uploadfail), Toast.LENGTH_SHORT).show();
+                    else if(result.equals("Exists"))
+                    {
+                        isNotCallMethod = true;
+                        uploadExistEvent(activity, fragment, methodCall, saveParam[1], saveParam[2], saveParam[3]);
+                    }
                     break;
                 }
             }
 
-            if(activity != null || fragment != null)
+            if(!isNotCallMethod)
             {
-                try
+                if (activity != null || fragment != null)
                 {
-                    Method method;
-                    if(activity != null)
+                    try
                     {
-                        method = activity.getClass().getMethod(methodCall);
-                        method.invoke(activity);
+                        Method method;
+                        if (activity != null)
+                        {
+                            method = activity.getClass().getMethod(methodCall);
+                            method.invoke(activity);
+                        }
+                        else if (fragment != null)
+                        {
+                            method = fragment.getClass().getMethod(methodCall);
+                            method.invoke(fragment);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        method = fragment.getClass().getMethod(methodCall);
-                        method.invoke(fragment);
+                        e.printStackTrace();
                     }
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
                 }
             }
         }
@@ -562,6 +486,14 @@ class FTPLib
 
                         case "DOWN":
                             result = FTPDownloadFile(params[1], params[2]);
+                            break;
+
+                        case "UP":
+                            result = FTPisFileExists(params[1], params[2], params[3]);
+                            break;
+
+                        case "UPO" :
+                            result = FTPUploadFile(params[1], params[2], params[3]);
                             break;
 
                         case "SRF":
@@ -744,6 +676,7 @@ class FTPLib
                 File downloadFile = new File(downloadPath);
                 OutputStream outputStream = new FileOutputStream(downloadFile);
 
+                final String downloadFileName = new StringLib().lastDir(downloadPath);
                 final long size = getFileSize(targetFile);
 
                 ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -769,13 +702,13 @@ class FTPLib
                         {
                             percentPrev = percent;
                             ncBuilder.setProgress(100, percent, false)
-                            .setContentText(context.getText(R.string.text_downloadinprogress) + "(" + percent + "%) - " + targetFile);
+                            .setContentText(context.getText(R.string.text_downloadinprogress) + "(" + percent + "%) - " + downloadFileName);
                             nmDownload.notify(1, ncBuilder.build());
                         }
                         if (totalBytesTransferred == size) // 다운 다 됨 ㅎ
                         {
                             removeCopyStreamListener(this);
-                            ncBuilder.setContentText(context.getText(R.string.text_downloadcomplete) + " : " + targetFile)
+                            ncBuilder.setContentText(context.getText(R.string.text_downloadcomplete) + " : " + downloadFileName)
                             .setProgress(0, 0, false)
                             .setOngoing(false)
                             .setAutoCancel(false);
@@ -801,6 +734,117 @@ class FTPLib
             }
         }
 
+        private String FTPUploadFile(final String targetFile, String uploadPath, final String uploadFileName)
+        {
+            try
+            {
+                /*
+                 * progressDialog는 다운로드 할 때 필요없으니까 비활성화.
+                 */
+                if(progressDialog != null)
+                {
+                    if(progressDialog.isShowing())
+                        progressDialog.dismiss();
+                }
+
+                final NotificationManager nmDownload = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                final NotificationCompat.Builder ncBuilder = new NotificationCompat.Builder(context);
+
+                ncBuilder.setContentTitle("Weloud")
+                        .setContentText(context.getText(R.string.text_uploadinprogress) + "(0%) - " + uploadFileName)
+                        .setOngoing(true)
+                        .setAutoCancel(true)
+                        .setSmallIcon(R.drawable.uploadcloud); // 요거 안넣어주면 notification 안생김.
+
+                File uploadFile = new File(targetFile);
+                FileInputStream inputStream = new FileInputStream(uploadFile);
+
+                final long size = inputStream.getChannel().size();
+
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                ftpClient.setCopyStreamListener(new CopyStreamAdapter()
+                {
+                    int percentPrev = 0;
+
+                    @Override
+                    public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize)
+                    {
+                        /*
+                         * 바이트가 전송될 때 마다 실행되는 메소드.
+                         */
+                        super.bytesTransferred(totalBytesTransferred, bytesTransferred, streamSize);
+
+                        int percent = (int) (totalBytesTransferred * 100 / size);
+
+                        /*
+                         * Percent 단위로 갱신해줘야함. 안그러면 위에서 말했듯이 바이트 전송될때마다 UI 갱신해서 핸드폰 배터리 광탈남
+                         * NotificationCombat을 Update 한 뒤에, NotificationManager에 Notify를 하는 순서로 Update를 해줘야함.
+                         */
+                        if(percentPrev < percent)
+                        {
+                            percentPrev = percent;
+                            ncBuilder.setProgress(100, percent, false)
+                                    .setContentText(context.getText(R.string.text_uploadinprogress) + "(" + percent + "%) - " + uploadFileName);
+                            nmDownload.notify(2, ncBuilder.build());
+                        }
+                        if (totalBytesTransferred == size) // 업로드 다 됨 ㅎ
+                        {
+                            removeCopyStreamListener(this);
+                            ncBuilder.setContentText(context.getText(R.string.text_uploadcomplete) + " : " + uploadFileName)
+                                    .setProgress(0, 0, false)
+                                    .setOngoing(false)
+                                    .setAutoCancel(false);
+                            nmDownload.notify(2, ncBuilder.build());
+                        }
+                    }
+                });
+
+                ftpClient.storeFile(uploadPath + "/" + uploadFileName, inputStream);
+                return "";
+            }
+            catch(FileNotFoundException fnfe)
+            {
+                System.out.println("FTP_UPLOADFILE_ERR : 파일이 존재하지 않습니다.");
+                fnfe.printStackTrace();
+                return "Error_fnfe";
+            }
+            catch(IOException ioe)
+            {
+                System.out.println("FTP_UPLOADFILE_ERR : 파일 업로드 실패");
+                ioe.printStackTrace();
+                return "Error_ioe";
+            }
+        }
+
+        // 업로드 하기 전 isFileExists 문을 통해 확인한다.
+        private String FTPisFileExists(final String targetFile, String path, final String uploadFile)
+        {
+            try
+            {
+                filterSearch = new FTPFileFilter()
+                {
+                    @Override
+                    public boolean accept(FTPFile ftpFile)
+                    {
+                        return (ftpFile.getName().equalsIgnoreCase(uploadFile));
+                    }
+                };
+
+                FTPFile[] files = ftpClient.listFiles(path, filterSearch);
+                if(files.length == 0)
+                {
+                    return FTPUploadFile(targetFile, path, uploadFile);
+                }
+                else
+                    return "Exists";
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                return "Error_ioe";
+            }
+        }
+
         private void FTPsearchFile(final String name)
         {
             try
@@ -810,7 +854,7 @@ class FTPLib
                     @Override
                     public boolean accept(FTPFile ftpFile)
                     {
-                        return (ftpFile.getName().contains(name));
+                        return (ftpFile.getName().toLowerCase().contains(name.toLowerCase()));
                     }
                 };
 

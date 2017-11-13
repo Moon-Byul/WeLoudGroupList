@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.RunnableFuture;
 
+import static android.R.attr.permission;
+import static com.example.reveu.weloudgrouplist.R.id.fragGroupCloudList;
+
 /**
  * Created by reveu on 2017-06-04.
  */
@@ -152,6 +155,7 @@ public class FragGroupCloudList extends Fragment
             @Override
             public void onRefresh()
             {
+                Log.d("Twily", ((GroupCloudList) getActivity()).getFTPMain() + "");
                 ((GroupCloudList) getActivity()).getFTPMain().execute(getActivity(), "loadFileList", FTPCMD.GetFileList);
                 srlGroupCloudMain.setRefreshing(false);
             }
@@ -162,6 +166,16 @@ public class FragGroupCloudList extends Fragment
             @Override
             public void onClick(View view)
             {
+                fabClickEvent();
+            }
+        });
+
+        fabUpload.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ((GroupCloudList) getActivity()).groupCloudUploadEvent();
                 fabClickEvent();
             }
         });
@@ -194,6 +208,7 @@ public class FragGroupCloudList extends Fragment
                             ftpMain.execute(FTPCMD.MakeDirectory, folderName);
                             fabClickEvent();
                             ftpMain.execute(getActivity(), "loadFileList", FTPCMD.GetFileList);
+                            ((GroupCloudList) getActivity()).updateUploadTime();
                         }
                         else
                         {
@@ -284,10 +299,9 @@ public class FragGroupCloudList extends Fragment
     public void permissionEvent()
     {
         boolean isVisible = false;
-        int permission = ((GroupCloudList) getActivity()).getUserPermission();
-        PermissionLib pmLib = new PermissionLib();
+        PermissionLib pmLib = ((GroupCloudList) getActivity()).getPmLib();
 
-        if(pmLib.isUserFolderAdd(permission))
+        if(pmLib.isUserFolderAdd())
         {
             isVisible = true;
             isFabCreateFolderVisible = true;
@@ -295,7 +309,7 @@ public class FragGroupCloudList extends Fragment
         else
             isFabCreateFolderVisible = false;
 
-        if(pmLib.isUserUpload(permission))
+        if(pmLib.isUserUpload())
         {
             isVisible = true;
             isFabUploadVisible = true;
@@ -318,6 +332,7 @@ public class FragGroupCloudList extends Fragment
     public void onStart()
     {
         super.onStart();
+        permissionEvent();
     }
 
     public ArrayList<GroupFileItem> getList()
@@ -346,8 +361,6 @@ public class FragGroupCloudList extends Fragment
         ftpfiles = ftpMain.getFTPFile();
 
         gcaAdapter.clearList();
-
-        SimpleDateFormat ftpFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
         if(ftpfiles != null)
         {

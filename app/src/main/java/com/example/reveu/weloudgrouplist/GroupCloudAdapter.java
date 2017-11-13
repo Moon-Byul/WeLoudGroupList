@@ -124,10 +124,7 @@ class GroupCloudAdapter extends BaseAdapter
 
         item.setFile(file);
 
-        Log.d("Twily", item.getFile() + "?");
-
         gciList.add(item);
-        this.notifyDataSetChanged();
     }
 
     void addItem(FTPFile file, Calendar fileUploadDate, String path)
@@ -143,7 +140,6 @@ class GroupCloudAdapter extends BaseAdapter
             item.setChecked(true);
 
         gciList.add(item);
-        this.notifyDataSetChanged();
     }
 
     GroupFileItem checkFile(GroupFileItem item)

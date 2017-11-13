@@ -91,6 +91,11 @@ public class ActionbarLib
         return btnActionBarConfirm;
     }
 
+    public void setTvActionBarTitle(String title)
+    {
+        tvActionBarTitle.setText(title);
+    }
+
     public TextView getTvActionBarTitle()
     {
         return tvActionBarTitle;

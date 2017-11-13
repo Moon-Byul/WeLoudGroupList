@@ -80,7 +80,7 @@ public class GroupSearch extends AppCompatActivity
             {
                 if(etSearch.getText().toString() == "")
                 {
-                    Snackbar.make(ctMain, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_entergroupname), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
                 else
                 {
@@ -100,7 +100,7 @@ public class GroupSearch extends AppCompatActivity
                 GroupListItem item = glaAdapter.getItem(position);
                 if(item.getStatus() == 2)
                 {
-                    Snackbar.make(ctMain, "이미 가입되어 있습니다.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
                 else
                 {
@@ -110,7 +110,7 @@ public class GroupSearch extends AppCompatActivity
             }
         });
 
-        abLib.setDefaultActionBar(this, "그룹 검색", false, 0);
+        abLib.setDefaultActionBar(this, getText(R.string.text_groupsearch).toString(), false, 0);
 
         abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
@@ -133,7 +133,7 @@ public class GroupSearch extends AppCompatActivity
 
             if(jsonArray.length() == 0)
             {
-                Snackbar.make(ctMain, "검색 결과가 없습니다.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(ctMain, getText(R.string.text_noresults), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
             else
             {
@@ -199,17 +199,17 @@ public class GroupSearch extends AppCompatActivity
                     int status = 0;
                     if(result.contains("deleted*"))
                     {
-                        Snackbar.make(ctMain, "가입 신청이 취소되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_cancelsignup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 0;
                     }
                     else if(result.contains("inserted*"))
                     {
-                        Snackbar.make(ctMain, "가입 신청 되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_waitsignup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 1;
                     }
                     else
                     {
-                        Snackbar.make(ctMain, "이미 가입되어 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 2;
                     }
 
@@ -224,7 +224,7 @@ public class GroupSearch extends AppCompatActivity
                 }
                 else if(result.contains("*group_user_inserted"))
                 {
-                    Snackbar.make(ctMain, "가입 되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_signupgroup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                     GroupListItem item = glaAdapter.getItem(position);
                     item.setStatus(2);

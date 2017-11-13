@@ -6,7 +6,7 @@ package com.example.reveu.weloudgrouplist;
 
 enum FTPCMD
 {
-    MakeDirectory("MD"), GetFileList("GFL"), ChangeWorkingDirectory("CWD"), Delete("DEL"), Move("MV"), Rename("RN"), RemoveDir("RDIR"), DownloadFile("DOWN"), SearchFile("SRF");
+    MakeDirectory("MD"), GetFileList("GFL"), ChangeWorkingDirectory("CWD"), Delete("DEL"), Move("MV"), Rename("RN"), RemoveDir("RDIR"), DownloadFile("DOWN"), SearchFile("SRF"), UploadFile("UP"), UploadFileOverWrite("UPO");
 
     final private String name;
 

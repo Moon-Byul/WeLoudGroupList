@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"
@@ -14,184 +14,257 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/settings_groupmain_ctMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/settings_groupmain_ctMain"
-            android:orientation="vertical"
             android:background="#f0eff5"
             android:divider="@drawable/separator"
-            android:showDividers="middle"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="#fff"
                 android:divider="@drawable/separator"
+                android:orientation="vertical"
                 android:showDividers="middle">
 
                 <LinearLayout
                     android:id="@+id/settings_groupmain_btnKick"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="@string/text_kickuser"
                         android:textColor="#000"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"/>
+                        android:textSize="18dp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:rotation="180"
                         android:src="@drawable/backbtn"
-                        android:tint="#aaffffff"
-                        android:rotation="180" />
+                        android:tint="#aaffffff"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/settings_groupmain_btnInvite"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="@string/text_userinvite"
                         android:textColor="#000"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"/>
+                        android:textSize="18dp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:rotation="180"
                         android:src="@drawable/backbtn"
-                        android:tint="#aaffffff"
-                        android:rotation="180" />
+                        android:tint="#aaffffff"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/settings_groupmain_btnAdmission"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="@string/text_useradmission"
                         android:textColor="#000"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"/>
+                        android:textSize="18dp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:rotation="180"
                         android:src="@drawable/backbtn"
-                        android:tint="#aaffffff"
-                        android:rotation="180" />
+                        android:tint="#aaffffff"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="#fff"
                 android:divider="@drawable/separator"
+                android:orientation="vertical"
                 android:showDividers="middle">
 
                 <LinearLayout
                     android:id="@+id/settings_groupmain_btnPerSett"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="@string/text_permissionsett"
                         android:textColor="#000"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"/>
+                        android:textSize="18dp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:rotation="180"
                         android:src="@drawable/backbtn"
-                        android:tint="#aaffffff"
-                        android:rotation="180" />
+                        android:tint="#aaffffff"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/settings_groupmain_btnRankSett"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:paddingTop="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:text="@string/text_userranksett"
                         android:textColor="#000"
-                        android:textSize="18dp"
-                        android:layout_gravity="center"/>
+                        android:textSize="18dp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
+                        android:rotation="180"
                         android:src="@drawable/backbtn"
-                        android:tint="#aaffffff"
-                        android:rotation="180" />
+                        android:tint="#aaffffff"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="#fff"
+                android:divider="@drawable/separator"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <LinearLayout
+                    android:id="@+id/settings_groupmain_ctAutoJoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="@string/text_autojoin"
+                        android:textColor="#000"
+                        android:textSize="18dp"/>
+
+                    <Switch
+                        android:id="@+id/settings_groupmain_swAutoJoin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:gravity="right"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_groupmain_ctAllow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="@string/text_allowsearchtogroup"
+                        android:textColor="#000"
+                        android:textSize="18dp"/>
+
+                    <Switch
+                        android:id="@+id/settings_groupmain_swAllow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:gravity="right"/>
 
                 </LinearLayout>
 

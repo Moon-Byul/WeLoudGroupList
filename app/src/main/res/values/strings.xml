@@ -19,9 +19,14 @@
     <string name="TAG_USERAPPROVED">userApproved</string>
     <string name="TAG_SERVERIP">serverIP</string>
     <string name="TAG_PERMISSION">Permission</string>
+    <string name="TAG_AUTOJOIN">autoJoin</string>
+    <string name="TAG_MAKEPUBLIC">makePublic</string>
+    <string name="TAG_DEFAULTFTPPATH">defaultFTPPath</string>
+    <string name="TAG_WORKINGPATH">workingPath</string>
 
     <string name="TAG_JSON_LOGIN">login</string>
     <string name="TAG_JSON_SEARCH">groupsearch</string>
+    <string name="TAG_JSON_SETT_GROUP_MAIN">settGroupMain</string>
     <string name="TAG_JSON_GROUPCREATE">groupcreate</string>
     <string name="TAG_JSON_GROUPRANK">grouprank</string>
     <string name="TAG_JSON_GROUPLIST">grouplist</string>
@@ -104,7 +109,7 @@
     <string name="text_userinvite">User Invite</string>
     <string name="text_useradmission">User Admission</string>
     <string name="text_downloadcomplete">Download Complete</string>
-    <string name="text_downloadinprogress">Download is progress</string>
+    <string name="text_downloadinprogress">Download in progress</string>
     <string name="text_movefailed">Failed to move File %1$s.</string>
     <string name="text_searchfileandfolder">Search Files and Folders (more than 2 characters)</string>
     <string name="text_path">Path : %1$s</string>
@@ -114,6 +119,22 @@
     <string name="text_ranknameexsists">This rank is already exists.</string>
     <string name="text_youalreadyjoined">You have already joined this group</string>
     <string name="text_successcreategroup">Successfully created group.</string>
+    <string name="text_lastmodifed">Last Modifed</string>
+    <string name="text_currentFolder_Upload">Upload File to Current Folder</string>
+    <string name="text_uploadsuccess">Upload Success</string>
+    <string name="text_uploadfail">Upload Fail</string>
+    <string name="text_uploadcomplete">Upload Complete</string>
+    <string name="text_uploadinprogress">Upload in progress</string>
+    <string name="text_allowsearchtogroup">Allow search to group</string>
+    <string name="text_creator">Creator</string>
+    <string name="text_successregister">Registered Successfully.</string>
+    <string name="text_hello">Welcome, %1$s.</string>
+    <string name="text_groupsearch">Group Search</string>
+    <string name="text_noresults">Sorry, no results were found</string>
+    <string name="text_entergroupname">Please enter group name.</string>
+    <string name="text_waitsignup">Wait for apply to sign up.</string>
+    <string name="text_cancelsignup">Cancel for apply to sign up.</string>
+    <string name="text_signupgroup">You have been sign up for this group.</string>
 
 
     <string name="error_temporary">Temporary Error.</string>
