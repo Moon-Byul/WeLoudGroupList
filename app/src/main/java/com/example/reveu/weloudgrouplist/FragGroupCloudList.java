@@ -1,11 +1,8 @@
 package com.example.reveu.weloudgrouplist;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -24,15 +21,7 @@ import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.RunnableFuture;
-
-import static android.R.attr.permission;
-import static com.example.reveu.weloudgrouplist.R.id.fragGroupCloudList;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -320,7 +309,10 @@ public class FragGroupCloudList extends Fragment
         if(!isVisible)
             fab.setVisibility(View.GONE);
         else
-            fab.setVisibility(View.VISIBLE);
+        {
+            if(((GroupCloudList) getActivity()).getModifyLayoutType() < 0)
+                fab.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setFabClicked(boolean input)
