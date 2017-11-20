@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/settings_groupuserrank_ctMain"
-    android:orientation="vertical"
+    android:id="@+id/ctMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d9d9d9"
     android:divider="@drawable/separator"
-    android:showDividers="middle">
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/actionbar_default"/>
+        layout="@layout/actionbar_default" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/settings_groupuserrank_etSearch"
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:ems="10"
+            android:hint="@string/text_enteruserid"
             android:inputType="textNoSuggestions"
-            android:text=""
-            android:hint="User ID"
-            android:ems="10" />
+            android:text="" />
 
     </LinearLayout>
 
     <ListView
-        android:id="@+id/settings_groupuserrank_lvMain"
+        android:id="@+id/lvUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

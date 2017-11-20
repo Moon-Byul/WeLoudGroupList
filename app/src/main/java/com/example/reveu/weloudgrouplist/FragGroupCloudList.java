@@ -230,6 +230,8 @@ public class FragGroupCloudList extends Fragment
             }
         });
 
+        isFabClicked = false;
+
         return rootView;
     }
 
