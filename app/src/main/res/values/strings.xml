@@ -25,6 +25,8 @@
     <string name="TAG_DEFAULTFTPPATH">defaultFTPPath</string>
     <string name="TAG_WORKINGPATH">workingPath</string>
     <string name="TAG_ISCREATE">isCreate</string>
+    <string name="TAG_ISKICK">isKick</string>
+    <string name="TAG_JOINDATE">joinDate</string>
 
     <string name="TAG_JSON_LOGIN">login</string>
     <string name="TAG_JSON_SEARCH">groupsearch</string>
@@ -37,6 +39,7 @@
     <string name="TAG_JSON_GROUPCLOUD">groupcloud</string>
     <string name="TAG_JSON_SETT_GROUP_PER">settGroupPermission</string>
     <string name="TAG_JSON_SETT_GROUP_PER_DETAIL">settGroupPermissionDetail</string>
+    <string name="TAG_JSON_GROUPUSERLIST">groupUserList</string>
 
     <string name="FTP_ID">WeLoud</string>
     <string name="FTP_PASSWORD">WeL0udCl0ud</string>
@@ -145,6 +148,11 @@
     <string name="text_successcreaterank">Successfully Created Rank.</string>
     <string name="text_successchangedrank">Successfully Changed Rank.</string>
     <string name="text_successdeleterank">Successfully Deleted Rank.</string>
+    <string name="text_enteruserid">Please enter user id.</string>
+    <string name="text_joindate">Joined</string>
+    <string name="text_areyousurekick_one">Are you sure want to kick %1$s?</string>
+    <string name="text_areyousurekick_multi">Are you sure want to kick selected %1$d user?</string>
+    <string name="text_successkickuser">Successfully Kick User.</string>
 
     <string name="per_fileupload">File Upload</string>
     <string name="per_filerename">File Rename</string>

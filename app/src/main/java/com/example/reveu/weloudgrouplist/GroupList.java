@@ -82,7 +82,7 @@ public class GroupList extends AppCompatActivity
     {
         super.onStart();
 
-        fragGroupList.getGroupList();
+        //fragGroupList.getGroupList();
     }
 
     @Override
@@ -180,7 +180,9 @@ public class GroupList extends AppCompatActivity
         }
         else if (id == R.id.nav_gl_logout)
         {
-
+            Intent intent = new Intent(GroupList.this, Main.class);
+            startActivity(intent);
+            finish();
         }
 
 

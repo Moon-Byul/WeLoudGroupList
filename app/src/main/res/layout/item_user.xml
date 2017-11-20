@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/group_button_state"
-    android:id="@+id/user_lnUserMain">
+    android:id="@+id/ctMain">
 
     <ImageView
+        android:id="@+id/ivIcon"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:paddingLeft="12dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:paddingRight="4dp"
-        android:src="@drawable/group" />
+        android:src="@drawable/user" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -35,16 +36,24 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:textSize="18dp"
-                android:id="@+id/user_tvID" />
+                android:id="@+id/tvID" />
 
             <TextView
-                android:text="Nickname : aaa"
+                android:text="가입일이나 닉네임"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
-                android:id="@+id/user_tvNickname" />
+                android:id="@+id/tvEtc" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivStatus"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:tint="#aad9d9d9"/>
 
     </LinearLayout>
 

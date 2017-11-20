@@ -43,6 +43,7 @@ import java.util.TimeZone;
 
 import static android.R.id.input;
 import static android.content.ContentValues.TAG;
+import static com.example.reveu.weloudgrouplist.R.id.fragGroupList;
 import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 /**
@@ -134,7 +135,8 @@ public class FragGroupList extends Fragment
     public void onStart()
     {
         super.onStart();
-        Log.d("Twily", "List Start");
+
+        getGroupList();
     }
 
     public void fabClickEvent()

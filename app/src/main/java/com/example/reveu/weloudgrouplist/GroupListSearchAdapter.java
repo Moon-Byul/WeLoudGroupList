@@ -32,7 +32,7 @@ public class GroupListSearchAdapter extends BaseAdapter
 
     // position번째에 있는 object를 return
     @Override
-    public Object getItem(int position) {
+    public GroupListItem getItem(int position) {
         return gliListSearch.get(position);
     }
 
@@ -75,7 +75,9 @@ public class GroupListSearchAdapter extends BaseAdapter
         else
             holder.ivGroupImage.setImageResource(R.drawable.group);
         holder.tvGroupName.setText(listViewItem.getGroupName());
-        holder.tvGroupUploadDate.setText("최근 업로드 : " + dateFormat.format(listViewItem.getGroupUploadDate()));
+
+        String text = context.getText(R.string.text_lastmodifed) + " : " + dateFormat.format(listViewItem.getGroupUploadDate().getTime());
+        holder.tvGroupUploadDate.setText(text);
 
         return convertView;
     }

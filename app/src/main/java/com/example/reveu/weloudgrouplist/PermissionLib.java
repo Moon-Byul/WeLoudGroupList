@@ -125,6 +125,10 @@ class PermissionLib
         return (permission & USER_CREATOR) > 0;
     }
 
+    public int getPermission()
+    {
+        return permission;
+    }
 
     private class PermissionTask extends AsyncTask<String, Integer, String>
     {

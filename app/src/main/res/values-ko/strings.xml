@@ -108,6 +108,11 @@
     <string name="text_successcreaterank">등급을 생성하였습니다.</string>
     <string name="text_successchangedrank">등급을 갱신하였습니다.</string>
     <string name="text_successdeleterank">등급을 삭제하였습니다.</string>
+    <string name="text_enteruserid">유저 아이디를 입력해주세요.</string>
+    <string name="text_joindate">가입일</string>
+    <string name="text_areyousurekick_one">%1$s 유저를 강퇴하시겠습니까?</string>
+    <string name="text_areyousurekick_multi">%1$d명의 유저를 강퇴하시겠습니까?</string>
+    <string name="text_successkickuser">회원을 강퇴하였습니다.</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static android.R.attr.permission;
 import static android.content.ContentValues.TAG;
 import static android.os.Build.ID;
 
@@ -77,7 +78,11 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             @Override
             public void onClick(View v)
             {
-
+                Intent intent = new Intent(SettGroupMain.this, SettGroupUserKickAndRank.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                intent.putExtra(getText(R.string.TAG_PERMISSION).toString(), pmLib.getPermission());
+                intent.putExtra(getText(R.string.TAG_ISKICK).toString(), true);
+                startActivity(intent);
             }
         });
 
@@ -115,7 +120,12 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             @Override
             public void onClick(View v)
             {
-
+                Intent intent = new Intent(SettGroupMain.this, SettGroupUserKickAndRank.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                intent.putExtra(getText(R.string.TAG_PERMISSION).toString(), pmLib.getPermission());
+                intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
+                intent.putExtra(getText(R.string.TAG_ISKICK).toString(), false);
+                startActivity(intent);
             }
         });
 

@@ -70,6 +70,16 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".SettGroupUserKickAndRank"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupUserRankDetail"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".GroupCloudUpload"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">

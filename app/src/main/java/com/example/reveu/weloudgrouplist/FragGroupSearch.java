@@ -44,15 +44,9 @@ public class FragGroupSearch extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                GroupListItem item = (GroupListItem) glaSearchAdapter.getItem(position);
+                GroupListItem item = glaSearchAdapter.getItem(position);
 
-                if(item.getFav())
-                    item.setFav(false);
-                else
-                    item.setFav(true);
-                Snackbar.make(view, "테스트 메시지입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                glaSearchAdapter.notifyDataSetChanged();
+                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
             }
         });
 
