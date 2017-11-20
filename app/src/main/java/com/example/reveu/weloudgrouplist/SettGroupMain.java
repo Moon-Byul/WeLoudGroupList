@@ -24,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static android.content.ContentValues.TAG;
+import static android.os.Build.ID;
 
 /**
  * Created by reveu on 2017-08-23.
@@ -70,6 +71,53 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
 
         SettGroupMainTask task = new SettGroupMainTask(true);
         task.execute(String.valueOf(groupID));
+
+        btnKick.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+
+        btnInvite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+
+        btnAdmission.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
+
+        btnPerSett.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(SettGroupMain.this, SettGroupPermission.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                startActivity(intent);
+            }
+        });
+
+        btnRankSett.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
 
         pmLib.execute(this, "permissionEvent", String.valueOf(groupID), String.valueOf(userNum));
 

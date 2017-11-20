@@ -1,6 +1,13 @@
 package com.example.reveu.weloudgrouplist;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.ExifInterface;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by reveu on 2017-05-29.
@@ -91,7 +100,16 @@ class GroupCloudUploadAdapter extends BaseAdapter
             if(listViewItem.getChecked())
                 holder.ivFileExtImage.setImageResource(R.drawable.checkmark);
             else
-                holder.ivFileExtImage.setImageResource(getExtDrawable(file));
+            {
+                Bitmap  thumbnail = BitmapFactory.decodeFile(file.getAbsolutePath());
+                if(thumbnail == null)
+                    holder.ivFileExtImage.setImageResource(getExtDrawable(file));
+                else
+                {
+                    holder.ivFileExtImage.setImageTintMode(null);
+                    holder.ivFileExtImage.setImageBitmap(thumbnail);
+                }
+            }
             holder.tvFileName.setText(file.getName());
             holder.tvFileUpload.setText(context.getText(R.string.text_lastmodifed).toString() + " : " + dateFormat.format(listViewItem.getFile().lastModified()));
         }

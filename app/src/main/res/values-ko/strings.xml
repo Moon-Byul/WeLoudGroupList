@@ -83,7 +83,7 @@
     <string name="text_successrename">이름을 변경하였습니다.</string>
     <string name="text_morechar">%1$d 글자 이상 입력하세요.</string>
     <string name="text_groupnameexists">%1$s 그룹은 이미 존재합니다.</string>
-    <string name="text_ranknameexsists">해당 등급은 이미 존재합니다.</string>
+    <string name="text_ranknameexsists">%1$s 등급 이름은 이미 존재합니다.</string>
     <string name="text_youalreadyjoined">이미 그룹에 가입하셨습니다.</string>
     <string name="text_successcreategroup">그룹을 생성하였습니다.</string>
     <string name="text_lastmodifed">수정한 날짜</string>
@@ -102,6 +102,12 @@
     <string name="text_waitsignup">가입 신청을 하였습니다.</string>
     <string name="text_cancelsignup">가입 신청을 취소하였습니다.</string>
     <string name="text_signupgroup">그룹에 가입되었습니다.</string>
+    <string name="text_rankdelete">등급 삭제</string>
+    <string name="text_rankname">등급 이름</string>
+    <string name="text_createrank">등급 생성</string>
+    <string name="text_successcreaterank">등급을 생성하였습니다.</string>
+    <string name="text_successchangedrank">등급을 갱신하였습니다.</string>
+    <string name="text_successdeleterank">등급을 삭제하였습니다.</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

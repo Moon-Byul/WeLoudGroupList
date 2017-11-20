@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/weloud"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -56,6 +56,16 @@
         </activity>
         <activity
             android:name=".SettGroupMain"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupPermission"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupPermissionDetail"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

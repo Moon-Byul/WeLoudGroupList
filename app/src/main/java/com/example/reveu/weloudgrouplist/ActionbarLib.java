@@ -60,7 +60,8 @@ public class ActionbarLib
             }
             else
             {
-                btnActionBarConfirm.setImageResource(R.drawable.addgroup_big);
+                btnActionBarConfirm.setImageResource(R.drawable.cancle);
+                btnActionBarConfirm.setRotation(45.0f);
             }
         }
         else

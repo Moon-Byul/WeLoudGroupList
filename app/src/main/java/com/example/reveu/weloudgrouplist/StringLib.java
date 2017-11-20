@@ -6,12 +6,12 @@ package com.example.reveu.weloudgrouplist;
 
 public class StringLib
 {
-    public StringLib()
+    StringLib()
     {
 
     }
 
-    public String fileExt(String fileName)
+    String fileExt(String fileName)
     {
         int index = fileName.lastIndexOf(".");
         if(index != -1)
@@ -24,7 +24,7 @@ public class StringLib
         }
     }
 
-    public String lastDir(String path)
+    String lastDir(String path)
     {
         int index = path.lastIndexOf("/");
         if(index != -1)

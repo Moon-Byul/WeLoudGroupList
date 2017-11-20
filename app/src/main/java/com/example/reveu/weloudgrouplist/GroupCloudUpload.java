@@ -171,7 +171,7 @@ public class GroupCloudUpload extends AppCompatActivity
         if(gcuAdapter.getCheckCount() > count)
         {
             path = gcuAdapter.getCheckList().get(count).getFile().getPath();
-            ftpMain.execute(GroupCloudUpload.this, "uploadLoopEvent", FTPCMD.UploadFile, path, workingPath, new StringLib().lastDir(path));
+            ftpMain.execute(GroupCloudUpload.this, "uploadLoopEvent", FTPCMD.UploadFile, path, workingPath, new StringLib().lastDir(path).replace(" ", "_"));
         }
         else
         {

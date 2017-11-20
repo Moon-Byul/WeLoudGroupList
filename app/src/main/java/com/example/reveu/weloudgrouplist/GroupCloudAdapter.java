@@ -1,6 +1,9 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,10 @@ import android.widget.TextView;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static android.R.attr.src;
 
 /**
  * Created by reveu on 2017-05-29.
@@ -95,7 +104,9 @@ class GroupCloudAdapter extends BaseAdapter
             if(listViewItem.getChecked())
                 holder.ivFileExtImage.setImageResource(R.drawable.checkmark);
             else
+            {
                 holder.ivFileExtImage.setImageResource(new FTPLib().getExtDrawable(listViewItem.getFile()));
+            }
             holder.tvFileName.setText(file.getName());
             holder.tvFileUpload.setText(context.getText(R.string.text_uploaddate).toString() + " : " + dateFormat.format(listViewItem.getFileUploadDate().getTime()));
         }

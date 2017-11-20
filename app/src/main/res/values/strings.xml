@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeLoudGroupList</string>
+    <string name="app_name">WeLoudCloud</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,14 +15,16 @@
     <string name="TAG_ISMEMBER">isMember</string>
     <string name="TAG_ISADMISSION">isAdmission</string>
     <string name="TAG_RANKID">rankID</string>
+    <string name="TAG_RANKNAME">rankName</string>
     <string name="TAG_GROUPUPLOAD">groupUpload</string>
     <string name="TAG_USERAPPROVED">userApproved</string>
     <string name="TAG_SERVERIP">serverIP</string>
-    <string name="TAG_PERMISSION">Permission</string>
+    <string name="TAG_PERMISSION">permission</string>
     <string name="TAG_AUTOJOIN">autoJoin</string>
     <string name="TAG_MAKEPUBLIC">makePublic</string>
     <string name="TAG_DEFAULTFTPPATH">defaultFTPPath</string>
     <string name="TAG_WORKINGPATH">workingPath</string>
+    <string name="TAG_ISCREATE">isCreate</string>
 
     <string name="TAG_JSON_LOGIN">login</string>
     <string name="TAG_JSON_SEARCH">groupsearch</string>
@@ -33,6 +35,8 @@
     <string name="TAG_JSON_SERVERLIST">serverlist</string>
     <string name="TAG_JSON_USERACCOUNT">useraccount</string>
     <string name="TAG_JSON_GROUPCLOUD">groupcloud</string>
+    <string name="TAG_JSON_SETT_GROUP_PER">settGroupPermission</string>
+    <string name="TAG_JSON_SETT_GROUP_PER_DETAIL">settGroupPermissionDetail</string>
 
     <string name="FTP_ID">WeLoud</string>
     <string name="FTP_PASSWORD">WeL0udCl0ud</string>
@@ -116,7 +120,7 @@
     <string name="text_successrename">Success to change name.</string>
     <string name="text_morechar">Please enter more than %1$d characters</string>
     <string name="text_groupnameexists">%1$s Group is already exists.</string>
-    <string name="text_ranknameexsists">This rank is already exists.</string>
+    <string name="text_ranknameexsists">%1$s rank name is already exists.</string>
     <string name="text_youalreadyjoined">You have already joined this group</string>
     <string name="text_successcreategroup">Successfully created group.</string>
     <string name="text_lastmodifed">Last Modifed</string>
@@ -135,7 +139,23 @@
     <string name="text_waitsignup">Wait for apply to sign up.</string>
     <string name="text_cancelsignup">Cancel for apply to sign up.</string>
     <string name="text_signupgroup">You have been sign up for this group.</string>
+    <string name="text_rankdelete">Rank Delete</string>
+    <string name="text_rankname">Rank Name</string>
+    <string name="text_createrank">Create Rank</string>
+    <string name="text_successcreaterank">Successfully Created Rank.</string>
+    <string name="text_successchangedrank">Successfully Changed Rank.</string>
+    <string name="text_successdeleterank">Successfully Deleted Rank.</string>
 
+    <string name="per_fileupload">File Upload</string>
+    <string name="per_filerename">File Rename</string>
+    <string name="per_filemove">File Move</string>
+    <string name="per_filedelete">File Delete</string>
+    <string name="per_folderadd">Folder Add</string>
+    <string name="per_foldermodify">Folder Modify</string>
+    <string name="per_folderdelete">Folder Delete</string>
+    <string name="per_approvejoin">Approve Join</string>
+    <string name="per_invite">User Invite</string>
+    <string name="per_managegroup">Manage Group</string>
 
     <string name="error_temporary">Temporary Error.</string>
     <string name="error_connection">Conntection Error.</string>
@@ -144,6 +164,7 @@
     <string name="hint_id">ID (4 ~ 16)</string>
     <string name="hint_password">Password (4 ~ 24)</string>
     <string name="hint_nickname">Nickname (2 ~ 12)</string>
+    <string name="hint_rankname">Rankname (2 ~ 12)</string>
     <string name="hint_email">Email Address</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.app.AlertDialog;
 import android.support.v4.app.ActivityCompat;
@@ -238,7 +239,7 @@ class FTPLib
 
                                     if(!fileName.equals(""))
                                     {
-                                        task.execute(FTPCMD.UploadFile.getName(), targetFile, uploadPath, fileName);
+                                        task.execute(FTPCMD.UploadFile.getName(), targetFile, uploadPath, fileName.replace(" ", "_"));
                                     }
                                     else
                                     {
@@ -671,7 +672,10 @@ class FTPLib
                 .setContentText(context.getText(R.string.text_downloadinprogress) + "(0%) - " + targetFile)
                 .setOngoing(true)
                 .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.download); // 요거 안넣어주면 notification 안생김.
+
+                nmDownload.cancel(1);
 
                 File downloadFile = new File(downloadPath);
                 OutputStream outputStream = new FileOutputStream(downloadFile);
@@ -712,7 +716,8 @@ class FTPLib
                             .setProgress(0, 0, false)
                             .setOngoing(false)
                             .setAutoCancel(false);
-                            nmDownload.notify(1, ncBuilder.build());
+                            nmDownload.cancel(1);
+                            nmDownload.notify(2, ncBuilder.build());
                         }
                     }
                 });
@@ -754,7 +759,10 @@ class FTPLib
                         .setContentText(context.getText(R.string.text_uploadinprogress) + "(0%) - " + uploadFileName)
                         .setOngoing(true)
                         .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.uploadcloud); // 요거 안넣어주면 notification 안생김.
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(R.drawable.uploadcloud);// 요거 안넣어주면 notification 안생김.
+
+                nmDownload.cancel(3);
 
                 File uploadFile = new File(targetFile);
                 FileInputStream inputStream = new FileInputStream(uploadFile);
@@ -775,7 +783,6 @@ class FTPLib
                         super.bytesTransferred(totalBytesTransferred, bytesTransferred, streamSize);
 
                         int percent = (int) (totalBytesTransferred * 100 / size);
-
                         /*
                          * Percent 단위로 갱신해줘야함. 안그러면 위에서 말했듯이 바이트 전송될때마다 UI 갱신해서 핸드폰 배터리 광탈남
                          * NotificationCombat을 Update 한 뒤에, NotificationManager에 Notify를 하는 순서로 Update를 해줘야함.
@@ -785,7 +792,7 @@ class FTPLib
                             percentPrev = percent;
                             ncBuilder.setProgress(100, percent, false)
                                     .setContentText(context.getText(R.string.text_uploadinprogress) + "(" + percent + "%) - " + uploadFileName);
-                            nmDownload.notify(2, ncBuilder.build());
+                            nmDownload.notify(3, ncBuilder.build());
                         }
                         if (totalBytesTransferred == size) // 업로드 다 됨 ㅎ
                         {
@@ -794,7 +801,8 @@ class FTPLib
                                     .setProgress(0, 0, false)
                                     .setOngoing(false)
                                     .setAutoCancel(false);
-                            nmDownload.notify(2, ncBuilder.build());
+                            nmDownload.cancel(3);
+                            nmDownload.notify(4, ncBuilder.build());
                         }
                     }
                 });

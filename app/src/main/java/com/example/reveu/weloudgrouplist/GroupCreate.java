@@ -204,7 +204,7 @@ public class GroupCreate extends AppCompatActivity
                 {
                     if (result.contains("*rank_already"))
                     {
-                        Snackbar.make(ctMain, getText(R.string.text_ranknameexsists), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getString(R.string.text_ranknameexsists, "this"), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         dismissDialog();
                     }
                     else
