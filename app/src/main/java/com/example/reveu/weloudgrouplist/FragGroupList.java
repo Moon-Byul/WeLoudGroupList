@@ -1,14 +1,11 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -19,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,11 +31,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
-import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -187,7 +180,7 @@ public class FragGroupList extends Fragment
     public void getGroupList()
     {
         GroupListTask glData = new GroupListTask();
-        glData.execute(((GroupList) getActivity()).getUserNum());
+        glData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ((GroupList) getActivity()).getUserNum());
     }
 
     public void groupListEvent(String jsonString)

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,17 +13,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Pattern;
 
-import static android.R.attr.password;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -50,7 +45,7 @@ public class SettChangePw extends AppCompatActivity
 
         // Main Thread의 부담을 덜기 위해 ASyncTask를 사용하여 다른 Thread로 UI를 처리했다.
         UITask task = new UITask();
-        task.execute();
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void UIAction()
@@ -91,7 +86,7 @@ public class SettChangePw extends AppCompatActivity
                 {
                     // 비밀번호 변경
                     ChangePwTask task = new ChangePwTask();
-                    task.execute(ID, etCurrentPw.getText().toString(), etNewPw.getText().toString());
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ID, etCurrentPw.getText().toString(), etNewPw.getText().toString());
                 }
             }
         });

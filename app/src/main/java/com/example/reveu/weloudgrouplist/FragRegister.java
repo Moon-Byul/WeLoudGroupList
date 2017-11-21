@@ -89,7 +89,7 @@ public class FragRegister extends Fragment
                 else
                 {
                     RegisterUserTask task = new RegisterUserTask();
-                    task.execute(id, password, email, nickname);
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, id, password, email, nickname);
                 }
 
                 new StockLib().hideKeyboard(v, getActivity());

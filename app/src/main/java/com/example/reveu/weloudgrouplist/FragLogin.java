@@ -80,7 +80,7 @@ public class FragLogin extends Fragment
                 new StockLib().hideKeyboard(v, getActivity());
 
                 LoginTask task = new LoginTask();
-                task.execute(id, password);
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, id, password);
             }
         });
         btnNewmember.setOnClickListener(new View.OnClickListener()

@@ -1,27 +1,19 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +51,7 @@ public class GroupSearch extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         UITask task = new UITask();
-        task.execute();
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void UIAction()
@@ -92,7 +84,7 @@ public class GroupSearch extends AppCompatActivity
                     new StockLib().hideKeyboard(v, getApplication());
 
                     SearchGroupTask task = new SearchGroupTask();
-                    task.execute(etSearch.getText().toString(), userNum, "0", "null");
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, etSearch.getText().toString(), userNum, "0", "null");
                 }
             }
         });
@@ -110,7 +102,7 @@ public class GroupSearch extends AppCompatActivity
                 else
                 {
                     SearchGroupTask task = new SearchGroupTask();
-                    task.execute(String.valueOf(item.getGroupID()), userNum, "1", String.valueOf(position));
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(item.getGroupID()), userNum, "1", String.valueOf(position));
                 }
             }
         });
@@ -225,7 +217,7 @@ public class GroupSearch extends AppCompatActivity
                 else if(result.contains("*autojoin"))
                 {
                     SearchGroupTask task = new SearchGroupTask();
-                    task.execute(groupinfo, userNum, "2", "null");
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, groupinfo, userNum, "2", "null");
                 }
                 else if(result.contains("*group_user_inserted"))
                 {

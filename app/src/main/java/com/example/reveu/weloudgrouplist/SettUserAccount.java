@@ -1,27 +1,17 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,13 +25,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Pattern;
 
-import static android.R.attr.enabled;
-import static android.R.attr.id;
 import static android.content.ContentValues.TAG;
-import static com.example.reveu.weloudgrouplist.R.id.editNickname;
-import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 /**
  * Created by reveu on 2017-08-27.
@@ -68,7 +53,7 @@ public class SettUserAccount extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         UITask task = new UITask();
-        task.execute();
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -116,7 +101,7 @@ public class SettUserAccount extends AppCompatActivity
                 if(result)
                 {
                     UserAccountTask task = new UserAccountTask();
-                    task.execute("1", ID, etNickname.getText().toString(), etEmail.getText().toString());
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "1", ID, etNickname.getText().toString(), etEmail.getText().toString());
                 }
             }
         });
@@ -163,7 +148,7 @@ public class SettUserAccount extends AppCompatActivity
         });
 
         UserAccountTask task = new UserAccountTask();
-        task.execute("0", ID);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "0", ID);
     }
 
     private boolean checkInfo()
