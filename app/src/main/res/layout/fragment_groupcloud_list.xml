@@ -68,8 +68,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/creategroup"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/folderadd"
                     app:elevation="0dp"
                     app:backgroundTint="#ffffff"/>
 
@@ -92,16 +92,15 @@
                     android:layout_gravity="center"
                     android:textSize="16dp"
                     android:textColor="#ffffff"
-                    android:text="@string/text_uploadFile"
-                    />
+                    android:text="@string/text_currentFolder_Upload"/>
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fabCloudUpload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/searchgroup"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/uploadcloud"
                     app:elevation="0dp"
                     app:backgroundTint="#ffffff" />
 

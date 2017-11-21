@@ -10,24 +10,29 @@ import java.util.List;
  * Created by reveu on 2017-10-22.
  */
 
-public class ExtLib
+class ExtLib
 {
     private ArrayList<ExtClass> extLib = new ArrayList<ExtClass>();
 
-    public ExtLib()
+    ExtLib()
     {
         // 이 문장에서 확장자 관리
 
-        extLib.add(new ExtClass(String.valueOf(R.drawable.document), "txt", "docs", "hwp"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.document), "txt", "docs", "hwp", "c", "xml", "java", "html"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.music), "mp3", "wav", "ogg", "wma", "m4a"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.video), "avi", "mp4", "flv", "wmv"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.zip), "zip", "7z", "alz", "rar", "iso"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.picture), "jpg", "jpeg", "png", "gif"));
+        extLib.add(new ExtClass(String.valueOf(R.drawable.apk), "apk"));
     }
 
-    public int getDrawableExt(String input)
+    int getDrawableExt(String input)
     {
         for (ExtClass ext : extLib)
         {
             for  (String temp : ext.getExtList())
             {
-                if(input.equals(temp))
+                if(input.toLowerCase().equals(temp.toLowerCase()))
                     return ext.getDrawable();
             }
         }
@@ -57,7 +62,7 @@ public class ExtLib
             }
         }
 
-        public ArrayList<String> getExtList()
+        ArrayList<String> getExtList()
         {
             return extList;
         }

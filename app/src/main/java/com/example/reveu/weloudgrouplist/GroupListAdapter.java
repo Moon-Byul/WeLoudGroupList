@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.text.SimpleDateFormat;
@@ -74,13 +75,16 @@ public class GroupListAdapter extends BaseAdapter
             holder.ivGroupImage.setImageResource(R.drawable.group);
         holder.tvGroupName.setText(listViewItem.getGroupName());
 
+        String text;
         if(listViewItem.getGroupCreator() == "null")
         {
-            holder.tvEtc.setText("최근 업로드 : " + dateFormat.format(listViewItem.getGroupUploadDate()));
+            text = context.getText(R.string.text_lastmodifed) + " : " + dateFormat.format(listViewItem.getGroupUploadDate().getTime());
+            holder.tvEtc.setText(text);
         }
         else
         {
-            holder.tvEtc.setText("관리자 : " + listViewItem.getGroupCreator());
+            text = context.getText(R.string.text_creator) + " : " + dateFormat.format(listViewItem.getGroupUploadDate().getTime());
+            holder.tvEtc.setText(text);
         }
 
         int status = listViewItem.getStatus();
@@ -108,7 +112,7 @@ public class GroupListAdapter extends BaseAdapter
         return gliList;
     }
 
-    public void addItem(int groupID, boolean isFav, String groupName, Date groupUploadDate)
+    public void addItem(int groupID, boolean isFav, String groupName, Calendar groupUploadDate)
     {
         GroupListItem item = new GroupListItem();
 

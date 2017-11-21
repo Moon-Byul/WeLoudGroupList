@@ -6,17 +6,30 @@ package com.example.reveu.weloudgrouplist;
 
 public class StringLib
 {
-    public StringLib()
+    StringLib()
     {
 
     }
 
-    public String fileExt(String fileName)
+    String fileExt(String fileName)
     {
         int index = fileName.lastIndexOf(".");
         if(index != -1)
         {
             return fileName.substring(index + 1);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    String lastDir(String path)
+    {
+        int index = path.lastIndexOf("/");
+        if(index != -1)
+        {
+            return path.substring(index + 1);
         }
         else
         {

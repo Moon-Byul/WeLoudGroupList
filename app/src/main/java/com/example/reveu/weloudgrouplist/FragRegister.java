@@ -155,7 +155,7 @@ public class FragRegister extends Fragment
             }
             else
             {
-                Toast.makeText(getContext(),"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getText(R.string.text_successregister), Toast.LENGTH_SHORT).show();
                 Main activity = (Main)getActivity();
                 activity.onFragmentChanged(2);
             }

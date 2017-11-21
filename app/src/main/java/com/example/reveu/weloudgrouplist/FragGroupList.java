@@ -1,11 +1,15 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -16,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,8 +36,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TimeZone;
 
+import static android.R.id.input;
 import static android.content.ContentValues.TAG;
+import static com.example.reveu.weloudgrouplist.R.id.fragGroupList;
+import static com.example.reveu.weloudgrouplist.R.id.textinfo;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -74,14 +86,6 @@ public class FragGroupList extends Fragment
                 GroupListItem item = glaAdapter.getItem(position);
 
                 ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
-                /*
-                if(item.getFav())
-                    item.setFav(false);
-                else
-                    item.setFav(true);
-                Snackbar.make(view, "테스트 메시지입니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                glaAdapter.notifyDataSetChanged();
-                */
             }
         });
 
@@ -131,7 +135,8 @@ public class FragGroupList extends Fragment
     public void onStart()
     {
         super.onStart();
-        Log.d("Twily", "List Start");
+
+        getGroupList();
     }
 
     public void fabClickEvent()
@@ -180,7 +185,7 @@ public class FragGroupList extends Fragment
     public void getGroupList()
     {
         GroupListTask glData = new GroupListTask();
-        glData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, ((GroupList) getActivity()).getUserNum());
+        glData.execute(((GroupList) getActivity()).getUserNum());
     }
 
     public void groupListEvent(String jsonString)
@@ -208,7 +213,10 @@ public class FragGroupList extends Fragment
                         String recentUpload = item.getString(getText(R.string.TAG_GROUPUPLOAD).toString());
                         int approved = item.getInt(getText(R.string.TAG_USERAPPROVED).toString());
 
-                        glaAdapter.addItem(groupID, (approved == 0 ? false : true), groupName, dateFormat.parse(recentUpload));
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dateFormat.parse(recentUpload));
+
+                        glaAdapter.addItem(groupID, (approved == 0 ? false : true), groupName, cal);
                         index++;
                     }
                     glaAdapter.notifyDataSetChanged();

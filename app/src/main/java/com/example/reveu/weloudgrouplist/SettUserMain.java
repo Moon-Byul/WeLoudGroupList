@@ -1,12 +1,29 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by reveu on 2017-08-23.
@@ -24,12 +41,7 @@ public class SettUserMain extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
 
-    private void UIAction()
-    {
         setContentView(R.layout.activity_settings_usermain);
 
         Intent intent = getIntent();
@@ -58,20 +70,5 @@ public class SettUserMain extends AppCompatActivity
                 startActivity(intent);
             }
         });
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
-        }
     }
 }

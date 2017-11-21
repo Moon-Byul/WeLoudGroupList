@@ -9,6 +9,10 @@
     android:showDividers="middle"
     android:id="@+id/groupSearch_ctMain">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/actionbar_default"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -20,10 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
             android:inputType="textNoSuggestions"
             android:text=""
-            android:hint="그룹 이름을 입력하세요."
+            android:hint="@string/text_entergroupname"
             android:ems="10" />
 
         <ImageView
@@ -31,7 +35,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="10dp"
-            android:tint="#000000"
+            android:tint="#ff6692f4"
             android:src="@drawable/search"
             android:layout_gravity="center"/>
 

@@ -1,59 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/settings_grouppermission_ctMain"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#f0eff5"
-    android:divider="@drawable/separator"
-    android:showDividers="middle"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/settings_grouppermission_ctList"
-        android:orientation="vertical"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/actionbar_default"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="#fff"
-        android:divider="@drawable/separator"
-        android:showDividers="middle">
-
-        <!-- 동적 생성을 위한 ctMain만 생성.. -->
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/settings_grouppermission_btnSample"
-            android:orientation="horizontal"
+            android:id="@+id/settings_grouppermission_ctMain"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:background="?android:attr/selectableItemBackground">
+            android:layout_height="match_parent"
+            android:paddingBottom="30dp"
+            android:background="#f0eff5"
+            android:divider="@drawable/separator"
+            android:showDividers="middle"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/settings_grouppermission_ctList"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/text_myaccount"
-                android:textColor="#000"
-                android:textSize="18dp"
-                android:layout_gravity="center"/>
+                android:layout_marginTop="30dp"
+                android:background="#fff"
+                android:divider="@drawable/separator"
+                android:showDividers="middle">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:src="@drawable/backbtn"
-                android:tint="#aaffffff"
-                android:rotation="180" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Sample end -->
-
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

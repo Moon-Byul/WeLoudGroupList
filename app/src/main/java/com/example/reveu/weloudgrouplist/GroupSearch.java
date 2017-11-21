@@ -1,19 +1,27 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,12 +58,7 @@ public class GroupSearch extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UITask task = new UITask();
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
 
-    private void UIAction()
-    {
         setContentView(R.layout.activity_groupsearch);
 
         Intent intent = getIntent();
@@ -77,14 +80,14 @@ public class GroupSearch extends AppCompatActivity
             {
                 if(etSearch.getText().toString() == "")
                 {
-                    Snackbar.make(ctMain, "검색어를 입력해주세요.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_entergroupname), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
                 else
                 {
                     new StockLib().hideKeyboard(v, getApplication());
 
                     SearchGroupTask task = new SearchGroupTask();
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, etSearch.getText().toString(), userNum, "0", "null");
+                    task.execute(etSearch.getText().toString(), userNum, "0", "null");
                 }
             }
         });
@@ -97,17 +100,17 @@ public class GroupSearch extends AppCompatActivity
                 GroupListItem item = glaAdapter.getItem(position);
                 if(item.getStatus() == 2)
                 {
-                    Snackbar.make(ctMain, "이미 가입되어 있습니다.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 }
                 else
                 {
                     SearchGroupTask task = new SearchGroupTask();
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(item.getGroupID()), userNum, "1", String.valueOf(position));
+                    task.execute(String.valueOf(item.getGroupID()), userNum, "1", String.valueOf(position));
                 }
             }
         });
 
-        abLib.setDefaultActionBar(this, "그룹 검색", false, 0);
+        abLib.setDefaultActionBar(this, getText(R.string.text_groupsearch).toString(), false, 0);
 
         abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
@@ -130,7 +133,7 @@ public class GroupSearch extends AppCompatActivity
 
             if(jsonArray.length() == 0)
             {
-                Snackbar.make(ctMain, "검색 결과가 없습니다.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                Snackbar.make(ctMain, getText(R.string.text_noresults), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
             else
             {
@@ -196,17 +199,17 @@ public class GroupSearch extends AppCompatActivity
                     int status = 0;
                     if(result.contains("deleted*"))
                     {
-                        Snackbar.make(ctMain, "가입 신청이 취소되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_cancelsignup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 0;
                     }
                     else if(result.contains("inserted*"))
                     {
-                        Snackbar.make(ctMain, "가입 신청 되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_waitsignup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 1;
                     }
                     else
                     {
-                        Snackbar.make(ctMain, "이미 가입되어 있습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(ctMain, getText(R.string.text_youalreadyjoined), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         status = 2;
                     }
 
@@ -217,11 +220,11 @@ public class GroupSearch extends AppCompatActivity
                 else if(result.contains("*autojoin"))
                 {
                     SearchGroupTask task = new SearchGroupTask();
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, groupinfo, userNum, "2", "null");
+                    task.execute(groupinfo, userNum, "2", "null");
                 }
                 else if(result.contains("*group_user_inserted"))
                 {
-                    Snackbar.make(ctMain, "가입 되었습니다.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(ctMain, getText(R.string.text_signupgroup), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
                     GroupListItem item = glaAdapter.getItem(position);
                     item.setStatus(2);
@@ -313,21 +316,6 @@ public class GroupSearch extends AppCompatActivity
 
                 return new String("Error: " + e.getMessage());
             }
-        }
-    }
-
-    private class UITask extends AsyncTask<String, Void, String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s)
-        {
-            UIAction();
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,11 @@ import android.widget.TextView;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.acl.Group;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static android.R.attr.src;
 
 /**
  * Created by reveu on 2017-05-29.
@@ -94,7 +104,9 @@ class GroupCloudAdapter extends BaseAdapter
             if(listViewItem.getChecked())
                 holder.ivFileExtImage.setImageResource(R.drawable.checkmark);
             else
+            {
                 holder.ivFileExtImage.setImageResource(new FTPLib().getExtDrawable(listViewItem.getFile()));
+            }
             holder.tvFileName.setText(file.getName());
             holder.tvFileUpload.setText(context.getText(R.string.text_uploaddate).toString() + " : " + dateFormat.format(listViewItem.getFileUploadDate().getTime()));
         }
@@ -112,16 +124,18 @@ class GroupCloudAdapter extends BaseAdapter
         return gciCheckList;
     }
 
+    void setCheckList(ArrayList<GroupFileItem> list)
+    {
+        gciCheckList = list;
+    }
+
     void addItem(FTPFile file)
     {
         GroupFileItem item = new GroupFileItem();
 
         item.setFile(file);
 
-        Log.d("Twily", item.getFile() + "?");
-
         gciList.add(item);
-        this.notifyDataSetChanged();
     }
 
     void addItem(FTPFile file, Calendar fileUploadDate, String path)
@@ -137,9 +151,7 @@ class GroupCloudAdapter extends BaseAdapter
             item.setChecked(true);
 
         gciList.add(item);
-        this.notifyDataSetChanged();
     }
-
 
     GroupFileItem checkFile(GroupFileItem item)
     {
@@ -152,6 +164,13 @@ class GroupCloudAdapter extends BaseAdapter
             }
         }
         return null;
+    }
+
+    void removeCheckItem(GroupFileItem item)
+    {
+        GroupFileItem temp = checkFile(item);
+        if(temp != null)
+            gciCheckList.remove(temp);
     }
 
     void addCheckItem(GroupFileItem item)
@@ -167,13 +186,6 @@ class GroupCloudAdapter extends BaseAdapter
     void clearCheckList()
     {
         gciCheckList.clear();
-    }
-
-    void removeCheckItem(GroupFileItem item)
-    {
-        GroupFileItem temp = checkFile(item);
-        if(temp != null)
-            gciCheckList.remove(temp);
     }
 
     void sortAscName()
@@ -291,15 +303,4 @@ class GroupCloudAdapter extends BaseAdapter
         TextView tvFileName;
         TextView tvFileUpload;
     }
-
-    /*
-        안드로이드는 dp를 쓰기 때문에 값을 dp로 바꿔주는 작업이 필요. 그때 쓰이는 메소드
-     */
-    /*
-    public int getDensityPx(int value)
-    {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (value * scale);
-    }
-    */
 }

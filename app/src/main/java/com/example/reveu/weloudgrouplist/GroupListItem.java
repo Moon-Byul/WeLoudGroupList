@@ -1,6 +1,8 @@
 package com.example.reveu.weloudgrouplist;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by reveu on 2017-06-04.
@@ -12,7 +14,7 @@ public class GroupListItem
     int groupID = 0;
     String groupName = "null";
     String groupCreator = "null";
-    Date groupUploadDate = new Date(System.currentTimeMillis());
+    Calendar groupUploadDate = Calendar.getInstance();
     /*
      * status의 value type
      * 0 - null
@@ -36,9 +38,11 @@ public class GroupListItem
         groupName = input;
     }
 
-    public void setGroupUploadDate(Date input)
+    public void setGroupUploadDate(Calendar input)
     {
-        groupUploadDate = input;
+        // MYSQL 서버의 시간은 UTC 시간 기준으로 return 하기 때문에 재 설정한다.
+        groupUploadDate.setTimeZone(TimeZone.getTimeZone("UTC"));
+        groupUploadDate.set(input.get(Calendar.YEAR), input.get(Calendar.MONTH), input.get(Calendar.DATE), input.get(Calendar.HOUR_OF_DAY), input.get(Calendar.MINUTE), input.get(Calendar.SECOND));
     }
 
     public void setGroupCreator(String input)
@@ -66,7 +70,7 @@ public class GroupListItem
         return groupName;
     }
 
-    public Date getGroupUploadDate()
+    public Calendar getGroupUploadDate()
     {
         return groupUploadDate;
     }

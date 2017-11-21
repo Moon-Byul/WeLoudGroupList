@@ -10,6 +10,10 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/actionbar_default"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -72,6 +76,30 @@
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/text_allowsearchtogroup"
+                android:textColor="#000"
+                android:textSize="18dp"/>
+
+            <Switch
+                android:id="@+id/groupCreate_swAllow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
 

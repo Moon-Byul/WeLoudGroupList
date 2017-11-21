@@ -9,16 +9,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.9"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/textView"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WELOUD LOGO"
-            android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:layout_marginTop="15dp"
+            android:src="@drawable/weloud"
+            android:scaleType="fitCenter"/>
 
     </LinearLayout>
 
@@ -39,6 +38,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             android:inputType="textNoSuggestions"
+            android:textSize="18dp"
             android:maxLines="1"/>
         <EditText
             android:layout_width="match_parent"
@@ -49,6 +49,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             android:inputType="textPassword"
+            android:textSize="18dp"
             android:maxLines="1"/>
         <EditText
             android:layout_width="match_parent"
@@ -59,6 +60,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             android:inputType="textNoSuggestions"
+            android:textSize="18dp"
             android:maxLines="1"/>
         <EditText
             android:layout_width="match_parent"
@@ -69,6 +71,7 @@
             android:layout_margin="5dp"
             android:padding="5dp"
             android:inputType="textNoSuggestions"
+            android:textSize="18dp"
             android:maxLines="1"/>
         <Button
             android:layout_width="match_parent"

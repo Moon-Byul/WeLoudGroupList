@@ -74,13 +74,17 @@ public class FragLogin extends Fragment
             @Override
             public void onClick(View v)
             {
+
                 String id = editId.getText().toString();
                 String password = editPassword.getText().toString();
 
                 new StockLib().hideKeyboard(v, getActivity());
 
-                LoginTask task = new LoginTask();
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, id, password);
+                if(id.length() > 0 && password.length() > 0)
+                {
+                    LoginTask task = new LoginTask();
+                    task.execute(id, password);
+                }
             }
         });
         btnNewmember.setOnClickListener(new View.OnClickListener()
@@ -102,6 +106,8 @@ public class FragLogin extends Fragment
         editId.setText("");
         editPassword.setText("");
         textinfo.setText("");
+
+        new StockLib().verifyStoragePermissions(getActivity());
     }
 
     private void loginEvent()

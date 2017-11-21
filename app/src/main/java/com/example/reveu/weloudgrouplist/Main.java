@@ -46,7 +46,7 @@ public class Main extends AppCompatActivity
         String nickName = map.get(TAG_NICKNAME);
         String registerDate = map.get(TAG_REGISTERDATE);
 
-        Toast.makeText(this, nickName + "님, 환영합니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.text_hello, nickName), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Main.this, GroupList.class);
         intent.putExtra(TAG_USERNUM, userNum);
         intent.putExtra(TAG_ID, id);
