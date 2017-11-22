@@ -18,6 +18,7 @@ class ExtLib
     {
         // 이 문장에서 확장자 관리
 
+        extLib.add(new ExtClass(String.valueOf(R.drawable.ppt), "ppt", "pptx"));
         extLib.add(new ExtClass(String.valueOf(R.drawable.document), "txt", "docs", "hwp", "c", "xml", "java", "html"));
         extLib.add(new ExtClass(String.valueOf(R.drawable.music), "mp3", "wav", "ogg", "wma", "m4a"));
         extLib.add(new ExtClass(String.valueOf(R.drawable.video), "avi", "mp4", "flv", "wmv"));
