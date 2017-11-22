@@ -49,15 +49,15 @@ public class FragLogin extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_login_main, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_login_main, container, false);
 
-        LinearLayout ctMain = (LinearLayout)rootView.findViewById(R.id.main_container);
-        Button btnLogin = (Button)rootView.findViewById(R.id.btnLogin);
-        Button btnNewmember = (Button)rootView.findViewById(R.id.btnNewMember);
+        LinearLayout ctMain = (LinearLayout) rootView.findViewById(R.id.main_container);
+        Button btnLogin = (Button) rootView.findViewById(R.id.btnLogin);
+        Button btnNewmember = (Button) rootView.findViewById(R.id.btnNewMember);
 
         editId = (EditText) rootView.findViewById(R.id.editId);
-        editPassword = (EditText)rootView.findViewById(R.id.editPassword);
-        textinfo = (TextView)rootView.findViewById(R.id.textinfo);
+        editPassword = (EditText) rootView.findViewById(R.id.editPassword);
+        textinfo = (TextView) rootView.findViewById(R.id.textinfo);
 
         ctMain.setSoundEffectsEnabled(false);
         ctMain.setOnClickListener(new View.OnClickListener()
@@ -80,7 +80,7 @@ public class FragLogin extends Fragment
 
                 new StockLib().hideKeyboard(v, getActivity());
 
-                if(id.length() > 0 && password.length() > 0)
+                if (id.length() > 0 && password.length() > 0)
                 {
                     LoginTask task = new LoginTask();
                     task.execute(id, password);
@@ -92,7 +92,7 @@ public class FragLogin extends Fragment
             @Override
             public void onClick(View v)
             {
-                Main activity = (Main)getActivity();
+                Main activity = (Main) getActivity();
                 activity.onFragmentChanged(1);
             }
         });
@@ -123,14 +123,14 @@ public class FragLogin extends Fragment
             String id = item.getString(getText(R.string.TAG_ID).toString());
             String nickname = item.getString(getText(R.string.TAG_NICKNAME).toString());
 
-            HashMap<String,String> hashMap = new HashMap<>();
+            HashMap<String, String> hashMap = new HashMap<>();
 
             hashMap.put(getText(R.string.TAG_USERNUM).toString(), userNum);
             hashMap.put(getText(R.string.TAG_ID).toString(), id);
             hashMap.put(getText(R.string.TAG_NICKNAME).toString(), nickname);
 
             textinfo.setText("");
-            Main activity = (Main)getActivity();
+            Main activity = (Main) getActivity();
             activity.login(hashMap);
         }
         catch (JSONException e)
@@ -159,18 +159,18 @@ public class FragLogin extends Fragment
 
             progressDialog.dismiss();
 
-            if(result == null)
+            if (result == null)
             {
                 textinfo.setText(getText(R.string.error_temporary).toString());
             }
             else
             {
-                if(result.contains("*password is error."))
+                if (result.contains("*password is error."))
                 {
                     textinfo.setText(getText(R.string.text_idpassworderr).toString());
                 }
                 else
-                    {
+                {
                     jsonString = result;
                     loginEvent();
                 }
@@ -208,7 +208,7 @@ public class FragLogin extends Fragment
                 Log.d(TAG, "response code - " + responseStatusCode);
 
                 InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK)
+                if (responseStatusCode == HttpURLConnection.HTTP_OK)
                 {
                     inputStream = httpURLConnection.getInputStream();
                 }
@@ -223,7 +223,7 @@ public class FragLogin extends Fragment
                 StringBuilder sb = new StringBuilder();
                 String line;
 
-                while((line = bufferedReader.readLine()) != null)
+                while ((line = bufferedReader.readLine()) != null)
                 {
                     sb.append(line);
                 }

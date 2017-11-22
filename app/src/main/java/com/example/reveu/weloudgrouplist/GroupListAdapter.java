@@ -1,6 +1,7 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class GroupListAdapter extends BaseAdapter
 
         // 아이템 내 각 위젯에 데이터 반영
         if (listViewItem.getFav() == true)
-            holder.ivGroupImage.setImageResource(R.drawable.favgroup);
+            holder.ivGroupImage.setImageResource(R.drawable.favgroup_small);
         else
             holder.ivGroupImage.setImageResource(R.drawable.group);
         holder.tvGroupName.setText(listViewItem.getGroupName());
@@ -83,7 +84,7 @@ public class GroupListAdapter extends BaseAdapter
         }
         else
         {
-            text = context.getText(R.string.text_creator) + " : " + dateFormat.format(listViewItem.getGroupUploadDate().getTime());
+            text = context.getText(R.string.text_creator) + " : " + listViewItem.getGroupCreator();
             holder.tvEtc.setText(text);
         }
 
@@ -92,10 +93,12 @@ public class GroupListAdapter extends BaseAdapter
         {
             if(status == 1)
             {
+                holder.ivGroupStatus.setColorFilter(Color.argb(170, 217, 217, 217));
                 holder.ivGroupStatus.setImageResource(R.drawable.clock);
             }
             else
             {
+                holder.ivGroupStatus.setColorFilter(Color.argb(255, 102, 146, 244));
                 holder.ivGroupStatus.setImageResource(R.drawable.checkmark);
             }
         }

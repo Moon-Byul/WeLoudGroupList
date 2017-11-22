@@ -284,6 +284,11 @@ class FTPLib
         return path.equals(defaultPath);
     }
 
+    public static String getDefaultPath()
+    {
+        return defaultPath;
+    }
+
     String getWorkingPath()
     {
         return workingPath;

@@ -93,6 +93,9 @@
     <string name="text_uploadcomplete">업로드 완료</string>
     <string name="text_uploadinprogress">업로드 진행 중</string>
     <string name="text_allowsearchtogroup">그룹 검색 허용</string>
+    <string name="text_generalmember">일반회원</string>
+    <string name="text_specialmember">특별회원</string>
+    <string name="text_administrator">그룹 관리자</string>
     <string name="text_creator">개설자</string>
     <string name="text_successregister">회원가입이 완료되었습니다.</string>
     <string name="text_hello">%1$s님, 환영합니다.</string>
@@ -113,6 +116,17 @@
     <string name="text_areyousurekick_one">%1$s 유저를 강퇴하시겠습니까?</string>
     <string name="text_areyousurekick_multi">%1$d명의 유저를 강퇴하시겠습니까?</string>
     <string name="text_successkickuser">회원을 강퇴하였습니다.</string>
+    <string name="text_useralreadyjoined">%1$s 유저는 이미 가입되어있습니다.</string>
+    <string name="text_invitationsend">그룹 초대장을 전송하였습니다.</string>
+    <string name="text_invitationcancel">그룹 초대장을 취소하였습니다.</string>
+    <string name="text_successadmission">가입승인이 완료되었습니다.</string>
+    <string name="text_deletegroup">그룹 삭제</string>
+    <string name="text_afterinheritance">총관리자 상속 후 탈퇴</string>
+    <string name="text_creatorinheritance">총관리자 상속</string>
+    <string name="text_areyousureleave">정말 이 그룹을 탈퇴하시겠습니까?</string>
+    <string name="text_areyousuredeletegroup">정말 이 그룹을 삭제하시겠습니까?</string>
+    <string name="text_areyousureinheritance">%1$s 에게 상속하시겠습니까? (기존 총관리자는 기본회원으로 돌아갑니다.)</string>
+    <string name="text_invitation">그룹 초대</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>

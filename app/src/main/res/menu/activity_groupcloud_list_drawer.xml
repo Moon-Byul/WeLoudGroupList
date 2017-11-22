@@ -17,6 +17,11 @@
         android:checkableBehavior="none">
 
         <item
+            android:id="@+id/nav_gc_fav"
+            android:icon="@drawable/favgroup"
+            android:title="@string/text_favoritegroup" />
+
+        <item
             android:id="@+id/nav_gc_setting"
             android:icon="@drawable/settings"
             android:title="@string/text_settings" />

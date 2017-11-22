@@ -30,7 +30,7 @@
             android:ems="10" />
 
         <ImageView
-            android:id="@+id/btnSearch"
+            android:id="@+id/ivSearch"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="10dp"

@@ -27,6 +27,8 @@
     <string name="TAG_ISCREATE">isCreate</string>
     <string name="TAG_ISKICK">isKick</string>
     <string name="TAG_JOINDATE">joinDate</string>
+    <string name="TAG_ISINVITE">isInvite</string>
+    <string name="TAG_MEMBERCOUNT">memberCount</string>
 
     <string name="TAG_JSON_LOGIN">login</string>
     <string name="TAG_JSON_SEARCH">groupsearch</string>
@@ -37,9 +39,11 @@
     <string name="TAG_JSON_SERVERLIST">serverlist</string>
     <string name="TAG_JSON_USERACCOUNT">useraccount</string>
     <string name="TAG_JSON_GROUPCLOUD">groupcloud</string>
+    <string name="TAG_JSON_INVITATION">groupInvitation</string>
     <string name="TAG_JSON_SETT_GROUP_PER">settGroupPermission</string>
     <string name="TAG_JSON_SETT_GROUP_PER_DETAIL">settGroupPermissionDetail</string>
     <string name="TAG_JSON_GROUPUSERLIST">groupUserList</string>
+    <string name="TAG_JSON_SETT_GROUP_ADMISSION">settGroupUserAdmission</string>
 
     <string name="FTP_ID">WeLoud</string>
     <string name="FTP_PASSWORD">WeL0udCl0ud</string>
@@ -85,7 +89,7 @@
     <string name="text_folder">"Folder"</string>
     <string name="text_groupsettings">"Group Settings"</string>
     <string name="text_backtogrouplist">"Back to GroupList"</string>
-    <string name="text_dropoutsgroup">"Dropouts Group"</string>
+    <string name="text_dropoutsgroup">"Leave Group"</string>
     <string name="text_favoritegroup">"Favorite Group"</string>
     <string name="text_uploaddate">Upload Date</string>
     <string name="text_creategroup">Create Group</string>
@@ -133,6 +137,9 @@
     <string name="text_uploadcomplete">Upload Complete</string>
     <string name="text_uploadinprogress">Upload in progress</string>
     <string name="text_allowsearchtogroup">Allow search to group</string>
+    <string name="text_generalmember">General Member</string>
+    <string name="text_specialmember">Special Member</string>
+    <string name="text_administrator">Group Administrator</string>
     <string name="text_creator">Creator</string>
     <string name="text_successregister">Registered Successfully.</string>
     <string name="text_hello">Welcome, %1$s.</string>
@@ -153,6 +160,17 @@
     <string name="text_areyousurekick_one">Are you sure want to kick %1$s?</string>
     <string name="text_areyousurekick_multi">Are you sure want to kick selected %1$d user?</string>
     <string name="text_successkickuser">Successfully Kick User.</string>
+    <string name="text_useralreadyjoined">%1$s is already joined this group</string>
+    <string name="text_invitationsend">Your invitation has been sent.</string>
+    <string name="text_invitationcancel">Your invitation has been canceled.</string>
+    <string name="text_successadmission">Successfully Admission to user.</string>
+    <string name="text_deletegroup">Delete Group</string>
+    <string name="text_afterinheritance">leave after Inheritance</string>
+    <string name="text_creatorinheritance">Creator Inheritance</string>
+    <string name="text_areyousureleave">Are you sure you want to leave this group?</string>
+    <string name="text_areyousuredeletegroup">Are you sure you want to delete this group?</string>
+    <string name="text_areyousureinheritance">Are you sure you want to inheritance to the %1$s? (You go back to the default member)</string>
+    <string name="text_invitation">Group Invitation</string>
 
     <string name="per_fileupload">File Upload</string>
     <string name="per_filerename">File Rename</string>

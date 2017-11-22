@@ -81,7 +81,6 @@ public class GroupList extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
-
         //fragGroupList.getGroupList();
     }
 
@@ -172,6 +171,12 @@ public class GroupList extends AppCompatActivity
         int id = item.getItemId();
 
 
+        if (id == R.id.nav_gl_invitation)
+        {
+            Intent intent = new Intent(GroupList.this, GroupListUserInvitation.class);
+            intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
+            startActivity(intent);
+        }
         if (id == R.id.nav_gl_settings)
         {
             Intent intent = new Intent(GroupList.this, SettUserMain.class);
@@ -236,7 +241,7 @@ public class GroupList extends AppCompatActivity
     /*
      * 그룹 Cloud (Drive) Activity로 넘어가는 Method.
      */
-    public void groupCloudEvent(String groupName, int groupID)
+    public void groupCloudEvent(String groupName, int groupID, boolean isFav)
     {
         Intent intent = new Intent(GroupList.this, GroupCloudList.class);
         intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
@@ -244,6 +249,7 @@ public class GroupList extends AppCompatActivity
         intent.putExtra(getText(R.string.TAG_ID).toString(), ID);
         intent.putExtra(getText(R.string.TAG_GROUPNAME).toString(), groupName);
         intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+        intent.putExtra(getText(R.string.TAG_USERAPPROVED).toString(), isFav);
         startActivity(intent);
     }
 }

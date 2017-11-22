@@ -1,6 +1,7 @@
 package com.example.reveu.weloudgrouplist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +27,22 @@ class UserListAdapter extends BaseAdapter
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM. dd. HH:mm", java.util.Locale.getDefault());
 
+    boolean isSearch = false;
+
+    UserListAdapter(boolean isSearch)
+    {
+        this.isSearch = isSearch;
+    }
+
     // ArrayList의 사이즈를 리턴
     @Override
     public int getCount() {
-        return userSearchList.size();
+        return userList.size();
     }
     // position번째에 있는 object를 return
     @Override
     public UserItem getItem(int position) {
-        return userSearchList.get(position);
+        return userList.get(position);
     }
 
     @Override
@@ -67,7 +75,7 @@ class UserListAdapter extends BaseAdapter
             holder = (UserHolder) convertView.getTag();
         }
 
-        final UserItem item = userSearchList.get(position);
+        final UserItem item = userList.get(position);
         String text;
 
         holder.tvID.setText(item.getUserID());
@@ -92,10 +100,12 @@ class UserListAdapter extends BaseAdapter
         }
         else if(item.getStatus() == 1)
         {
+            holder.ivStatus.setColorFilter(Color.argb(170, 217, 217, 217));
             holder.ivStatus.setImageResource(R.drawable.clock);
         }
         else
         {
+            holder.ivStatus.setColorFilter(Color.argb(255, 102, 146, 244));
             holder.ivStatus.setImageResource(R.drawable.checkmark);
         }
 
@@ -105,18 +115,18 @@ class UserListAdapter extends BaseAdapter
     public void filter(String charText)
     {
         charText = charText.toLowerCase(Locale.getDefault());
-        userSearchList.clear();
+        userList.clear();
         if (charText.length() == 0)
         {
-            userSearchList.addAll(userList);
+            userList.addAll(userSearchList);
         }
         else
         {
-            for (UserItem item : userList)
+            for (UserItem item : userSearchList)
             {
                 if (item.getUserID().toLowerCase().contains(charText))
                 {
-                    userSearchList.add(item);
+                    userList.add(item);
                 }
             }
         }
@@ -125,7 +135,10 @@ class UserListAdapter extends BaseAdapter
 
     ArrayList<UserItem> getList()
     {
-        return userList;
+        if(isSearch)
+            return userSearchList;
+        else
+            return userList;
     }
 
     void addItem(String userID, int userNum, String rankName)
@@ -136,8 +149,7 @@ class UserListAdapter extends BaseAdapter
         item.setUserNum(userNum);
         item.setRankName(rankName);
 
-        userList.add(item);
-        this.notifyDataSetChanged();
+        addListItem(item);
     }
 
     void addItem(String userID, int userNum, Calendar joinDate)
@@ -148,8 +160,7 @@ class UserListAdapter extends BaseAdapter
         item.setUserNum(userNum);
         item.setJoinDate(joinDate);
 
-        userList.add(item);
-        this.notifyDataSetChanged();
+        addListItem(item);
     }
 
     void addItem(String userID, int userNum, String nickName, int status)
@@ -161,7 +172,16 @@ class UserListAdapter extends BaseAdapter
         item.setStatus(status);
         item.setNickName(nickName);
 
-        userList.add(item);
+        addListItem(item);
+    }
+
+    void addListItem(UserItem item)
+    {
+        if(isSearch)
+            userSearchList.add(item);
+        else
+            userList.add(item);
+
         this.notifyDataSetChanged();
     }
 
@@ -175,10 +195,21 @@ class UserListAdapter extends BaseAdapter
     {
         int result = 0;
 
-        for(UserItem user : userList)
+        if(isSearch)
         {
-            if(user.getChecked())
-                result++;
+            for (UserItem user : userSearchList)
+            {
+                if (user.getChecked())
+                    result++;
+            }
+        }
+        else
+        {
+            for (UserItem user : userList)
+            {
+                if (user.getChecked())
+                    result++;
+            }
         }
 
         return result;

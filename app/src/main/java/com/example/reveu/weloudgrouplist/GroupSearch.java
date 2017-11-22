@@ -78,16 +78,16 @@ public class GroupSearch extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if(etSearch.getText().toString() == "")
-                {
-                    Snackbar.make(ctMain, getText(R.string.text_entergroupname), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                }
+                String groupName = etSearch.getText().toString();
+
+                if(groupName.length() < 2)
+                    Snackbar.make(ctMain, getString(R.string.text_morechar, 2), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                 else
                 {
                     new StockLib().hideKeyboard(v, getApplication());
 
                     SearchGroupTask task = new SearchGroupTask();
-                    task.execute(etSearch.getText().toString(), userNum, "0", "null");
+                    task.execute(groupName, userNum, "0", "null");
                 }
             }
         });
@@ -137,25 +137,31 @@ public class GroupSearch extends AppCompatActivity
             }
             else
             {
-                JSONObject item = jsonArray.getJSONObject(0);
-
-                int groupID = Integer.parseInt(item.getString(getText(R.string.TAG_GROUPID).toString()));
-                String groupName = item.getString(getText(R.string.TAG_GROUPNAME).toString());
-                String nickname = item.getString(getText(R.string.TAG_NICKNAME).toString());
-                int isMember = item.getInt(getText(R.string.TAG_ISMEMBER).toString());
-                int isAdmission = item.getInt(getText(R.string.TAG_ISADMISSION).toString());
-                int status = 0;
-
-                if(isMember > 0)
+                int length = jsonArray.length();
+                if(length > 0)
                 {
-                    status = 2;
-                }
-                else if(isAdmission > 0)
-                {
-                    status = 1;
-                }
+                    int index = 0;
 
-                glaAdapter.addItem(groupID, false, groupName, nickname, status);
+                    while (length > index)
+                    {
+                        JSONObject item = jsonArray.getJSONObject(index);
+
+                        int groupID = Integer.parseInt(item.getString(getText(R.string.TAG_GROUPID).toString()));
+                        String groupName = item.getString(getText(R.string.TAG_GROUPNAME).toString());
+                        String nickname = item.getString(getText(R.string.TAG_NICKNAME).toString());
+                        int isMember = item.getInt(getText(R.string.TAG_ISMEMBER).toString());
+                        int isAdmission = item.getInt(getText(R.string.TAG_ISADMISSION).toString());
+                        int status = 0;
+
+                        if (isMember > 0)
+                            status = 2;
+                        else if (isAdmission > 0)
+                            status = 1;
+
+                        glaAdapter.addItem(groupID, false, groupName, nickname, status);
+                        index++;
+                    }
+                }
             }
 
             glaAdapter.notifyDataSetChanged();

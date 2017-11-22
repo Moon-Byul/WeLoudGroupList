@@ -157,6 +157,7 @@ public class FragGroupCloudList extends Fragment
             {
                 Log.d("Twily", ((GroupCloudList) getActivity()).getFTPMain() + "");
                 ((GroupCloudList) getActivity()).getFTPMain().execute(getActivity(), "loadFileList", FTPCMD.GetFileList);
+                ((GroupCloudList) getActivity()).refreshPermissionLib();
                 srlGroupCloudMain.setRefreshing(false);
             }
         });

@@ -1,29 +1,21 @@
 package com.example.reveu.weloudgrouplist;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,79 +30,60 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import static android.R.attr.permission;
-import static android.R.attr.value;
-import static android.R.id.list;
 import static android.content.ContentValues.TAG;
-import static com.example.reveu.weloudgrouplist.R.id.etGroupSearch;
-import static com.example.reveu.weloudgrouplist.R.id.fragGroupCloudList;
-import static com.example.reveu.weloudgrouplist.R.id.lvGroupSearch;
 
 /**
  * Created by reveu on 2017-08-23.
  */
 
-public class SettGroupUserInvite extends AppCompatActivity
+public class SettGroupUserAdmission extends AppCompatActivity
 {
     private ActionbarLib abLib = new ActionbarLib();
 
     private int groupID;
     private UserListAdapter userAdapter = new UserListAdapter(false);
 
+    ProgressDialog progressDialogAdmission;;
     LinearLayout ctMain;
-    ListView lvUser;
-    EditText etSearch;
-    ImageView ivSearch;
+    ListView lvAdmission;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_settings_group_userinvite);
+        setContentView(R.layout.activity_settings_group_useradmission);
 
         ctMain = (LinearLayout) findViewById(R.id.ctMain);
-        lvUser = (ListView) findViewById(R.id.lvUser);
-        etSearch = (EditText) findViewById(R.id.etSearch);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        lvAdmission = (ListView) findViewById(R.id.lvAdmission);
 
-        lvUser.setAdapter(userAdapter);
+        lvAdmission.setAdapter(userAdapter);
 
         Intent intent = getIntent();
         groupID = intent.getIntExtra(getText(R.string.TAG_GROUPID).toString(), -1);
 
-        lvUser.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        lvAdmission.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 UserItem item = userAdapter.getItem(position);
 
-                GroupUserTask task = new GroupUserTask(position);
-                task.execute(String.valueOf(groupID), String.valueOf(item.getUserNum()));
-            }
-        });
-
-        ivSearch.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                String searchID = etSearch.getText().toString();
-
-                if(searchID.length() < 2)
-                    Snackbar.make(ctMain, getString(R.string.text_morechar, 2), Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+                if(item.getChecked())
+                    item.setChecked(false);
                 else
-                {
-                    userAdapter.clearList();
+                    item.setChecked(true);
 
-                    GroupUserTask task = new GroupUserTask();
-                    task.execute(searchID, String.valueOf(groupID));
-                }
+                if(userAdapter.getCheckCount() > 0)
+                    abLib.setEnableConfirmBtn(true);
+                else
+                    abLib.setEnableConfirmBtn(false);
+
+                userAdapter.notifyDataSetChanged();
             }
         });
 
-        abLib.setDefaultActionBar(this, getText(R.string.text_userinvite).toString(), true, 0);
+        abLib.setDefaultActionBar(this, getText(R.string.text_useradmission).toString(), true, 1);
 
         abLib.getBtnActionBarBack().setOnClickListener(new View.OnClickListener()
         {
@@ -120,22 +93,63 @@ public class SettGroupUserInvite extends AppCompatActivity
                 finish();
             }
         });
+
+        abLib.getBtnActionBarConfirm().setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ArrayList<UserItem> userList = userAdapter.getList();
+                Iterator<UserItem> it = userList.iterator();
+
+                progressDialogAdmission = ProgressDialog.show(SettGroupUserAdmission.this, getText(R.string.text_loading).toString(), null, true, true);
+
+                while(it.hasNext())
+                {
+                    UserItem user = it.next();
+
+                    if(user.getChecked())
+                    {
+                        GroupUserTask task;
+
+                        if(it.hasNext())
+                            task = new GroupUserTask(true);
+                        else
+                            task = new GroupUserTask(true, true);
+
+                        task.execute(String.valueOf(groupID), String.valueOf(user.getUserNum()));
+                        it.remove();
+                    }
+                }
+            }
+        });
+
+        abLib.setEnableConfirmBtn(false);
     }
 
-    void inviteJsonEvent(String result)
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        GroupUserTask task = new GroupUserTask(false);
+
+        task.execute(String.valueOf(groupID));
+    }
+
+    void admissionSearchEvent(String result)
     {
         try
         {
             JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray = jsonObject.getJSONArray(getText(R.string.TAG_JSON_GROUPUSERLIST).toString());
+            JSONArray jsonArray = jsonObject.getJSONArray(getText(R.string.TAG_JSON_SETT_GROUP_ADMISSION).toString());
 
             int length = jsonArray.length();
             if(length > 0)
             {
-                userAdapter.clearList();
-
                 int index = 0;
 
+                userAdapter.clearList();
                 while (length > index)
                 {
                     JSONObject item = jsonArray.getJSONObject(index);
@@ -143,16 +157,7 @@ public class SettGroupUserInvite extends AppCompatActivity
                     String userID = item.getString(getText(R.string.TAG_ID).toString());
                     int userNum = item.getInt(getText(R.string.TAG_USERNUM).toString());
                     String nickName = item.getString(getText(R.string.TAG_NICKNAME).toString());
-                    int isMember = item.getInt(getText(R.string.TAG_ISMEMBER).toString());
-                    int isInvite = item.getInt(getText(R.string.TAG_ISINVITE).toString());
-                    int status = 0;
-
-                    if (isMember > 0)
-                        status = 2;
-                    else if (isInvite > 0)
-                        status = 1;
-
-                    userAdapter.addItem(userID, userNum, nickName, status);
+                    userAdapter.addItem(userID, userNum, nickName, 0);
                     index++;
                 }
             }
@@ -161,23 +166,37 @@ public class SettGroupUserInvite extends AppCompatActivity
         }
         catch (Exception e)
         {
-            Log.d(TAG, "SettGroupUserInvite : ", e);
+            Log.d(TAG, "SettGroupUserAdmission : ", e);
         }
+    }
+
+    void printSuccessMessage()
+    {
+        if(progressDialogAdmission != null)
+        {
+            if(progressDialogAdmission.isShowing())
+                progressDialogAdmission.dismiss();
+        }
+
+        Snackbar.make(ctMain, getText(R.string.text_successadmission), Snackbar.LENGTH_SHORT).show();
+
+        userAdapter.notifyDataSetChanged();
     }
 
     private class GroupUserTask extends AsyncTask<String, Void, String>
     {
-        ProgressDialog progressDialog;
-        int position = -1;
+        boolean AdmissionEvent;
+        boolean isLast;
 
-        GroupUserTask()
+        GroupUserTask(boolean AdmissionEvent)
         {
-
+            this.AdmissionEvent = AdmissionEvent;
         }
 
-        GroupUserTask(int position)
+        GroupUserTask(boolean AdmissionEvent, boolean isLast)
         {
-            this.position = position;
+            this.AdmissionEvent = AdmissionEvent;
+            this.isLast = isLast;
         }
 
         @Override
@@ -185,7 +204,8 @@ public class SettGroupUserInvite extends AppCompatActivity
         {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(SettGroupUserInvite.this, getText(R.string.text_loading).toString(), null, true, true);
+            if(!AdmissionEvent)
+                progressDialogAdmission = ProgressDialog.show(SettGroupUserAdmission.this, getText(R.string.text_loading).toString(), null, true, true);
         }
 
         @Override
@@ -193,37 +213,16 @@ public class SettGroupUserInvite extends AppCompatActivity
         {
             super.onPostExecute(result);
 
-            if(progressDialog != null)
+            if(progressDialogAdmission != null)
             {
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
+                if(progressDialogAdmission.isShowing())
+                    progressDialogAdmission.dismiss();
             }
 
-            if(position < 0)
-                inviteJsonEvent(result);
-            else
-            {
-                UserItem item = userAdapter.getItem(position);
-                int status;
-
-                if(result.contains("deleted*"))
-                {
-                    Snackbar.make(ctMain, getText(R.string.text_invitationcancel), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    status = 0;
-                }
-                else if(result.contains("inserted*"))
-                {
-                    Snackbar.make(ctMain, getText(R.string.text_invitationsend), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    status = 1;
-                }
-                else
-                {
-                    Snackbar.make(ctMain, getString(R.string.text_useralreadyjoined, item.getUserID()), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    status = 2;
-                }
-                item.setStatus(status);
-                userAdapter.notifyDataSetChanged();
-            }
+            if(!AdmissionEvent)
+                admissionSearchEvent(result);
+            if(isLast)
+                printSuccessMessage();
         }
 
 
@@ -233,15 +232,15 @@ public class SettGroupUserInvite extends AppCompatActivity
             String serverURL;
             String postParameters;
 
-            if(position >= 0)
+            if(AdmissionEvent)
             {
-                serverURL = "http://weloud.duckdns.org/weloud/db_search_userinvite.php";
+                serverURL = "http://weloud.duckdns.org/weloud/db_event_user_admission.php";
                 postParameters = "groupid=" + params[0] + "&usernum=" + params[1];
             }
             else
             {
-                serverURL = "http://weloud.duckdns.org/weloud/db_search_usersearch.php";
-                postParameters = "ID=" + params[0] + "&groupID=" + params[1];
+                serverURL = "http://weloud.duckdns.org/weloud/db_get_group_admission.php";
+                postParameters = "groupid=" + params[0];
             }
 
             try
@@ -290,7 +289,7 @@ public class SettGroupUserInvite extends AppCompatActivity
             }
             catch (Exception e)
             {
-                Log.d(TAG, "SettGroupUserInvite: Error ", e);
+                Log.d(TAG, "SettGroupUserAdmission: Error ", e);
 
                 return new String("Error: " + e.getMessage());
             }

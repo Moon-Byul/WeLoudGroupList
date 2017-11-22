@@ -85,7 +85,7 @@ public class FragGroupList extends Fragment
             {
                 GroupListItem item = glaAdapter.getItem(position);
 
-                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
+                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID(), item.getFav());
             }
         });
 
@@ -226,11 +226,12 @@ public class FragGroupList extends Fragment
                     Log.d("Twily", "groupListEvent : ", pe);
                 }
             }
-            if(srlGroupMain.isRefreshing() == true)
+            if(srlGroupMain.isRefreshing())
             {
                 srlGroupMain.setRefreshing(false);
                 lvGroup.setEnabled(true);
             }
+            glaAdapter.sortAscName();
         }
         catch (JSONException e)
         {

@@ -56,7 +56,7 @@ public class SettGroupUserKickAndRank extends AppCompatActivity
     private int permission;
     private String userNum;
     private boolean isKick;
-    private UserListAdapter userAdapter = new UserListAdapter();
+    private UserListAdapter userAdapter = new UserListAdapter(true);
 
     ProgressDialog progressDialogKick;
     LinearLayout ctMain;
@@ -93,6 +93,11 @@ public class SettGroupUserKickAndRank extends AppCompatActivity
                     item.setChecked(false);
                 else
                     item.setChecked(true);
+
+                if(userAdapter.getCheckCount() > 0)
+                    abLib.setEnableConfirmBtn(true);
+                else
+                    abLib.setEnableConfirmBtn(false);
 
                 userAdapter.notifyDataSetChanged();
             }
@@ -212,6 +217,8 @@ public class SettGroupUserKickAndRank extends AppCompatActivity
                 }
             }
         });
+
+        abLib.setEnableConfirmBtn(false);
     }
 
     @Override
@@ -225,12 +232,6 @@ public class SettGroupUserKickAndRank extends AppCompatActivity
             task.execute(String.valueOf(groupID), String.valueOf(permission));
         else
             task.execute(String.valueOf(groupID), userNum);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     void userSearchEvent(String result)

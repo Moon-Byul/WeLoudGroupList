@@ -20,7 +20,7 @@ public class UserItem
     /*
      * status의 value type
      * 0 - null
-     * 1 - 가입 승인중
+     * 1 - invite 보냄
      * 2 - 이미 가입됨
      */
     int status = 0;

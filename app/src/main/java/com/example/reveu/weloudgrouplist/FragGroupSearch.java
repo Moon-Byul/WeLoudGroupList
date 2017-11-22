@@ -46,7 +46,7 @@ public class FragGroupSearch extends Fragment
             {
                 GroupListItem item = glaSearchAdapter.getItem(position);
 
-                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID());
+                ((GroupList) getActivity()).groupCloudEvent(item.getGroupName(), item.getGroupID(), item.getFav());
             }
         });
 

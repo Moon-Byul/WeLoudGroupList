@@ -40,6 +40,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".GroupListUserInvitation"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".SettUserMain"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -66,6 +71,21 @@
         </activity>
         <activity
             android:name=".SettGroupPermissionDetail"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupUserInvite"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupUserAdmission"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SettGroupUserInheritance"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

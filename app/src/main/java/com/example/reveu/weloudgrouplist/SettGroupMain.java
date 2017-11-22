@@ -41,6 +41,7 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
     private LinearLayout btnAdmission;
     private LinearLayout btnPerSett;
     private LinearLayout btnRankSett;
+    private LinearLayout btnCreatorInheritance;
     private LinearLayout ctAutoJoin;
     private LinearLayout ctAllow;
     private Switch swAutoJoin;
@@ -61,6 +62,7 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
         btnAdmission = (LinearLayout) findViewById(R.id.settings_groupmain_btnAdmission);
         btnPerSett = (LinearLayout) findViewById(R.id.settings_groupmain_btnPerSett);
         btnRankSett = (LinearLayout) findViewById(R.id.settings_groupmain_btnRankSett);
+        btnCreatorInheritance = (LinearLayout) findViewById(R.id.settings_groupmain_btnCreatorInheritance);
         ctAutoJoin = (LinearLayout) findViewById(R.id.settings_groupmain_ctAutoJoin);
         ctAllow = (LinearLayout) findViewById(R.id.settings_groupmain_ctAllow);
         swAutoJoin = (Switch) findViewById(R.id.settings_groupmain_swAutoJoin);
@@ -91,7 +93,9 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             @Override
             public void onClick(View v)
             {
-
+                Intent intent = new Intent(SettGroupMain.this, SettGroupUserInvite.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                startActivity(intent);
             }
         });
 
@@ -100,7 +104,9 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             @Override
             public void onClick(View v)
             {
-
+                Intent intent = new Intent(SettGroupMain.this, SettGroupUserAdmission.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                startActivity(intent);
             }
         });
 
@@ -129,7 +135,17 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             }
         });
 
-        pmLib.execute(this, "permissionEvent", String.valueOf(groupID), String.valueOf(userNum));
+        btnCreatorInheritance.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(SettGroupMain.this, SettGroupUserInheritance.class);
+                intent.putExtra(getText(R.string.TAG_GROUPID).toString(), groupID);
+                intent.putExtra(getText(R.string.TAG_USERNUM).toString(), userNum);
+                startActivity(intent);
+            }
+        });
 
         abLib.setDefaultActionBar(this, getText(R.string.text_groupsettings).toString(), true, 0);
 
@@ -152,6 +168,14 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
         String allow = (swAllow.isChecked() ? "1" : "0");
 
         task.execute(String.valueOf(groupID), autoJoin, allow);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        pmLib.execute(this, "permissionEvent", String.valueOf(groupID), String.valueOf(userNum));
     }
 
     private void switchCheckEvent(String jsonString)
@@ -310,12 +334,14 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
 
         if(pmLib.isUserCreator())
         {
+            btnCreatorInheritance.setVisibility(View.VISIBLE);
             btnPerSett.setVisibility(View.VISIBLE);
             ctAutoJoin.setVisibility(View.VISIBLE);
             ctAllow.setVisibility(View.VISIBLE);
         }
         else
         {
+            btnCreatorInheritance.setVisibility(View.GONE);
             btnPerSett.setVisibility(View.GONE);
             ctAutoJoin.setVisibility(View.GONE);
             ctAllow.setVisibility(View.GONE);
@@ -325,5 +351,8 @@ public class SettGroupMain extends AppCompatActivity implements CompoundButton.O
             btnRankSett.setVisibility(View.VISIBLE);
         else
             btnRankSett.setVisibility(View.GONE);
+
+        if(!pmLib.isUserCreator() && !pmLib.isUserManageGroup() && !pmLib.isUserInvite() && !pmLib.isUserApproveJoin())
+            finish();
     }
 }
