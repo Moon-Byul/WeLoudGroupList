@@ -3,6 +3,7 @@ package com.example.reveu.weloudgrouplist;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.app.AlertDialog;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -678,9 +680,17 @@ class FTPLib
                 .setOngoing(true)
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.download); // 요거 안넣어주면 notification 안생김.
+                .setSmallIcon(R.drawable.download)
+                .setDefaults(Notification.DEFAULT_ALL); // 요거 안넣어주면 notification 안생김.
 
-                nmDownload.cancel(1);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ncBuilder.setCategory(Notification.CATEGORY_MESSAGE)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC);
+                }
+
+                nmDownload.cancel(111);
+                nmDownload.cancel(222);
 
                 File downloadFile = new File(downloadPath);
                 OutputStream outputStream = new FileOutputStream(downloadFile);
@@ -707,22 +717,22 @@ class FTPLib
                          * Percent 단위로 갱신해줘야함. 안그러면 위에서 말했듯이 바이트 전송될때마다 UI 갱신해서 핸드폰 배터리 광탈남
                          * NotificationCombat을 Update 한 뒤에, NotificationManager에 Notify를 하는 순서로 Update를 해줘야함.
                          */
-                        if(percentPrev < percent)
+                        if (totalBytesTransferred >= size) // 다운 다 됨 ㅎ
+                        {
+                            removeCopyStreamListener(this);
+                            ncBuilder.setContentText(context.getText(R.string.text_downloadcomplete) + " : " + downloadFileName)
+                                    .setProgress(0, 0, false)
+                                    .setOngoing(false)
+                                    .setAutoCancel(false);
+                            nmDownload.cancel(111);
+                            nmDownload.notify(222, ncBuilder.build());
+                        }
+                        else if(percentPrev < percent)
                         {
                             percentPrev = percent;
                             ncBuilder.setProgress(100, percent, false)
                             .setContentText(context.getText(R.string.text_downloadinprogress) + "(" + percent + "%) - " + downloadFileName);
-                            nmDownload.notify(1, ncBuilder.build());
-                        }
-                        if (totalBytesTransferred == size) // 다운 다 됨 ㅎ
-                        {
-                            removeCopyStreamListener(this);
-                            ncBuilder.setContentText(context.getText(R.string.text_downloadcomplete) + " : " + downloadFileName)
-                            .setProgress(0, 0, false)
-                            .setOngoing(false)
-                            .setAutoCancel(false);
-                            nmDownload.cancel(1);
-                            nmDownload.notify(2, ncBuilder.build());
+                            nmDownload.notify(111, ncBuilder.build());
                         }
                     }
                 });
@@ -761,13 +771,21 @@ class FTPLib
                 final NotificationCompat.Builder ncBuilder = new NotificationCompat.Builder(context);
 
                 ncBuilder.setContentTitle("Weloud")
-                        .setContentText(context.getText(R.string.text_uploadinprogress) + "(0%) - " + uploadFileName)
-                        .setOngoing(true)
-                        .setAutoCancel(true)
-                        .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(R.drawable.uploadcloud);// 요거 안넣어주면 notification 안생김.
+                .setContentText(context.getText(R.string.text_uploadinprogress) + "(0%) - " + uploadFileName)
+                .setOngoing(true)
+                .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.uploadcloud)
+                .setDefaults(Notification.DEFAULT_ALL);// 요거 안넣어주면 notification 안생김.
 
-                nmDownload.cancel(3);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ncBuilder.setCategory(Notification.CATEGORY_MESSAGE)
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .setVisibility(Notification.VISIBILITY_PUBLIC);
+                }
+
+                nmDownload.cancel(333);
+                nmDownload.cancel(444);
 
                 File uploadFile = new File(targetFile);
                 FileInputStream inputStream = new FileInputStream(uploadFile);
@@ -792,22 +810,22 @@ class FTPLib
                          * Percent 단위로 갱신해줘야함. 안그러면 위에서 말했듯이 바이트 전송될때마다 UI 갱신해서 핸드폰 배터리 광탈남
                          * NotificationCombat을 Update 한 뒤에, NotificationManager에 Notify를 하는 순서로 Update를 해줘야함.
                          */
-                        if(percentPrev < percent)
-                        {
-                            percentPrev = percent;
-                            ncBuilder.setProgress(100, percent, false)
-                                    .setContentText(context.getText(R.string.text_uploadinprogress) + "(" + percent + "%) - " + uploadFileName);
-                            nmDownload.notify(3, ncBuilder.build());
-                        }
-                        if (totalBytesTransferred == size) // 업로드 다 됨 ㅎ
+                        if (totalBytesTransferred >= size) // 업로드 다 됨 ㅎ
                         {
                             removeCopyStreamListener(this);
                             ncBuilder.setContentText(context.getText(R.string.text_uploadcomplete) + " : " + uploadFileName)
                                     .setProgress(0, 0, false)
                                     .setOngoing(false)
                                     .setAutoCancel(false);
-                            nmDownload.cancel(3);
-                            nmDownload.notify(4, ncBuilder.build());
+                            nmDownload.cancel(333);
+                            nmDownload.notify(444, ncBuilder.build());
+                        }
+                        else if(percentPrev < percent)
+                        {
+                            percentPrev = percent;
+                            ncBuilder.setProgress(100, percent, false)
+                                    .setContentText(context.getText(R.string.text_uploadinprogress) + "(" + percent + "%) - " + uploadFileName);
+                            nmDownload.notify(333, ncBuilder.build());
                         }
                     }
                 });

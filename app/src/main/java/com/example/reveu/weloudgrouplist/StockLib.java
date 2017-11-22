@@ -52,7 +52,7 @@ public class StockLib
      */
     public Boolean isIDFormatted(String input)
     {
-        if (Pattern.matches("^[a-zA-Z0-9]{4,16}$", input))
+        if (Pattern.matches("^[a-zA-Z0-9-_]{4,16}$", input))
             return true;
         else
             return false;
@@ -74,7 +74,7 @@ public class StockLib
      */
     public Boolean isNickFormatted(String input)
     {
-        if (Pattern.matches("^[a-zA-Z0-9가-힣]{2,12}$", input))
+        if (Pattern.matches("^[a-zA-Z0-9가-힣-_]{2,12}$", input))
             return true;
         else
             return false;
@@ -85,7 +85,7 @@ public class StockLib
      */
     public Boolean isEmailFormatted(String input)
     {
-        if (Pattern.matches("^[a-zA-Z0-9]+@[a-zA-Z0-9.]+$", input))
+        if (Pattern.matches("^[a-zA-Z0-9-_]+@[a-zA-Z0-9.]+$", input))
             return true;
         else
             return false;
@@ -96,7 +96,7 @@ public class StockLib
      */
     public Boolean isGroupNameFormatted(String input)
     {
-        if (Pattern.matches("^[a-zA-Z0-9가-힣]{2,16}$", input))
+        if (Pattern.matches("^[a-zA-Z0-9가-힣-_]{2,16}$", input))
             return true;
         else
             return false;
