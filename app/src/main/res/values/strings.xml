@@ -1,4 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
     <string name="app_name">WeLoudCloud</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -101,6 +103,7 @@
     <string name="text_downloadsuccess">Download success</string>
     <string name="text_downloadfail">Download fail</string>
     <string name="text_fileisntexists">File is not exists.</string>
+    <string name="text_nameisexists">File name is exists.</string>
     <string name="text_delete">Delete</string>
     <string name="text_overwrite">Overwrite</string>
     <string name="text_rename">Rename</string>

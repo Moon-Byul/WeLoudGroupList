@@ -1,4 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
     <string name="app_name">WeLoudGroupList</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -127,6 +129,17 @@
     <string name="text_areyousuredeletegroup">정말 이 그룹을 삭제하시겠습니까?</string>
     <string name="text_areyousureinheritance">%1$s 에게 상속하시겠습니까? (기존 총관리자는 기본회원으로 돌아갑니다.)</string>
     <string name="text_invitation">그룹 초대</string>
+
+    <string name="per_fileupload">파일 업로드</string>
+    <string name="per_filerename">파일 이름변경</string>
+    <string name="per_filemove">파일 이동</string>
+    <string name="per_filedelete">파일 삭제</string>
+    <string name="per_folderadd">폴더 생성</string>
+    <string name="per_foldermodify">폴더 수정</string>
+    <string name="per_folderdelete">폴더 삭제</string>
+    <string name="per_approvejoin">가입 승인</string>
+    <string name="per_invite">유저 초대</string>
+    <string name="per_managegroup">그룹 관리</string>
 
     <string name="error_temporary">일시적인 오류입니다.</string>
     <string name="error_connection">연결 오류입니다.</string>
